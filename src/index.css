@@ -38,19 +38,24 @@ html{
 
 body { 
   width: 100%;
-  font-family: 'Pretendard'; 
-  background-color: var(--color-white);  
+  font-family: 'Pretendard', bootstrap-icons; 
   color: var(--color-black);
-  font-size: 1rem; /* 기본 본문 텍스트 크기 (16px) */
+  font-size: 1rem; 
   line-height: 1.5;  
   place-items: center;
   min-height: 100vh;
-  margin: 0 auto;
-  text-align: center;
+  margin: 0 auto; 
   display: flex;
+  background-color: var(--color-gray10);
 }  
 
 p {
+  font-size: 1rem; 
+  font-weight: 500; 
+  margin-bottom: 1rem;  
+}
+
+span {
   font-size: 1rem; 
   font-weight: 500; 
   margin-bottom: 1rem;  

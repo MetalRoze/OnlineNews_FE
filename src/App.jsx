@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import '../src/styles/styles.css';
 import '../src/styles/common.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 
 import Header from './components/Header'; 

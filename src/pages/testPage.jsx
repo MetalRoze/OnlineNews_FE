@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function TestPage() {
-    return (
+    return ( 
         <div className="mobile-container">
             <h1>테스트페이지</h1>
             <h2>헤딩 2</h2>
@@ -20,6 +20,6 @@ export default function TestPage() {
             </p>
 
             <button>기본 버튼</button> 
-        </div>
+        </div> 
     );
 }
