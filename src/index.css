@@ -1,5 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
+/* 테이블, 스크롤바, input, select, textarea, label, ol/ul/li 정의해야 함 */
+
 :root {  
   --color-white: #ffffff;
   --color-black: #1c1c1c;
@@ -13,22 +15,19 @@
   --color-gray60: #8E8E93; 
 }
 
-:root {
-  font-family: "Pretendard";
+:root { 
   line-height: 1.5;
   font-weight: 500; 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424; 
+  color: rgba(255, 255, 255, 0.87); 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
+* { 
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -44,7 +43,8 @@ body {
   line-height: 1.5;  
   place-items: center;
   min-height: 100vh;
-  margin: 0;
+  margin: 0 auto;
+  text-align: center;
   display: flex;
 }  
 

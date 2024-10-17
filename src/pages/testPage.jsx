@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function TestPage() {
     return (
-        <div className="container">
+        <div className="mobile-container">
             <h1>테스트페이지</h1>
             <h2>헤딩 2</h2>
             <h3>헤딩 3</h3>
@@ -11,9 +11,7 @@ export default function TestPage() {
             <h6>헤딩 6</h6>
 
             <p> p. 가독성을 위해 1rem 크기로 설정되어 있습니다.</p>
-            <p style={{color: 'var(--color-red)'}} >추후 홈 생기면 해당 페이지 삭제 후 App.jsx 경로 수정</p>
-            
-            <caption> caption: 테이블 설명할 때 사용</caption>
+            <p>추후 홈 생기면 해당 페이지 삭제 후 App.jsx 경로 수정</p> 
 
             <small>작은 텍스트 small 예시입니다.</small>
 
