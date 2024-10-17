@@ -109,6 +109,7 @@ button {
   cursor: pointer;
   background-color: var(--color-gray40);
   color: var(--color-white);
+  width: 150px; /* 고정 너비 */
 }
 
 button:hover {
