@@ -27,6 +27,7 @@
 }
 
 * { 
+  width: 100%;
   margin: 0 auto;
   padding: 0;
 }
@@ -36,6 +37,7 @@ html{
 } 
 
 body { 
+  width: 100%;
   font-family: 'Pretendard'; 
   background-color: var(--color-white);  
   color: var(--color-black);

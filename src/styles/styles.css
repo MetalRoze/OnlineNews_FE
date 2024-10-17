@@ -1,8 +1,17 @@
-.custom-header{
+.desktop-header{
     background-color: var(--color-blue);
     color: var(--color-white);
 }
-.custom-footer{
+.mobile-header{
+    width: 600px;
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+.desktop-footer{
+    background-color: var(--color-gray40); 
+}
+.mobile-footer{
+    width: 600px;
     background-color: var(--color-gray40); 
 }
 .mobile-container {
@@ -14,8 +23,9 @@
     overflow: auto;   
     background-color: var(--color-gray10); 
 }
-.admin-container {
-    width: 100%; 
+.desktop-container {
+    width: 100%;
     min-height: 100vh; 
     padding: 20px; 
+    margin: 0;  
 }

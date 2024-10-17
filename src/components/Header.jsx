@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 
-const Header = () => {
+const Header = ({ className }) => {
     return (
-    <nav class="navbar custom-header py-3" data-bs-theme="dark">
+        <Navbar className={`${className} py-3`} data-bs-theme="dark">
             <div className="container">
                 <Navbar.Brand href="#home">틀만 만들어 놨음</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -13,9 +13,8 @@ const Header = () => {
                     </Nav>
                 </Navbar.Collapse>
             </div>
-        </nav>
+        </Navbar>
     );
 };
-
 
 export default Header;
