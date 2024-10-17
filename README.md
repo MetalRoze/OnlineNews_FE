@@ -9,6 +9,7 @@
  ├─ apis
  ├─ utils
  ├─ store
- ├─ App.js
- └─ index.js
+ ├─ App.jsx
+ └─ main.jsx
 ```
+‼️ **jsx 확장명** 사용하기
