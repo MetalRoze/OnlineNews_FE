@@ -1,31 +1,40 @@
-// src/App.jsx
-import { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-// import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import '../src/styles/styles.css';
 import '../src/styles/common.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import './index.css';
- 
 
-import Header from './components/Header';  // Header 임포트
-import Footer from './components/Footer';  // Footer 임포트
+import Header from './components/Header'; 
+import Footer from './components/Footer'; 
 import TestPage from './pages/TestPage';  
+import TestPageDT from './pages/testPageDT';  
 
 function App() { 
-
   return (
     <Router>
-            <Header />
-        {/* Routes 설정 */}
-        <Routes>
-          <Route path="/" element={<TestPage/>} /> 
-        </Routes>
-        <Footer />
+      <Main />
     </Router>
   );
 }
+
+const Main = () => {
+  const location = useLocation();
+  
+  // 현재 경로에 따라 클래스 설정
+  const isDesktop = location.pathname === "/desktop";
+
+  return (
+    <>
+      <Header className={isDesktop ? 'desktop-header' : 'mobile-header'} />
+      {/* Routes 설정 */}
+      <Routes>
+        <Route path="/" element={<TestPage />} /> 
+        <Route path="/desktop" element={<TestPageDT />} /> 
+      </Routes>
+      <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
+    </>
+  );
+};
 
 export default App;
