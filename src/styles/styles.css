@@ -80,5 +80,24 @@
 }
 
 .desktop-sidebar i {
-    width: 1px;
+    font-size: 1.25rem;
+}
+
+
+.desktop-sidebar .list {
+    padding: 20px;
+    margin-top: 4em;
+}
+
+.desktop-sidebar li {
+    list-style-type: none;
+    color: var(--color-white);
+}
+
+.desktop-sidebar text {
+    margin-left: 1px;
+}
+
+.desktop-sidebar a {
+    color: var(--color-white);
 }
