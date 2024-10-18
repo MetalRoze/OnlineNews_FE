@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar'
 
 export default function TestPageDT() {
     return (
-        <div className="flex">
+        <div className="flex" style={{width:"100vw"}}>
             <Sidebar />
             <div className="desktop-container">
                 <h1>테스트페이지</h1>
