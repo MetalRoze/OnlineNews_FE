@@ -24,7 +24,7 @@ export default function MyCalendar() {
   );
 }
 
-export const StyledCalendarWrapper = styled.div`
+const StyledCalendarWrapper = styled.div`
   width: 25rem;
   display: flex;
   justify-content: center;

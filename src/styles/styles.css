@@ -147,3 +147,16 @@
     width:500px;
     margin:0; 
 }
+
+/* 관리자 승인+보류+거절버튼 */
+.desktop-3buttons{
+    background-color: var(--color-blueOp);
+}
+.desktop-3buttons button{
+    background-color: transparent;
+    color: var(--color-blue);
+}
+.desktop-3buttons button:hover{
+    background-color: var(--color-white);
+    color: var(--color-blue);
+}
