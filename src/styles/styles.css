@@ -1,8 +1,4 @@
-.desktop-header {
-    background-color: var(--color-blue);
-    color: var(--color-white);
-}
-
+/* 헤더 */
 .mobile-header {
     width: 600px;
     display: flex;
@@ -23,6 +19,10 @@
     text-align: left;
     color: var(--color-gray60);
     margin: auto 0 auto 10px;
+}
+
+.mobile-header i {
+    font-size: 1.25rem;
 }
 
 .mobile-header .link {
