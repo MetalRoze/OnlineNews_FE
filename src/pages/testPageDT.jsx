@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function TestPage() {
-    return ( 
-        <div className="mobile-container">
+export default function testPageDT() {
+    return (
+        <div className="desktop-container">
             <h1>테스트페이지</h1>
             <h2>헤딩 2</h2>
             <h3>헤딩 3</h3>
@@ -20,6 +20,6 @@ export default function TestPage() {
             </p>
 
             <button>기본 버튼</button> 
-        </div> 
+        </div>
     );
 }

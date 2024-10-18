@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Footer = () => {
+const Footer = ({ className }) => {
     return (
-        <footer class="py-2 custom-footer mt-auto">
+        <footer className={`${className} py-2 mt-auto`}>
             <div className="container p-4">
                 <div className="text-center">
                     © 2024 Online News by metalroze. All rights reserved.

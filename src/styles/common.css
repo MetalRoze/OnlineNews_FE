@@ -1,0 +1,11 @@
+ .flex {
+     display: flex;
+ }
+
+ .taRight {
+     text-align: right;
+ }
+
+ .aiCenter {
+     align-items: center;
+ }
