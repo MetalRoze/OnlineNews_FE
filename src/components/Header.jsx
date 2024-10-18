@@ -19,8 +19,8 @@ const Header = () => {
     const today = new Date();  // Date 객체 생성 
 
     return (
-        <div>
-            <div className='mobile-header' style={{ padding: "1rem 1.5rem" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div className='mobile-header' >
                 <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' />
                 <div>
                     <div className='taRight'>

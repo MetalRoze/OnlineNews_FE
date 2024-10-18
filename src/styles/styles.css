@@ -1,6 +1,7 @@
 /* 헤더 */
 .mobile-header {
     width: 600px;
+    padding: 10px;
     display: flex;
     background-color: var(--color-white);
     color: var(--color-black);
@@ -54,10 +55,30 @@
     background-color: var(--color-white);
 }
 
+
 .desktop-container {
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-white);
     width: 100%;
     min-height: 100vh;
     padding: 20px;
     margin: 0;
+}
+
+.desktop-sidebar {
+    width: 300px;
+    min-height: 100vh;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 10px;
+}
+
+.desktop-sidebar img {
+    width: 75px;
+    height: 25px;
+}
+
+.desktop-sidebar i {
+    width: 1px;
 }
