@@ -21,29 +21,22 @@ const MobileHeader = () => {
     const today = new Date();
     return (
         <div>
-        <div className='mobile-header' style={{padding:"1rem 1.5rem"}}>
-            <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' />
-            <div className='header-icons'>
-                <div className='icon-container'>
-                    <i className="bi bi-search"></i>
-                    <i className="bi bi-filter-right"></i>
-                </div>
-                <div className='date-container'>
-                    <span className='date'>{formatDate(today)}</span>
-                    <div className='link-container'>
-                        <a href='#'>로그인</a>
-                        <span> | </span>
-                        <a href='#'>회원가입</a>
+            <div className='mobile-header' style={{ padding: "1rem 1.5rem" }}>
+                <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' />
+                <div>
+                    <div className='taRight'>
+                        <i className="bi bi-search"></i>
+                        <i className="bi bi-filter-right"></i>
+                    </div>
+                    <div className='flex aiCenter'>
+                        <span className='date'>{formatDate(today)}</span>
+                        <div className='link'>
+                            <a href='#'>로그인</a>
+                            <span> | </span>
+                            <a href='#'>회원가입</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='mobile-header' style={{padding:"0rem 1.5rem"}}>
-                <p>My</p>
-                <p>My</p>
-                <p>My</p>
-                <p>My</p>
-                <p>My</p>
             </div>
         </div>
     );
