@@ -27,6 +27,7 @@
 }
 
 * { 
+  width: 100%;
   margin: 0 auto;
   padding: 0;
 }
@@ -36,19 +37,25 @@ html{
 } 
 
 body { 
-  font-family: 'Pretendard'; 
-  background-color: var(--color-white);  
+  width: 100%;
+  font-family: 'Pretendard', bootstrap-icons; 
   color: var(--color-black);
-  font-size: 1rem; /* 기본 본문 텍스트 크기 (16px) */
+  font-size: 1rem; 
   line-height: 1.5;  
   place-items: center;
   min-height: 100vh;
-  margin: 0 auto;
-  text-align: center;
+  margin: 0 auto; 
   display: flex;
+  background-color: var(--color-gray10);
 }  
 
 p {
+  font-size: 1rem; 
+  font-weight: 500; 
+  margin-bottom: 1rem;  
+}
+
+span {
   font-size: 1rem; 
   font-weight: 500; 
   margin-bottom: 1rem;  
@@ -107,6 +114,7 @@ button {
   cursor: pointer;
   background-color: var(--color-gray40);
   color: var(--color-white);
+  width: 150px; /* 고정 너비 */
 }
 
 button:hover {
