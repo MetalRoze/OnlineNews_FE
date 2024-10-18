@@ -1,6 +1,12 @@
  .flex {
      display: flex;
  }
+.mAuto{
+    margin: auto;
+}
+ .spaceBetween {
+     justify-content: space-between;
+ }
 
  .taRight {
      text-align: right;
@@ -8,4 +14,15 @@
 
  .aiCenter {
      align-items: center;
+ }
+
+ .pd10 {
+     padding: 10px;
+ }
+
+ .mr15{
+    margin-right: 1.5rem;
+ }
+ .mb1{
+    margin-bottom: 1rem;
  }

@@ -2,7 +2,7 @@
 
 /* 테이블, 스크롤바, input, select, textarea, label, ol/ul/li 정의해야 함 */
 
-:root {  
+:root {
   --color-white: #ffffff;
   --color-black: #1c1c1c;
   --color-red: #FF3B30;
@@ -12,111 +12,111 @@
   --color-gray30: #D1D1D6;
   --color-gray40: #C7C7CC;
   --color-gray50: #AEAEB2;
-  --color-gray60: #8E8E93; 
+  --color-gray60: #8E8E93;
 }
 
-:root { 
+:root {
   line-height: 1.5;
-  font-weight: 500; 
+  font-weight: 500;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87); 
+  color: rgba(255, 255, 255, 0.87);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* { 
+* {
   width: 100%;
-  margin: 0 auto;
   padding: 0;
 }
 
-html{
+html {
   font-size: 16px;
-} 
+}
 
-body { 
+body {
   width: 100%;
-  font-family: 'Pretendard', bootstrap-icons; 
+  font-family: 'Pretendard', bootstrap-icons;
   color: var(--color-black);
-  font-size: 1rem; 
-  line-height: 1.5;  
+  font-size: 1rem;
+  line-height: 1.5;
   place-items: center;
   min-height: 100vh;
-  margin: 0 auto; 
+  margin: 0 auto;
   display: flex;
   background-color: var(--color-gray10);
-}  
+}
 
 p {
-  font-size: 1rem; 
-  font-weight: 500; 
-  margin-bottom: 1rem;  
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 span {
-  font-size: 1rem; 
-  font-weight: 500; 
-  margin-bottom: 1rem;  
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 h1 {
-  font-size: 2rem;  
-  font-weight: 700; 
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 h2 {
-  font-size: 1.5rem; 
-  font-weight: 700;  
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 h3 {
-  font-size: 1.25rem; 
-  font-weight: 600; 
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 h4 {
-  font-size: 1.125rem;  
-  font-weight: 600;  
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
 h5 {
-  font-size: 1rem;  
-  font-weight: 600;  
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 h6 {
-  font-size: 0.875rem;  
-  font-weight: 600;  
+  font-size: 0.875rem;
+  font-weight: 600;
 }
- 
+
 small {
-  font-size: 0.875rem; 
-  font-weight: 500;  
+  font-size: 0.875rem;
+  font-weight: 500;
 }
- 
-a { 
+
+a {
   color: var(--color-black);
   text-decoration: none;
 }
 
 a:hover {
   color: var(--color-blue);
-}  
+}
 
 button {
-  font-size: 1rem;  
-  font-weight: 500;  
+  font-size: 1rem;
+  font-weight: 500;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   background-color: var(--color-gray40);
   color: var(--color-white);
-  width: 150px; /* 고정 너비 */
+  width: 150px;
+  /* 고정 너비 */
 }
 
 button:hover {
-  background-color: var(--color-black); 
-}  
+  background-color: var(--color-black);
+}
