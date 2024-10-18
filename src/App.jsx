@@ -13,7 +13,7 @@ import TestPageDT from './pages/testPageDT';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login'; 
 import SignupPage from './pages/signup/Signup';
-
+import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
 
 function App() {
   return (
@@ -26,7 +26,9 @@ function App() {
 const Main = () => {
   const location = useLocation();
 
-  // 관리자 페이지(데스크탑사이즈) 여기에 적기
+  const isDetail = location.pathname === '/articleDetail';
+
+  // 기사 상세 페이지 헤더
   const excludedPaths = ["/desktop",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
@@ -42,21 +44,19 @@ const Main = () => {
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
 
   return (
-    <>
-      {isBackHeader ? (
-        <GoBackHeader title={backHeaderTitle} />
-      ) : (
-        !isDesktop && <Header/>
-      )}
-      {/* Routes 설정 */}
+    <div style={{ width: '100%', height:"100%"}}>
+      {!isDetail && !isBackHeader && !isDesktop && <Header />}
+      {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
+      
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/desktop" element={<TestPageDT />} />
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/signup" element={<SignupPage/>}/>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/articleDetail" element={<ArticleDtPage />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
-    </>
+    </div>
   );
 };
 

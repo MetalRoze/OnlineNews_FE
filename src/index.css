@@ -23,30 +23,49 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; 
+  width: 100vw;
 }
 
 * {
+  margin: 0;  
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+html, body {
+  margin: 0;  
+  padding: 0; 
   width: 100%;
-  padding: 0;
+  font-family: 'Pretendard', sans-serif; 
+  background-color: var(--color-gray10);  
 }
 
 html {
+  margin: 0;  
+  padding: 0; 
+  width: 100%;
+  height: 100%;
   font-size: 16px;
 }
 
 body {
-  width: 100%;
+  width: 100%; 
   font-family: 'Pretendard', bootstrap-icons;
   color: var(--color-black);
   font-size: 1rem;
   line-height: 1.5;
   place-items: center;
-  min-height: 100vh;
-  margin: 0 auto;
+  min-height: 100vh; 
+  justify-content: center; 
+  align-items: center; 
+  margin: 0;
+  margin: 0;  
+  padding: 0; 
   display: flex;
   background-color: var(--color-gray10);
 }
+
 
 p {
   font-size: 1rem;
