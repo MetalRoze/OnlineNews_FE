@@ -148,15 +148,32 @@
     margin:0; 
 }
 
+.desktop-request{
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    height: 10rem;
+    background-color: var(--color-gray10);
+}
+.desktop-request .ellipsis{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    /* 노란줄 무시하셈 */
+    -webkit-line-clamp: 2 ; 
+    -webkit-box-orient: vertical;
+ }
 /* 관리자 승인+보류+거절버튼 */
-.desktop-3buttons{
+.desktop-request-3buttons{
     background-color: var(--color-blueOp);
 }
-.desktop-3buttons button{
+.desktop-request-3buttons button{
     background-color: transparent;
     color: var(--color-blue);
 }
-.desktop-3buttons button:hover{
+.desktop-request-3buttons button:hover{
     background-color: var(--color-white);
     color: var(--color-blue);
 }
