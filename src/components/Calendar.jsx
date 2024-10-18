@@ -9,16 +9,27 @@ export default function MyCalendar() {
 
   return (
     <StyledCalendarWrapper>
-      <Calendar onChange={onChange} value={value} formatDay={(locale, date) => moment(date).format("D")}/>
+      <Calendar 
+      locale="ko"
+      onChange={onChange} 
+      value={value} 
+      formatDay={(locale, date) => moment(date).format("D")}
+      formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")}
+      calendarType="gregory"
+      showNeighboringMonth={false}
+      minDetail="year"
+      selectRange={false}
+      />
     </StyledCalendarWrapper>
   );
 }
 
 export const StyledCalendarWrapper = styled.div`
- width: 25rem;
+  width: 25rem;
   display: flex;
   justify-content: center;
   position: relative;
+
   .react-calendar {
     width: 100%;
     border: none;
@@ -32,6 +43,7 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__month-view {
     abbr {
       color: #AEAEB2;
+      font-size: 1rem;
     }
   }
 
@@ -44,20 +56,27 @@ export const StyledCalendarWrapper = styled.div`
   .react-calendar__navigation button {
     font-weight: 800;
     color:#007AFF;
-    font-size: 1rem;
   }
   /* 날짜 */
   .react-calendar__navigation__label > span{
      color: black;
-     font-size: 1rem;
+     font-weight: 900;
   }
 
   /* 네비게이션 버튼 컬러 */
+  .react-calendar__navigation button:hover,
   .react-calendar__navigation button:focus {
     color:#007AFF;
+    background: none;
   }
 
+  .react-calendar__navigation__next2-button,
+  .react-calendar__navigation__prev2-button {
+    display: none;
+}
+  /* 타일 */
   .react-calendar__tile {
+    font-size: 1rem;
     text-align: center;
     height: 2rem;
     width: 2rem;
@@ -65,6 +84,7 @@ export const StyledCalendarWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #AEAEB2;
   }
 
   /* 요일 밑줄 제거 */
@@ -81,19 +101,6 @@ export const StyledCalendarWrapper = styled.div`
       font-weight: 900;
       color:#007AFF;
     }
-  }
-
-
-  /* 네비게이션 월 스타일 적용 */
-  .react-calendar__year-view__months__month {
-    flex: 0 0 calc(33.3333% - 10px) !important;
-    margin-inline-start: 5px !important;
-    margin-inline-end: 5px !important;
-    margin-block-end: 10px;
-    padding: 20px 6.6667px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: ${(props) => props.theme.gray_1};
   }
 
   /* 선택한 날짜 스타일 적용 */

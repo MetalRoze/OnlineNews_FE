@@ -1,5 +1,6 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar'
+import MyCalendar from '../components/Calendar';
 
 export default function TestPageDT() {
     return (
@@ -23,6 +24,7 @@ export default function TestPageDT() {
                 </p>
 
                 <button>기본 버튼</button>
+                <MyCalendar/>
             </div>
         </div>
     );
