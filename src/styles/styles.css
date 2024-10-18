@@ -37,7 +37,7 @@
 }
 
 .desktop-footer {
-    background-color: var(--color-gray40);
+    background-color: var(--color-gray20);
 }
 
 .mobile-footer {
@@ -71,16 +71,19 @@
     min-height: 100vh;
     background-color: var(--color-black);
     color: var(--color-white);
-    padding: 10px;
+    padding: 20px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
 }
 
 .desktop-sidebar img {
-    width: 75px;
-    height: 25px;
+    width: 100px;
+    height: 50px;
 }
 
 .desktop-sidebar i {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 
@@ -89,6 +92,11 @@
     margin-top: 4em;
 }
 
+.desktop-sidebar .ul{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; 
+}
 .desktop-sidebar li {
     list-style-type: none;
     color: var(--color-white);
@@ -99,5 +107,10 @@
 }
 
 .desktop-sidebar a {
-    color: var(--color-white);
+    color: var(--color-white); 
+}
+
+.desktop-sidebar .logout {
+    margin-bottom: 20px;
+    text-align: center;
 }
