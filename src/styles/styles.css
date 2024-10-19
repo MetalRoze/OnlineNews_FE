@@ -228,3 +228,18 @@
 .searchbar i{
     cursor: pointer;
 }
+.desktop-tabs{
+    display: flex;
+    width: 80%;
+}
+.desktop-tabs button{
+    width: 9rem;
+    padding: 0;
+    background-color: transparent;
+    color: var(--color-gray60);
+}
+.desktop-tabs button:hover{
+    background-color: transparent;
+    color: var(--color-black);
+    font-weight: 800;
+}
