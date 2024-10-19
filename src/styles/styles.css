@@ -179,7 +179,7 @@
 
 .desktop-article{
     display: flex;
-    width: 30rem;
+    width: 25rem;
     height: 8rem;
     background-color: var(--color-gray10);
 }

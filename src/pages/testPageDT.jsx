@@ -32,34 +32,46 @@ export default function TestPageDT() {
                 <div style={{ height: '3rem' }}></div>
                 <div className='flex column aiFlexstart'>
                     <h2 className='mb1'>기사 요청 현황</h2>
-                    <StyledRequestWrapper>
+                    <StyledRequestListWrapper>
                         <AdminRequest />
                         <AdminRequest />
                         <AdminRequest />
                         <AdminRequest />
                         <AdminRequest />
                         <AdminRequest />
-                    </StyledRequestWrapper>
-                    <button style={{width: '6rem', alignSelf:'center'}}>더보기</button>
+                    </StyledRequestListWrapper>
+                    <button style={{ width: '6rem', alignSelf: 'center' }}>더보기</button>
                 </div>
                 <div style={{ height: '3rem' }}></div>
-                <div className='flex column aiCenter'>
-                    <h2 className='mb1'  style={{alignSelf:"flex-start"}}>오늘 기사</h2>
-                    <StyledRequestWrapper>
+                <h2 className='mb1' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
+                    <StyledArticleListWrapper>
                         <AdminArticle />
-                       
-                    </StyledRequestWrapper>
-                    <button style={{width: '6rem'}}>더보기</button>
-                </div>
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                        <AdminArticle />
+                    </StyledArticleListWrapper>
+                    <button style={{ width: '6rem', alignSelf: 'center' }}>더보기</button>
+                <div style={{ height: '3rem' }}></div>
             </div>
         </div>
     );
 }
-const StyledRequestWrapper = styled.div`
+const StyledRequestListWrapper = styled.div`
     display: grid;
     grid-template-rows: repeat(2, 1fr); 
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 1rem;
 `;
-
+const StyledArticleListWrapper = styled.div`
+    display: grid;
+    grid-template-rows: repeat(2, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+`;
