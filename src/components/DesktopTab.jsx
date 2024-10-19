@@ -6,7 +6,7 @@ import Tabs from 'react-bootstrap/Tabs';
 const StyledTabs = styled(Tabs)`
     width: 35rem;
     border: none;
-    
+
   .nav-link {
     padding: 0;
     width: 7rem;
@@ -21,33 +21,17 @@ const StyledTabs = styled(Tabs)`
       text-decoration: underline;
     }
   }
-  .tab-content {
-    border: none;
-    padding: 20px;
-  }
+
 `;
 
-export default function DesktopTab() {
+export default function DesktopTab({tabData}) {
     return (
-        <StyledTabs
-            defaultActiveKey="profile"
-            className="mb-3"
-        >
-            <Tab eventKey="전체 요청" title="전체 요청">
-                Tab content 전체 요청
-            </Tab>
-            <Tab eventKey="승인" title="승인">
-                Tab content for 승인
-            </Tab>
-            <Tab eventKey="보류" title="보류">
-                Tab content for 보류
-            </Tab>
-            <Tab eventKey="거절" title="거절">
-                Tab content for 거절
-            </Tab>
-            <Tab eventKey="미열람" title="미열람">
-                Tab content for 미열람
-            </Tab>
+        <StyledTabs defaultActiveKey={tabData[0]?.eventKey} className="mb-3">
+            {tabData.map((tab) => (
+                <Tab eventKey={tab.eventKey} title={tab.title} key={tab.eventKey}>
+                    {tab.content}
+                </Tab>
+            ))}
         </StyledTabs>
     );
 }
