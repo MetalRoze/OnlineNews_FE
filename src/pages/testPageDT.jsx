@@ -30,7 +30,8 @@ export default function TestPageDT() {
                 <button>기본 버튼</button> */}
                 <MyCalendar />
                 <div style={{ height: '3rem' }}></div>
-                <div className='flex column aiFlexstart'>
+
+                <div className='flex column aiFlexstart' style={{width: '78rem'}}>
                     <h2 className='mb1'>기사 요청 현황</h2>
                     <StyledRequestListWrapper>
                         <AdminRequest />
@@ -43,8 +44,10 @@ export default function TestPageDT() {
                     <button style={{ width: '6rem', alignSelf: 'center' }}>더보기</button>
                 </div>
                 <div style={{ height: '3rem' }}></div>
-                <h2 className='mb1' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
-                    <StyledArticleListWrapper>
+                
+                <div className='flex column aiFlexstart' style={{width: '78rem'}}>
+                    <h2 className='mb1' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
+                    <StyledArticleListWrapper> 
                         <AdminArticle />
                         <AdminArticle />
                         <AdminArticle />
@@ -56,6 +59,7 @@ export default function TestPageDT() {
                         <AdminArticle />
                     </StyledArticleListWrapper>
                     <button style={{ width: '6rem', alignSelf: 'center' }}>더보기</button>
+                </div>
                 <div style={{ height: '3rem' }}></div>
             </div>
         </div>
