@@ -8,8 +8,8 @@ const StyledTabs = styled(Tabs)`
     border: none;
 
   .nav-link {
-    padding: 0;
-    width: 7rem;
+    width: auto;
+    padding: 1rem;
     color: ${(props) => props.theme.colors.gray50};
     background-color: transparent;
     border: none;
