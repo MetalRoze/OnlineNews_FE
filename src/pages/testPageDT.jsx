@@ -1,12 +1,14 @@
 import React from 'react';
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar';
 import MyCalendar from '../components/Calendar';
-import Request from '../components/Request';
+import AdminRequest from '../components/AdminRequest';
+import AdminArticle from '../components/AdminArticle';
 import styled from 'styled-components';
+
 
 export default function TestPageDT() {
     return (
-        <div className="flex" style={{width:"100vw"}}>
+        <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
             <div className="desktop-container">
                 {/* <h1>테스트페이지</h1>
@@ -28,15 +30,27 @@ export default function TestPageDT() {
                 <button>기본 버튼</button> */}
                 <MyCalendar />
                 <div style={{ height: '3rem' }}></div>
-                <h2 className='mb1'>기사 요청 현황</h2>
-                <StyledRequestWrapper>
-                    <Request />
-                    <Request />
-                    <Request />
-                    <Request />
-                    <Request />
-                    <Request />
-                </StyledRequestWrapper>
+                <div className='flex column aiFlexstart'>
+                    <h2 className='mb1'>기사 요청 현황</h2>
+                    <StyledRequestWrapper>
+                        <AdminRequest />
+                        <AdminRequest />
+                        <AdminRequest />
+                        <AdminRequest />
+                        <AdminRequest />
+                        <AdminRequest />
+                    </StyledRequestWrapper>
+                    <button style={{width: '6rem', alignSelf:'center'}}>더보기</button>
+                </div>
+                <div style={{ height: '3rem' }}></div>
+                <div className='flex column aiCenter'>
+                    <h2 className='mb1'  style={{alignSelf:"flex-start"}}>오늘 기사</h2>
+                    <StyledRequestWrapper>
+                        <AdminArticle />
+                       
+                    </StyledRequestWrapper>
+                    <button style={{width: '6rem'}}>더보기</button>
+                </div>
             </div>
         </div>
     );
@@ -46,4 +60,6 @@ const StyledRequestWrapper = styled.div`
     grid-template-rows: repeat(2, 1fr); 
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    margin-bottom: 1rem;
 `;
+
