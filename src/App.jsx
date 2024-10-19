@@ -14,6 +14,7 @@ import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login'; 
 import SignupPage from './pages/signup/Signup';
 import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
+import RequestManage from './pages/requestManage/RequestManage';
 
 function App() {
   return (
@@ -29,7 +30,7 @@ const Main = () => {
   const isDetail = location.pathname === '/articleDetail';
 
   // 기사 상세 페이지 헤더
-  const excludedPaths = ["/desktop",];
+  const excludedPaths = ["/desktop", "/request-manage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -51,6 +52,7 @@ const Main = () => {
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/desktop" element={<TestPageDT />} />
+        <Route path="/request-manage" element={<RequestManage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
