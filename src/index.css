@@ -7,6 +7,7 @@
   --color-black: #1c1c1c;
   --color-red: #FF3B30;
   --color-blue: #007AFF;
+  --color-blueOp:  rgba(0, 122, 255, 0.15); 
   --color-gray10: #F2F2F7;
   --color-gray20: #E5E5EA;
   --color-gray30: #D1D1D6;
@@ -39,6 +40,7 @@ html, body {
   width: 100%;
   font-family: 'Pretendard', sans-serif; 
   background-color: var(--color-gray10);  
+  overflow-x: hidden;
 }
 
 html {
