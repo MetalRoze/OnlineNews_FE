@@ -225,3 +225,6 @@
     outline: none;
     width: 90%;
 }
+.searchbar i{
+    cursor: pointer;
+}
