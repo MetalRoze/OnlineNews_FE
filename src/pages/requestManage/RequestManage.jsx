@@ -24,12 +24,34 @@ export default function RequestManage() {
             <div className="desktop-container">
                 <SearchBar />
                 <div style={{ height: '3rem' }}></div>
-                <DesktopTab tabData={tabData}/>
+                <DesktopTab tabData={tabData} />
+                <TotalCount>전체 99개</TotalCount>
+                <StyledRequestListWrapper>
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+                </StyledRequestListWrapper>
+                <div style={{ height: '3rem' }}></div>
                 <MyPagination itemsCountPerPage={5} totalItemsCount={300} pageRangeDisplayed={5}/>
             </div>
         </div>
     );
 }
-const StyledRequestWrapper = styled.div`
-  
+
+const StyledRequestListWrapper = styled.div`
+  width: 52rem;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr); 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+`;
+const TotalCount = styled.p`
+    color : ${(props) => props.theme.colors.gray50};
 `;
