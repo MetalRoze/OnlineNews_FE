@@ -8,7 +8,7 @@ import './index.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import TestPage from './pages/TestPage';
+import TestPage from './pages/testPage';
 import TestPageDT from './pages/testPageDT';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login'; 
