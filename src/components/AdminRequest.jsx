@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function Request() {
+export default function AdminRequest() {
 
     return (
         <div className='desktop-request pd10 aiFlexend'>
