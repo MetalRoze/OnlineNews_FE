@@ -4,6 +4,7 @@ import SearchBar from '../../components/SearchBar';
 import Sidebar from '../../components/Sidebar';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
+import AdminRequest from '../../components/AdminRequest';
 
 export default function RequestManage() {
     const tabData = [
@@ -13,11 +14,13 @@ export default function RequestManage() {
         { eventKey: 'rejected', title: '거절', content: '거절된 요청 내용' },
         { eventKey: 'unread', title: '미열람', content: '미열람된 요청 내용' },
     ];
+
     const tabData2 = [
         { eventKey: 'allRequests', title: '전체직원', content: '전체 직원' },
         { eventKey: 'approved', title: '기자', content: '기자' },
         { eventKey: 'pending', title: '일반기자', content: '일반기자' },
     ];
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
@@ -37,9 +40,14 @@ export default function RequestManage() {
                     <AdminRequest />
                     <AdminRequest />
                     <AdminRequest />
+                    <AdminRequest />
+                    <AdminRequest />
+
+                    <PaginationContainer>
+                        <MyPagination itemsCountPerPage={5} totalItemsCount={300} pageRangeDisplayed={5} />
+                    </PaginationContainer>
                 </StyledRequestListWrapper>
                 <div style={{ height: '3rem' }}></div>
-                <MyPagination itemsCountPerPage={5} totalItemsCount={300} pageRangeDisplayed={5}/>
             </div>
         </div>
     );
@@ -49,9 +57,18 @@ const StyledRequestListWrapper = styled.div`
   width: 52rem;
   display: grid;
   grid-template-rows: repeat(5, 1fr); 
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  position: relative; 
 `;
+
+const PaginationContainer = styled.div`
+  grid-column: 1 / -1; 
+  display: flex;
+  justify-content: center; 
+  margin-top: 1rem; 
+`;
+
 const TotalCount = styled.p`
-    color : ${(props) => props.theme.colors.gray50};
+    color: ${(props) => props.theme.colors.gray50};
 `;
