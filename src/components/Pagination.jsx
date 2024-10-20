@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 
-export default function MyPagination() {
+export default function MyPagination({itemsCountPerPage, totalItemsCount, pageRangeDisplayed }) {
     const [page, setPage] = useState(1);
 
     const handlePageChange = (page) => {
@@ -12,10 +12,10 @@ export default function MyPagination() {
         <div>
             <StyledPagination>
                 <Pagination
-                    activePage={1}
-                    itemsCountPerPage={5}
-                    totalItemsCount={300}
-                    pageRangeDisplayed={5}
+                    activePage={page}
+                    itemsCountPerPage={itemsCountPerPage}
+                    totalItemsCount={totalItemsCount}
+                    pageRangeDisplayed={pageRangeDisplayed}
                     onChange={handlePageChange}
                     prevPageText={"←"}
                     nextPageText={"→"}>

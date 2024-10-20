@@ -25,7 +25,7 @@ export default function RequestManage() {
                 <SearchBar />
                 <div style={{ height: '3rem' }}></div>
                 <DesktopTab tabData={tabData}/>
-                <MyPagination/>
+                <MyPagination itemsCountPerPage={5} totalItemsCount={300} pageRangeDisplayed={5}/>
             </div>
         </div>
     );
