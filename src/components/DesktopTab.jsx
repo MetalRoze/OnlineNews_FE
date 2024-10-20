@@ -9,7 +9,7 @@ const StyledTabs = styled(Tabs)`
 
   .nav-link {
     width: auto;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 0rem;
     color: ${(props) => props.theme.colors.gray50};
     background-color: transparent;
     border: none;
@@ -24,14 +24,16 @@ const StyledTabs = styled(Tabs)`
 
 `;
 
-export default function DesktopTab({tabData}) {
-    return (
-        <StyledTabs defaultActiveKey={tabData[0]?.eventKey} className="mb-3">
-            {tabData.map((tab) => (
-                <Tab eventKey={tab.eventKey} title={tab.title} key={tab.eventKey}>
-                    {tab.content}
-                </Tab>
-            ))}
-        </StyledTabs>
-    );
+export default function DesktopTab({ tabData, setActiveTab }) {
+  return (
+    <StyledTabs defaultActiveKey={tabData[0]?.eventKey}  onSelect={setActiveTab} className="mb-3">
+      {tabData.map((tab) => (
+        <Tab
+          eventKey={tab.eventKey}
+          title={tab.title}
+          key={tab.eventKey}
+        />
+      ))}
+    </StyledTabs>
+  );
 }
