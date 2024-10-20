@@ -11,22 +11,26 @@ export default function MenuList() {
         <div className='mobile-header m0 pd0'>
             <Swiper
                 style={{ height: '4rem', width: '100%' }} // 높이 및 폭 설정
-                className='mobile-header m0 pd0 '
+                className='mobile-header m0 pd0'
                 modules={[Navigation]}
-                spaceBetween={0}
-                slidesPerView={6} // 한 번에 보여지는 슬라이드 수
-                navigation={{
+                spaceBetween={10} // 슬라이드 간의 간격
+                slidesPerView="auto" // 슬라이드의 너비를 자동으로 설정
+                navigation={categories.length > 5 ? {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
-                }}
+                } : false} // 슬라이드가 5개 이상일 경우에만 내비게이션 활성화
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
             >
                 {categories.map((category, index) => (
                     <StyledSwiperSlide key={index}>{category}</StyledSwiperSlide>
                 ))}
-                <StyledSwiperButton className="swiper-button-prev">‹</StyledSwiperButton>
-                <StyledSwiperButton className="swiper-button-next">›</StyledSwiperButton>
+                {categories.length > 5 && ( // 슬라이드가 5개 이상일 경우에만 버튼을 렌더링
+                    <>
+                        <StyledSwiperButton className="swiper-button-prev">‹</StyledSwiperButton>
+                        <StyledSwiperButton className="swiper-button-next">›</StyledSwiperButton>
+                    </>
+                )}
             </Swiper>
         </div>
     );
@@ -55,6 +59,7 @@ const StyledSwiperButton = styled.div`
     &.swiper-button-next:after {
         font-size: 1.1rem !important;
         font-weight: 600 !important;
+        content: ''; // 텍스트를 없앰
     }
 `;
 
@@ -63,7 +68,10 @@ const StyledSwiperSlide = styled(SwiperSlide)`
     justify-content: center;     /* 수평 중앙 정렬 */
     align-items: center;         /* 수직 중앙 정렬 */
     height: 100%;                /* 전체 높이 사용 */
-    font-size: 1.1rem;            /* 글자 크기 조정 */
-    padding: 0 10px;            /* 슬라이드 내부 여백 추가 */
+    font-size: 1.1rem;          /* 글자 크기 조정 */
+    padding: 0 10px;            /* 좌우 여백 추가 */
     box-sizing: border-box;      /* 패딩이 높이에 포함되도록 설정 */
+    flex: 1 0 auto;              /* 슬라이드 너비 유동적 설정 */
+    min-width: 0;                /* 최소 너비 설정 */
+    max-width: calc(100% / 5 - 10px); /* 최대 너비 설정 (슬라이드 간의 공간 고려) */
 `;
