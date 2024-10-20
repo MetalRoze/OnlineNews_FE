@@ -24,7 +24,6 @@ export default function RequestManage() {
         rejected: [4], 
         unread: [], 
     };
-    console.log(activeTab);
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
@@ -35,7 +34,7 @@ export default function RequestManage() {
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
                 <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
-                        <AdminRequest key={request} />
+                        <AdminRequest activeTab={activeTab} />
                     ))}
                     <PaginationContainer>
                         <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
