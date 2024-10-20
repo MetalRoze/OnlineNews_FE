@@ -176,6 +176,19 @@
     background-color: var(--color-white);
     color: var(--color-blue);
 }
+.desktop-request-3buttons-check{
+    background-color: var(--color-gray20);
+}
+.desktop-request-3buttons-check button{
+    background-color: transparent;
+    color: var(--color-gray50);
+}
+.desktop-request-3buttons-check button:hover,
+.desktop-request-3buttons-check button:active,
+.desktop-request-3buttons-check button.pending,
+.desktop-request-3buttons-check button.rejected {
+    background-color: var(--color-white); /* 호버 및 특정 상태에서 배경색 변경 */
+}
 .desktop-request-privatebutton {
     width: auto;
     padding: 0;
