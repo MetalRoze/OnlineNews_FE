@@ -16,16 +16,17 @@ import SignupPage from './pages/signup/Signup';
 import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
 import GeneralTermPage from './pages/signup/GeneralTerm'; 
 import RequestManage from './pages/requestManage/RequestManage';
+import Main from './pages/main/Main';
 
 function App() {
   return (
     <Router>
-      <Main />
+      <Basic />
     </Router>
   );
 }
 
-const Main = () => {
+const Basic = () => {
   const location = useLocation();
 
   const isDetail = location.pathname === '/articleDetail';
@@ -52,6 +53,7 @@ const Main = () => {
       
       <Routes>
         <Route path="/" element={<TestPage />} />
+        <Route path="/main" element={<Main />} />
         <Route path="/desktop" element={<TestPageDT />} />
         <Route path="/requestManage" element={<RequestManage/>}/>
         <Route path="/login" element={<LoginPage />} />
