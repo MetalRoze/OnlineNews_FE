@@ -16,6 +16,10 @@ import SignupPage from './pages/signup/Signup';
 import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
 import GeneralTermPage from './pages/signup/GeneralTerm'; 
 import RequestManage from './pages/requestManage/RequestManage';
+import JurnalistTermPage from './pages/signup/JournalistTerm';
+import GeneralFormPage from './pages/signup/GeneralForm'
+import JurnalistFormPage from './pages/signup/JournalistForm'
+import SignupSccessPage from './pages/signup/SignupSuccess'
 
 function App() {
   return (
@@ -40,6 +44,11 @@ const Main = () => {
     { path: '/login', title: '로그인' },
     { path: '/signup', title: '회원가입' },
     { path: '/signup/generalTerm', title:'회원가입'}, 
+    { path: '/signup/journalistTerm', title:'회원가입'},
+    { path: '/signup/generalForm', title:'회원가입'},
+    { path: '/signup/journalistForm', title:'회원가입'},
+    { path: '/signup/success', title:'회원가입'}
+
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -58,6 +67,11 @@ const Main = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
         <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
+        <Route path="/signup/journalistTerm" element={<JurnalistTermPage />}/>
+        <Route path="/signup/generalForm" element={<GeneralFormPage />}/>
+        <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
+        <Route path="/signup/success" element={<SignupSccessPage />}/>
+
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
