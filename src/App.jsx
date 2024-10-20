@@ -8,12 +8,14 @@ import './index.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import TestPage from './pages/TestPage';
+import TestPage from './pages/testPage';
 import TestPageDT from './pages/testPageDT';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login'; 
 import SignupPage from './pages/signup/Signup';
 import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
+import GeneralTermPage from './pages/signup/GeneralTerm'; 
+import RequestManage from './pages/requestManage/RequestManage';
 
 function App() {
   return (
@@ -29,20 +31,20 @@ const Main = () => {
   const isDetail = location.pathname === '/articleDetail';
 
   // 기사 상세 페이지 헤더
-  const excludedPaths = ["/desktop",];
+  const excludedPaths = ["/desktop", "/requestManage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
    // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
    const goBackHeaderPaths = [
     { path: '/login', title: '로그인' },
-    { path: '/signup', title: '회원가입' }
+    { path: '/signup', title: '회원가입' },
+    { path: '/signup/generalTerm', title:'회원가입'}, 
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
-
   return (
     <div style={{ width: '100%', height:"100%"}}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
@@ -51,9 +53,11 @@ const Main = () => {
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/desktop" element={<TestPageDT />} />
+        <Route path="/requestManage" element={<RequestManage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
+        <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>

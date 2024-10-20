@@ -147,3 +147,84 @@
     width:500px;
     margin:0; 
 }
+
+.desktop-request{
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    height: 10rem;
+    background-color: var(--color-gray10);
+}
+.desktop-request .ellipsis{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    /* 노란줄 무시하셈 */
+    -webkit-line-clamp: 2 ; 
+    -webkit-box-orient: vertical;
+ }
+.desktop-request-3buttons{
+    background-color: var(--color-blueOp);
+}
+.desktop-request-3buttons button{
+    background-color: transparent;
+    color: var(--color-blue);
+}
+.desktop-request-3buttons button:hover{
+    background-color: var(--color-white);
+    color: var(--color-blue);
+}
+
+.desktop-article{
+    display: flex;
+    width: 25rem;
+    height: 8rem;
+    background-color: var(--color-gray10);
+}
+.desktop-article .ellipsis{
+    width: 100%;
+    white-space: nowrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.desktop-article i,
+.desktop-article p{
+    color: var(--color-gray60);
+}
+
+.long-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-gray20);
+    border-radius: 5px;
+    margin-bottom: 15px; 
+}
+
+.long-black-button {
+    padding: 10px;
+    width: 100%;
+    background-color: var(--color-black);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.searchbar{
+    width: 20rem;
+    height: 3rem;
+    background-color: var(--color-gray20);
+}
+.searchbar-input{
+    border: none;
+    background-color: transparent;
+    outline: none;
+    width: 90%;
+}
+.searchbar i{
+    cursor: pointer;
+}
