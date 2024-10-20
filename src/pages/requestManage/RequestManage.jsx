@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchBar from '../../components/SearchBar';
 import Sidebar from '../../components/Sidebar';
 import DesktopTab from '../../components/DesktopTab';
+import MyPagination from '../../components/Pagination';
 
 export default function RequestManage() {
     const tabData = [
@@ -24,7 +25,7 @@ export default function RequestManage() {
                 <SearchBar />
                 <div style={{ height: '3rem' }}></div>
                 <DesktopTab tabData={tabData}/>
-                
+                <MyPagination itemsCountPerPage={5} totalItemsCount={300} pageRangeDisplayed={5}/>
             </div>
         </div>
     );
