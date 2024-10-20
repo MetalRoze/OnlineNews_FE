@@ -119,13 +119,14 @@ const TermDescriptionScrollBox = styled.div`
   color:var(--color-gray50); 
 `;
 
-export default function GeneralTerm() {
+export default function JurnalistTerm() {
     const navigate = useNavigate(); 
 
     const [allChecked, setAllChecked] = useState(false); 
     const [termsChecked, setTermsChecked] = useState({
         service:false,
-        privacy:false
+        privacy:false,
+        age:false
     }); 
 
 
@@ -135,7 +136,7 @@ export default function GeneralTerm() {
         setTermsChecked({
         useTerm: checked,
         privacyTerm: checked,
-        serviceTerm : checked
+        ageTerm : checked
         });
     };
 
@@ -148,12 +149,12 @@ export default function GeneralTerm() {
         }));
     };
 
-    const isFormValid = termsChecked.useTerm && termsChecked.privacyTerm;
+    const isFormValid = termsChecked.useTerm && termsChecked.privacyTerm && termsChecked.ageTerm;
 
 
     const handleNext = () => {
         if(isFormValid){
-            navigate('/signup/generalForm');
+            navigate('/signup/journalistForm');
         }
     }; 
 
@@ -174,7 +175,7 @@ export default function GeneralTerm() {
                     </CheckboxWrapper>
                     <CheckboxLabel>모두 동의합니다</CheckboxLabel>
                 </AgreeCheckWrapper>
-                <AllAgreeDescription>약관, 개인정보 수집 및 이용 안내, 제 3자 정보제공 및 메일링 서비스 수신 모두 동의.</AllAgreeDescription>
+                <AllAgreeDescription>약관, 개인정보 수집 및 이용 안내, 제 3자 정보제공 및 만 19세 이상에 모두 동의.</AllAgreeDescription>
             </AllAgreeWrapper>
 
             <HrLine />
@@ -216,12 +217,12 @@ export default function GeneralTerm() {
                     <CheckboxWrapper>
                         <Checkbox 
                             type="checkbox"
-                            name="serviceTerm"
-                            checked={termsChecked.serviceTerm}
+                            name="ageTerm"
+                            checked={termsChecked.ageTerm}
                             onChange={handleTermsChecked}
                         ></Checkbox>
                     </CheckboxWrapper>
-                    <CheckboxLabel>메일링 서비스 수신 동의 <span style={{ fontWeight: 'normal', fontSize: 'smaller' }}>(선택)</span></CheckboxLabel>
+                    <CheckboxLabel>만 19세 이상입니다. <span style={{ fontWeight: 'normal', fontSize: 'smaller' }}>(필수)</span></CheckboxLabel>
                 </AgreeCheckWrapper>
 
             </UseTermAgreeWrapper>
