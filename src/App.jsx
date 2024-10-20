@@ -30,7 +30,7 @@ const Main = () => {
 
   const isDetail = location.pathname === '/articleDetail';
 
-  // 기사 상세 페이지 헤더
+  // 데스크탑 푸터 사용할 페이지 경로
   const excludedPaths = ["/desktop", "/requestManage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 

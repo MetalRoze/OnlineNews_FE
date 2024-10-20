@@ -228,3 +228,17 @@
 .searchbar i{
     cursor: pointer;
 }
+
+/* 버튼 */
+.subsButton{
+    width: 100%;
+    padding: 0.8em;
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+.shareButton{
+    font-size: 0.8em;
+    width: 110px;
+    color: var(--color-white);
+} 

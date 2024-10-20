@@ -12,7 +12,7 @@ const HeaderWrapper = styled.div`
 const WhiteLink = styled(Link)`
     color: var(--color-gray30); 
     text-decoration: none; 
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
 
     &:hover {
@@ -48,12 +48,7 @@ const ArticleHeader = () => {
                         <WhiteLink>사회</WhiteLink> 
                         <WhiteLink>생활</WhiteLink> 
                 </div>
-            </HeaderWrapper>
-
-            <div className='mobile-container'>
-
-
-            </div>
+            </HeaderWrapper> 
         </div>
 
     );

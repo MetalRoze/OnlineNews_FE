@@ -141,9 +141,7 @@ button:hover {
   background-color: var(--color-black);
 }
 
-hr{
-  border: none; 
-  height: 1px;  
-  background-color: var(--color-white);
+hr{     
+  border-top: var(--color-gray20) solid;
   opacity: 1;
 }

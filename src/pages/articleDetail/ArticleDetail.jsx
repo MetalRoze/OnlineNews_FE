@@ -1,18 +1,14 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ArticleHeader from './ArticleHeader';
+import ArticleContent from './ArticleContent';
 
- 
-
-const ArticleDetail = () => {
-    const navigate = useNavigate(); 
+const ArticleDetail = () => {  
     return (
-        <div> 
-            <ArticleHeader/> 
-            <div className='mobile-container'>
-
-
+        <div>
+            <ArticleHeader />
+            <div className='mobile-container pd20' >
+                <ArticleContent/>
             </div>
         </div>
 
