@@ -16,7 +16,7 @@ const Sidebar = () => {
                 </div>
             </div>
             <div style={{ flex: "1" }}></div>
-            <div className='logout'> 
+            <div className='logout'>
                 <Link to="/"><i className="bi bi-box-arrow-right mr15"></i>로그아웃</Link>
             </div>
         </div>
