@@ -133,6 +133,7 @@ const ArticleComment = () => {
 
     return (
         <div className='mt2'>
+            <h3 className='mb1'>댓글</h3>
             <div className='mb1'>
                 <textarea
                     value={newComment}
@@ -147,7 +148,6 @@ const ArticleComment = () => {
                         댓글 작성
                     </button></div>
             </div>
-            <h3 className='mb1'>댓글</h3>
             <div className='pd10'>
                 {comments.map((comment) => (
                     <div key={comment.commentId} className='mb1'>
@@ -159,20 +159,22 @@ const ArticleComment = () => {
                             </div>
                         </div>
                         <p className='mt05'>{comment.content}</p>
-                        <div className='flex'>
-                            <p className={`cursor-pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.commentId)}>
-                                답글 {comment.replies.length}
-                            </p>
+                        <div className='flex mb1'>
+                            <small className={`cursor-pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.commentId)}>
+                                답글 {comment.replies.length} {comment.isReplyVisible ? <i class="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
+                            </small>
+
                             <i
                                 className={`bi block taCenter mlAuto ${comment.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
                                 onClick={() => handleLikeToggle(comment.commentId)}
                             ></i>
                             <small className='taCenter ml05'>{comment.likeCount}</small>
                         </div>
+
                         {comment.isReplyVisible && (
                             <div className='pdlr20'>
                                 {comment.replies.map((reply) => (
-                                    <div key={reply.commentId} className='mb1'>
+                                    <div key={reply.commentId}>
                                         <div className='flex'>
                                             <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
                                             <div className='mtbAuto ml05'>
@@ -188,9 +190,11 @@ const ArticleComment = () => {
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>
+                                        <hr></hr>
                                     </div>
                                 ))}
-                                <textarea
+
+                                <textarea className='mt05'
                                     value={replyContent}
                                     onChange={handleReplyChange}
                                     placeholder="답글을 입력하세요..."

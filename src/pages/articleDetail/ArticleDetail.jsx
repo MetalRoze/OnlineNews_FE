@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import ArticleHeader from './ArticleHeader';
 import ArticleContent from './ArticleContent';
 import ArticleComment from './ArticleComment';
