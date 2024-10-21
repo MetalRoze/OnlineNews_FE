@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import SubscriptionModal from './SubscriptionModal';
 const ArticleContent = () => {
     const [articleLikeCount, setArticleLikeCount] = useState(0);
     const [isArticleLiked, setIsArticleLiked] = useState(false);
@@ -18,6 +18,7 @@ const ArticleContent = () => {
         "https://placehold.co/560x300",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
     ]);
+
     const handleArticleLikeToggle = () => {
         setIsArticleLiked(prevState => {
             const newState = !prevState;
@@ -25,6 +26,25 @@ const ArticleContent = () => {
             return newState;
         });
     };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
+    const handleSubscriptionToggle = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleSubscribe = () => {
+        setIsSubscribed(true);
+        setIsModalOpen(false);
+    };
+
+    const handleUnsubscribe = () => {
+        setIsSubscribed(false);
+        setIsModalOpen(false);
+    };
+
+
 
     return (
         <div>
@@ -34,12 +54,13 @@ const ArticleContent = () => {
                 <small className='mt1 gray40'>{articleDate}</small>
                 <div className='mt1 taRight'>
                     <p className='mr1 inline'>{authorName} 기자</p>
-                    <img className='br50' src="https://placehold.co/50x50"></img></div>
+                    <img className='br50' src="https://placehold.co/50x50" alt="Author" />
+                </div>
             </div>
             <hr />
             <div>
                 <h2>{articleSubtit}</h2>
-                <br></br>
+                <br />
                 {articleContent.map((content, index) => (
                     <div key={index}>
                         {typeof content === 'string' && content.startsWith('http') ? (
@@ -55,13 +76,15 @@ const ArticleContent = () => {
             <div className='mt1 flex'>
                 <img src="https://placehold.co/130x50" alt="Bootstrap" />
                 <div className='mlAuto'>
-                    <p className='m0'>{authorName}기자 {authorEmail}</p>
+                    <p className='m0'>{authorName} 기자 {authorEmail}</p>
                     <small className='gray40'>{authorDescription}</small>
                 </div>
             </div>
-            <a className='gray40 mt1'>{publisherUrl} &gt; </a>
-            <button className='subsButton mt2'>구독</button>
-            <hr className='mt1'></hr>
+            <a className='gray40 mt1'>{publisherUrl} &gt;</a>
+            <button className='subsButton mt2' onClick={handleSubscriptionToggle}>
+                {isSubscribed ? '구독 취소' : '구독'}
+            </button>
+            <hr className='mt1' />
 
             <div className='flex'>
                 <div>
@@ -72,10 +95,17 @@ const ArticleContent = () => {
                     <small className='taCenter block'>{articleLikeCount}</small>
                 </div>
                 <button className='shareButton m0' style={{ marginLeft: "auto" }}>
-                    공유 &nbsp; <i className="bi bi-share" /></button>
+                    공유 &nbsp; <i className="bi bi-share" />
+                </button>
             </div>
-        </div>
 
+            <SubscriptionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubscribe={handleSubscribe}
+                onUnsubscribe={handleUnsubscribe}
+            />
+        </div>
     );
 };
 
