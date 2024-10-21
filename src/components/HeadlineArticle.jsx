@@ -2,7 +2,7 @@ import React from "react";
 
 export default function HeadlineArticle(){
     return(
-        <div className='flex column mobile-header'>
+        <div className='flex column mobile-header' style={{cursor:"pointer"}}>
             <h2>수술 부위 감염되자 소송, 1심 패소 2심 승소…대법 판단은?</h2>
             <h4>2심 의료상 과실 인정 "검출 병원균, 병원 내 감염 일으켜"</h4>
             <h4>대법 "병원 감염 원인 다양…완전한 예방 불가" 파기 환송</h4>

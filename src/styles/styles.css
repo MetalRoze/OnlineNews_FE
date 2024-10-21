@@ -228,3 +228,11 @@
 .searchbar i{
     cursor: pointer;
 }
+
+.basicArticle{
+    align-self: flex-start;
+}
+
+.basicArticle p {
+    align-self: flex-start;
+}
