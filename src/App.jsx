@@ -21,6 +21,7 @@ import JurnalistTermPage from './pages/signup/JournalistTerm';
 import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
+import My from './pages/my/My';
 
 function App() {
   return (
@@ -73,6 +74,8 @@ const Basic = () => {
         <Route path="/signup/generalForm" element={<GeneralFormPage />}/>
         <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
         <Route path="/signup/success" element={<SignupSccessPage />}/>
+        <Route path="/my" element={<My/>}/>
+
 
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
