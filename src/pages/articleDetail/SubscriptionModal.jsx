@@ -32,16 +32,16 @@ const CloseButton = styled.span`
     cursor: pointer;
 `;
 
-const SubscriptionModal = ({ isOpen, onClose, onUnsubscribe }) => {
+const SubscriptionModal = ({ isOpen, onClose, onUnsubscribe, onEmailSubscribe, onEmailUnsubscribe }) => {
     if (!isOpen) return null;
 
     return (
         <ModalOverlay>
             <ModalContent>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
-                <h3 onClick={onClose}><i class="bi bi-envelope-check"></i>&nbsp;&nbsp;&nbsp;메일 수신</h3>
+                <h3 onClick={onEmailSubscribe}><i class="bi bi-envelope-check"></i>&nbsp;&nbsp;&nbsp;메일 수신</h3>
                 <hr></hr>
-                <h3 onClick={onClose}><i class="bi bi-envelope-dash"></i>&nbsp;&nbsp;&nbsp;메일 미수신</h3>
+                <h3 onClick={onEmailUnsubscribe}><i class="bi bi-envelope-x-fill"></i>&nbsp;&nbsp;&nbsp;메일 미수신</h3>
                 <hr></hr>
                 <h3 onClick={onUnsubscribe}><i class="bi bi-dash-circle"></i>&nbsp;&nbsp;&nbsp;구독 취소</h3>
             </ModalContent>

@@ -3,6 +3,8 @@ import SubscriptionModal from './SubscriptionModal';
 const ArticleContent = () => {
     const [articleLikeCount, setArticleLikeCount] = useState(0);
     const [isArticleLiked, setIsArticleLiked] = useState(false);
+    const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
+
 
     const [articleTitle, setArticleTitle] = useState("Lorem ipsum dolor sit amet adipisicing elit.");
     const [articleDate, setArticleDate] = useState("입력 yyyy.mm.dd 오전 hh:mm");
@@ -41,6 +43,15 @@ const ArticleContent = () => {
 
     const handleUnsubscribe = () => {
         setIsSubscribed(false);
+        setIsModalOpen(false);
+    };
+    const handleEmailSubscribe = () => {
+        setIsEmailSubscribed(true);
+        setIsModalOpen(false);
+    };
+
+    const handleEmailUnsubscribe = () => {
+        setIsEmailSubscribed(false);
         setIsModalOpen(false);
     };
 
@@ -91,8 +102,12 @@ const ArticleContent = () => {
                     }
                 }}
             >
-                {isSubscribed ? '구독 취소' : '구독'}
+                {isSubscribed && isEmailSubscribed !== null && (
+                    <i className={`bi ${isEmailSubscribed ? 'bi-envelope-check' : 'bi-envelope-x-fill'}`}></i>
+                )}
+                &nbsp;{isSubscribed ? '구독중' : '구독'}
             </button>
+
             <hr className='mt1' />
 
             <div className='flex'>
@@ -111,8 +126,11 @@ const ArticleContent = () => {
             <SubscriptionModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+                onEmailSubscribe={handleEmailSubscribe}
+                onEmailUnsubscribe={handleEmailUnsubscribe}
                 onUnsubscribe={handleUnsubscribe}
             />
+
         </div>
     );
 };
