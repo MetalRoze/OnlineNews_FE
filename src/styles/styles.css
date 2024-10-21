@@ -262,6 +262,14 @@
     cursor: pointer;
 }
 
+.basicArticle{
+    align-self: flex-start;
+}
+
+.basicArticle p {
+    align-self: flex-start;
+}
+
 /* 버튼 */
 .subsButton {
     width: 100%;
