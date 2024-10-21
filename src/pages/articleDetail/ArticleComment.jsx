@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 const ArticleComment = () => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [isActive, setIsActive] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [replyContent, setReplyContent] = useState('');
     const [comments, setComments] = useState([
@@ -12,6 +10,7 @@ const ArticleComment = () => {
             date: '2024.09.27 9:23',
             content: 'Lorem, ipsum dolor sit amet consectetur.',
             likeCount: '511',
+            isActive: false,
             replies: [],
             isReplyVisible: false,
         },
@@ -21,27 +20,24 @@ const ArticleComment = () => {
             date: '2024.09.27 10:23',
             content: 'Lorem, ipsum dolor sit amet consectetur.',
             likeCount: '221',
+            isActive: false,
             replies: [],
             isReplyVisible: false,
         },
     ]);
 
-    const toggleReplies = (commentId) => {
-        setComments(prevComments =>
-            prevComments.map(comment =>
-                comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible } : comment
-            )
-        );
+    // 이름 변환
+    const obfuscateUsername = (username) => {
+        if (username.length <= 2) {
+            return username;
+        }
+        const firstChar = username.charAt(0);
+        const lastChar = username.charAt(username.length - 1);
+        const obscuredPart = '*'.repeat(username.length - 2);
+        return `${firstChar}${obscuredPart}${lastChar}`;
     };
 
-    const handleNewCommentChange = (e) => {
-        setNewComment(e.target.value);
-    };
-
-    const handleReplyChange = (e) => {
-        setReplyContent(e.target.value);
-    };
-
+    // 댓글
     const handleCommentSubmit = () => {
         if (newComment.trim()) {
             const newCommentData = {
@@ -58,6 +54,40 @@ const ArticleComment = () => {
         }
     };
 
+    const handleNewCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
+
+    const toggleReplies = (commentId) => {
+        setComments(prevComments =>
+            prevComments.map(comment =>
+                comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible } : comment
+            )
+        );
+    };
+
+
+    const handleLikeToggle = (commentId) => {
+        setComments(prevComments =>
+            prevComments.map(comment =>
+                comment.commentId === commentId
+                    ? {
+                        ...comment,
+                        isActive: !comment.isActive,
+                        likeCount: comment.isActive
+                            ? (parseInt(comment.likeCount) - 1).toString()
+                            : (parseInt(comment.likeCount) + 1).toString()
+                    }
+                    : comment
+            )
+        );
+    };
+
+    // 답글
+    const handleReplyChange = (e) => {
+        setReplyContent(e.target.value);
+    };
+
     const handleReplySubmit = (commentId) => {
         if (replyContent.trim()) {
             const newReplyData = {
@@ -66,6 +96,7 @@ const ArticleComment = () => {
                 date: new Date().toLocaleString(),
                 content: replyContent,
                 likeCount: '0',
+                isActive: false,
             };
             setComments(prevComments =>
                 prevComments.map(comment =>
@@ -77,13 +108,27 @@ const ArticleComment = () => {
             setReplyContent('');
         }
     };
-
-    const handleMouseEnter = () => {
-        setIsHovered(true);
-    };
-
-    const handleMouseLeave = () => {
-        setIsHovered(false);
+    const handleReplyLikeToggle = (commentId, replyId) => {
+        setComments(prevComments =>
+            prevComments.map(comment =>
+                comment.commentId === commentId
+                    ? {
+                        ...comment,
+                        replies: comment.replies.map(reply =>
+                            reply.commentId === replyId
+                                ? {
+                                    ...reply,
+                                    isActive: !reply.isActive,
+                                    likeCount: reply.isActive
+                                        ? (parseInt(reply.likeCount) - 1).toString()
+                                        : (parseInt(reply.likeCount) + 1).toString()
+                                }
+                                : reply
+                        )
+                    }
+                    : comment
+            )
+        );
     };
 
     return (
@@ -109,7 +154,7 @@ const ArticleComment = () => {
                         <div className='flex'>
                             <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
                             <div className='mtbAuto ml05'>
-                                <h6 className='m0'>{comment.user}</h6>
+                                <h6 className='m0'>{obfuscateUsername(comment.user)}</h6>
                                 <small className='gray40'>{comment.date}</small>
                             </div>
                         </div>
@@ -119,10 +164,8 @@ const ArticleComment = () => {
                                 답글 {comment.replies.length}
                             </p>
                             <i
-                                className={`bi block taCenter mlAuto ${isActive || isHovered ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                onMouseEnter={handleMouseEnter}
-                                onMouseLeave={handleMouseLeave}
-                                onClick={() => setIsActive(!isActive)}
+                                className={`bi block taCenter mlAuto ${comment.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                onClick={() => handleLikeToggle(comment.commentId)}
                             ></i>
                             <small className='taCenter ml05'>{comment.likeCount}</small>
                         </div>
@@ -133,17 +176,15 @@ const ArticleComment = () => {
                                         <div className='flex'>
                                             <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
                                             <div className='mtbAuto ml05'>
-                                                <h6 className='m0'>{reply.user}</h6>
+                                                <h6 className='m0'>{obfuscateUsername(reply.user)}</h6>
                                                 <small className='gray40'>{reply.date}</small>
                                             </div>
                                         </div>
                                         <p className='mt05'>{reply.content}</p>
                                         <div className='flex'>
                                             <i
-                                                className={`bi block taCenter mlAuto ${isActive || isHovered ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                                onMouseEnter={handleMouseEnter}
-                                                onMouseLeave={handleMouseLeave}
-                                                onClick={() => setIsActive(!isActive)}
+                                                className={`bi block taCenter mlAuto ${reply.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                                onClick={() => handleReplyLikeToggle(comment.commentId, reply.commentId)}
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>

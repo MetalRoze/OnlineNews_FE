@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 const ArticleContent = () => {
+    const [articleLikeCount, setArticleLikeCount] = useState(0);
+    const [isArticleLiked, setIsArticleLiked] = useState(false);
 
     const [articleTitle, setArticleTitle] = useState("Lorem ipsum dolor sit amet adipisicing elit.");
     const [articleDate, setArticleDate] = useState("입력 yyyy.mm.dd 오전 hh:mm");
@@ -16,19 +18,12 @@ const ArticleContent = () => {
         "https://placehold.co/560x300",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
     ]);
-    const [isHovered, setIsHovered] = useState(false);
-    const [isActive, setIsActive] = useState(false);
-
-    const handleMouseEnter = () => {
-        setIsHovered(true);
-    };
-
-    const handleMouseLeave = () => {
-        setIsHovered(false);
-    };
-
-    const handleClick = () => {
-        setIsActive(!isActive);
+    const handleArticleLikeToggle = () => {
+        setIsArticleLiked(prevState => {
+            const newState = !prevState;
+            setArticleLikeCount(prevCount => newState ? prevCount + 1 : prevCount - 1);
+            return newState;
+        });
     };
 
     return (
@@ -71,12 +66,11 @@ const ArticleContent = () => {
             <div className='flex'>
                 <div>
                     <i
-                        className={`bi block taCenter ${isActive || isHovered ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={handleClick}
+                        className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                        onClick={handleArticleLikeToggle}
                     ></i>
-                    <small className='taCenter'>511</small></div>
+                    <small className='taCenter block'>{articleLikeCount}</small>
+                </div>
                 <button className='shareButton m0' style={{ marginLeft: "auto" }}>
                     공유 &nbsp; <i className="bi bi-share" /></button>
             </div>
