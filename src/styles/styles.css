@@ -246,6 +246,14 @@
     color: var(--color-white);
 }
 
+.unsubsButton {
+    width: 100%;
+    padding: 0.8em;
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+
 .blueButton {
     width: 100px;
     background-color: var(--color-blue);

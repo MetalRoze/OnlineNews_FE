@@ -81,7 +81,16 @@ const ArticleContent = () => {
                 </div>
             </div>
             <a className='gray40 mt1'>{publisherUrl} &gt;</a>
-            <button className='subsButton mt2' onClick={handleSubscriptionToggle}>
+            <button
+                className={`mt2 ${isSubscribed ? 'unsubsButton' : 'subsButton'}`}
+                onClick={() => {
+                    if (isSubscribed) {
+                        handleSubscriptionToggle();
+                    } else {
+                        handleSubscribe();
+                    }
+                }}
+            >
                 {isSubscribed ? '구독 취소' : '구독'}
             </button>
             <hr className='mt1' />
@@ -102,7 +111,6 @@ const ArticleContent = () => {
             <SubscriptionModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubscribe={handleSubscribe}
                 onUnsubscribe={handleUnsubscribe}
             />
         </div>

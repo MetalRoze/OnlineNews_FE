@@ -1,18 +1,51 @@
 import React from 'react';
+import styled from 'styled-components';
 
-const SubscriptionModal = ({ isOpen, onClose, onSubscribe, onUnsubscribe }) => {
+const ModalOverlay = styled.div`
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%
+`;
+
+const ModalContent = styled.div`
+    background-color: white;
+    padding: 40px 20px;
+    border-radius: 20px;
+    width: 500px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    height: 230px;
+}
+`;
+
+const CloseButton = styled.span`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+`;
+
+const SubscriptionModal = ({ isOpen, onClose, onUnsubscribe }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modal" style={{ height: "100vh", backgroundColor: "rgba(0, 0, 0, 0.5)", position: "fixed", top: 0, left: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div className="modal-content" style={{ backgroundColor: "white", padding: "20px", borderRadius: "5px", position: "relative" }}>
-                <span className="close-btn" onClick={onClose} style={{ position: "absolute", top: "10px", right: "10px", cursor: "pointer" }}>&times;</span>
-                <h2>구독 옵션</h2>
-                <p>구독하시겠습니까?</p>
-                <button onClick={onSubscribe}>구독</button>
-                <button onClick={onUnsubscribe}>구독 취소</button>
-            </div>
-        </div>
+        <ModalOverlay>
+            <ModalContent>
+                <CloseButton onClick={onClose}>&times;</CloseButton>
+                <h3 onClick={onClose}><i class="bi bi-envelope-check"></i>&nbsp;&nbsp;&nbsp;메일 수신</h3>
+                <hr></hr>
+                <h3 onClick={onClose}><i class="bi bi-envelope-dash"></i>&nbsp;&nbsp;&nbsp;메일 미수신</h3>
+                <hr></hr>
+                <h3 onClick={onUnsubscribe}><i class="bi bi-dash-circle"></i>&nbsp;&nbsp;&nbsp;구독 취소</h3>
+            </ModalContent>
+        </ModalOverlay>
     );
 };
 
