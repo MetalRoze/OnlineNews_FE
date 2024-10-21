@@ -1,62 +1,136 @@
  /* 배치 */
  .flex {
-     display: flex;
+    display: flex;
  }
- .column{
+
+ .inline {
+    display: inline;
+ }
+
+ .block {
+    display: block;
+ }
+
+ .column {
     flex-direction: column;
  }
- .mAuto{
+
+ .mAuto {
     margin: auto;
  }
+
+ .mtbAuto {
+    margin-block: auto;
+ }
+
+ .mlAuto {
+    margin-left: auto;
+ }
+
  .spaceBetween {
-     justify-content: space-between;
+    justify-content: space-between;
  }
+
  .aiCenter {
-     align-items: center;
+    align-items: center;
  }
- .aiFlexstart{
-   align-items: flex-start;
+
+ .aiFlexstart {
+    align-items: flex-start;
  }
- .aiFlexend{
+
+ .aiFlexend {
     align-items: flex-end;
  }
- .jcCenter{
-   justify-items: center;
+
+ .jcCenter {
+    justify-items: center;
  }
 
-/* padding */
+ /* padding */
  .pd10 {
-     padding: 10px;
+    padding: 10px;
  }
 
- .pd0{
-   padding : 0;
+ .pd20 {
+    padding: 20px;
  }
 
-/* margin */
- .m0{
+ .pd0 {
+    padding: 0;
+ }
+
+ .pdlr20 {
+    padding-inline: 20px;
+ }
+
+ /* margin */
+ .m0 {
     margin: 0;
  }
- .ml05{
-   margin-left: 0.5rem;
+
+ .ml05 {
+    margin-left: 0.5rem;
  }
- .mr15{
+
+ .mr1 {
+    margin-right: 1rem;
+ }
+
+ .mr15 {
     margin-right: 1.5rem;
  }
- .mb1{
+
+ .mb05 {
     margin-bottom: 1rem;
  }
 
+ .mb1 {
+    margin-bottom: 1rem;
+ }
+
+ .mt05 {
+    margin-top: 0.5rem;
+ }
+
+ .mt1 {
+    margin-top: 1rem;
+ }
+
+ .mt2 {
+    margin-top: 2rem;
+ }
+
  /* border */
- .br10{
+ .br10 {
     border-radius: 10px;
  }
 
+ .br50 {
+    border-radius: 50%;
+ }
+
  /* 텍스트 */
+ .white {
+    color: white;
+ }
+
+ .gray40 {
+    color: var(--color-gray40);
+ }
+
+ .blue {
+    color: var(--color-blue);
+ }
+
+ .taCenter {
+    text-align: center;
+ }
+
  .taRight {
     text-align: right;
-}
-.taLeft {
-   text-align: left;
-}
+ }
 
+ .taLeft {
+    text-align: left;
+ }
