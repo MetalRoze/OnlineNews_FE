@@ -95,11 +95,12 @@ const ArticleComment = () => {
                     placeholder="댓글을 입력하세요..."
                     rows="3"
                 />
-                <button
-                    onClick={handleCommentSubmit}
-                    className='blueButton mlAuto'>
-                    댓글 작성
-                </button>
+                <div className='flex'>
+                    <button
+                        onClick={handleCommentSubmit}
+                        className='blueButton mlAuto'>
+                        댓글 작성
+                    </button></div>
             </div>
             <h3 className='mb1'>댓글</h3>
             <div className='pd10'>
