@@ -297,3 +297,18 @@
     padding: 5px 20px;
     color: var(--color-white);
 }
+
+.textButton {
+    color: var(--color-gray40);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+  
+.textButton.active {
+    color: var(--color-black);
+    font-weight: bold;
+}
+  
+.textButton:hover {
+    color: var(--color-black);
+}
