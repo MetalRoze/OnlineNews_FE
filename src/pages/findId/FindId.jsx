@@ -18,11 +18,13 @@ const MenuWrapper = styled.div
 `  display: flex;
   justify-content: center;
   gap: 40px;
-  margin-bottom: 50px;`
+  margin-bottom: 50px;
+  `
 ;
 
 const InputContainer = styled.div`
     width:400px;
+    height: 250px;
     max-height:600px;
     overflow-y:auto;
     scrollbar-width: none;
@@ -159,10 +161,10 @@ export default function FindId(){
                 />
                 </PhoneInputWrapper>
               </InputWrapper>
-
-              <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", marginTop:'50px'}}>이메일 찾기</button>
-
             </InputContainer>
+
+            <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>이메일 찾기</button>
+
 
         </HeadWrapper>
     )
