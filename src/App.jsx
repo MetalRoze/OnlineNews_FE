@@ -21,6 +21,7 @@ import JurnalistTermPage from './pages/signup/JournalistTerm';
 import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
+import FindIdPage from './pages/findId/FindId'; 
 
 function App() {
   return (
@@ -48,7 +49,9 @@ const Basic = () => {
     { path: '/signup/journalistTerm', title:'회원가입'},
     { path: '/signup/generalForm', title:'회원가입'},
     { path: '/signup/journalistForm', title:'회원가입'},
-    { path: '/signup/success', title:'회원가입'}
+    { path: '/signup/success', title:'회원가입'},
+    { path: '/findId', title:'아이디 찾기'},
+    { path: '/findPassword', title:'비밀번호 찾기'},
 
   ];
 
@@ -73,7 +76,7 @@ const Basic = () => {
         <Route path="/signup/generalForm" element={<GeneralFormPage />}/>
         <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
         <Route path="/signup/success" element={<SignupSccessPage />}/>
-
+        <Route path="/findId" element={<FindIdPage />}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
