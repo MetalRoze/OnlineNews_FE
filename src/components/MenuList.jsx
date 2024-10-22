@@ -2,30 +2,42 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import styled from "styled-components";
+import { useState } from 'react';
 import 'swiper/css/navigation';
 
 export default function MenuList() {
     const categories = ['MY', '랭킹', '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
+    const [activeIndex, setActiveIndex] = useState(null); // 선택된 슬라이드 인덱스를 저장
+
+    const handleSlideClick = (index) => {
+        setActiveIndex(index); // 클릭된 슬라이드의 인덱스를 저장
+    };
 
     return (
         <div className='mobile-header m0 pd0'>
             <Swiper
-                style={{ height: '4rem', width: '100%' }} // 높이 및 폭 설정
+                style={{ height: '4rem', width: '100%' }}
                 className='mobile-header m0 pd0'
                 modules={[Navigation]}
-                spaceBetween={10} // 슬라이드 간의 간격
-                slidesPerView="auto" // 슬라이드의 너비를 자동으로 설정
+                spaceBetween={10}
+                slidesPerView="auto"
                 navigation={categories.length > 5 ? {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
-                } : false} // 슬라이드가 5개 이상일 경우에만 내비게이션 활성화
+                } : false}
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
             >
                 {categories.map((category, index) => (
-                    <StyledSwiperSlide key={index}>{category}</StyledSwiperSlide>
+                    <StyledSwiperSlide
+                        key={index}
+                        isActive={activeIndex === index} // 현재 슬라이드가 활성화된 슬라이드인지 확인
+                        onClick={() => handleSlideClick(index)} // 클릭 핸들러
+                    >
+                        {category}
+                    </StyledSwiperSlide>
                 ))}
-                {categories.length > 5 && ( // 슬라이드가 5개 이상일 경우에만 버튼을 렌더링
+                {categories.length > 5 && (
                     <>
                         <StyledSwiperButton className="swiper-button-prev">‹</StyledSwiperButton>
                         <StyledSwiperButton className="swiper-button-next">›</StyledSwiperButton>
@@ -48,30 +60,33 @@ const StyledSwiperButton = styled.div`
     }
 
     &.swiper-button-prev {
-        left: 0px; // 버튼 위치 조정
+        left: 0px; 
     }
 
     &.swiper-button-next {
-        right: 0px; // 버튼 위치 조정
+        right: 0px; 
     }
 
     &.swiper-button-prev:after,
     &.swiper-button-next:after {
         font-size: 1.1rem !important;
         font-weight: 600 !important;
-        content: ''; // 텍스트를 없앰
+        content: ''; 
     }
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-    display: flex;               /* Flexbox 사용 */
-    justify-content: center;     /* 수평 중앙 정렬 */
-    align-items: center;         /* 수직 중앙 정렬 */
-    height: 100%;                /* 전체 높이 사용 */
-    font-size: 1.1rem;          /* 글자 크기 조정 */
-    padding: 0 10px;            /* 좌우 여백 추가 */
-    box-sizing: border-box;      /* 패딩이 높이에 포함되도록 설정 */
-    flex: 1 0 auto;              /* 슬라이드 너비 유동적 설정 */
-    min-width: 0;                /* 최소 너비 설정 */
-    max-width: calc(100% / 5 - 10px); /* 최대 너비 설정 (슬라이드 간의 공간 고려) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.1rem;
+    padding: 0 10px;
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    min-width: 0;
+    max-width: calc(100% / 5 - 10px);
+    cursor: pointer; /* 클릭 가능한 상태 표시 */
+    font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')}; /* 활성화된 슬라이드에 bold 적용 */
+    color: ${({ isActive }) => (isActive ? 'black' : 'gray')}; /* 활성화된 슬라이드의 글자 색상 변경 */
 `;

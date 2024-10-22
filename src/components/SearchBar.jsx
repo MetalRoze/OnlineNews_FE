@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 
 
-export default function SearchBar() {
+export default function SearchBar({width}) {
     const inputRef = useRef(null);
 
     const onSearch = () => {
@@ -12,7 +12,7 @@ export default function SearchBar() {
         inputRef.current.value = '';  
     };
     return (
-        <div className='searchbar flex aiCenter pd10 br10'>
+        <div className='searchbar flex aiCenter pd10 br10' style={{width: width}}>
             <input
                 className='searchbar-input'
                 type="text"
