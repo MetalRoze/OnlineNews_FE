@@ -261,6 +261,13 @@
 .searchbar i {
     cursor: pointer;
 }
+.label{
+    width: 3rem;
+    display: inline-block;
+    background-color: var(--color-blueOp);
+    color: var(--color-blue);
+    border-radius: 0.5rem;
+}
 
 .basicArticle{
     align-self: flex-start;
