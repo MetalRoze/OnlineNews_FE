@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SubscriptionModal from './SubscriptionModal';
+import KakaoShare from '/src/utils/KakaoShare.jsx';
+
+
+
 const ArticleContent = () => {
     const [articleLikeCount, setArticleLikeCount] = useState(0);
     const [isArticleLiked, setIsArticleLiked] = useState(false);
@@ -54,7 +58,13 @@ const ArticleContent = () => {
         setIsEmailSubscribed(false);
         setIsModalOpen(false);
     };
-
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => document.body.removeChild(script);
+    }, []);
 
 
     return (
@@ -118,9 +128,7 @@ const ArticleContent = () => {
                     ></i>
                     <small className='taCenter block'>{articleLikeCount}</small>
                 </div>
-                <button className='shareButton m0' style={{ marginLeft: "auto" }}>
-                    공유 &nbsp; <i className="bi bi-share" />
-                </button>
+                <KakaoShare ></KakaoShare>
             </div>
 
             <SubscriptionModal
