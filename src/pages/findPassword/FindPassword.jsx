@@ -18,12 +18,13 @@ const MenuWrapper = styled.div
 `  display: flex;
   justify-content: center;
   gap: 40px;
-  margin-bottom: 50px;`
+  margin-bottom: 50px;
+  `
 ;
 
 const InputContainer = styled.div`
     width:400px;
-    max-height:600px;
+    height:250px;
     overflow-y:auto;
     scrollbar-width: none;
     padding:0px 5px 20px 5px;
@@ -111,11 +112,9 @@ export default function FindPassword(){
                     aria-label='이메일 입력 필드'
                 ></input>
               </InputWrapper>
-
-              <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", marginTop:'40px'}}>비밀번호 찾기</button>
-
             </InputContainer>
 
+            <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>비밀번호 찾기</button>
         </HeadWrapper>
     )
  
