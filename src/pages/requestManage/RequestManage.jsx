@@ -8,7 +8,7 @@ export default function RequestManage() {
         <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
             <div className="desktop-container">
-                <SearchBar />
+                <SearchBar width={'90%'}/>
             </div>
         </div>
     );
