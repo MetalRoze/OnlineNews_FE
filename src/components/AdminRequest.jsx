@@ -26,7 +26,13 @@ export default function AdminRequest({ activeTab }) {
             {activeTab === 'approved' && (
                 <button className='desktop-request-privatebutton'>비공개</button>
             )}
-
+            {(!activeTab) && (
+                <div className='flex desktop-request-3buttons br10' style={{ width: '70%' }}>
+                <button>승인</button>
+                <button>보류</button>
+                <button>거절</button>
+            </div>
+            )}
         </div>
     );
 }

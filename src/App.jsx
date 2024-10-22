@@ -16,6 +16,7 @@ import SignupPage from './pages/signup/Signup';
 import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
 import GeneralTermPage from './pages/signup/GeneralTerm'; 
 import RequestManage from './pages/requestManage/RequestManage';
+import ArticleManage from './pages/articleManage/ArticleManage';
 import Main from './pages/main/Main';
 import JurnalistTermPage from './pages/signup/JournalistTerm';
 import GeneralFormPage from './pages/signup/GeneralForm'
@@ -36,7 +37,7 @@ const Basic = () => {
   const isDetail = location.pathname === '/articleDetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/desktop", "/requestManage",];
+  const excludedPaths = ["/desktop", "/requestManage", "/articleManage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -65,6 +66,7 @@ const Basic = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/desktop" element={<TestPageDT />} />
         <Route path="/requestManage" element={<RequestManage/>}/>
+        <Route path="/articleManage" element={<ArticleManage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
