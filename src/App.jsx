@@ -22,6 +22,7 @@ import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import FindIdPage from './pages/findId/FindId'; 
+import FindPassword from './pages/findPassword/FindPassword';
 
 function App() {
   return (
@@ -77,6 +78,7 @@ const Basic = () => {
         <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
         <Route path="/signup/success" element={<SignupSccessPage />}/>
         <Route path="/findId" element={<FindIdPage />}/>
+        <Route path="/findPassword" element={<FindPassword />}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>

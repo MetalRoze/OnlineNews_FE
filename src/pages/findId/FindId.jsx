@@ -22,7 +22,7 @@ const MenuWrapper = styled.div
 ;
 
 const InputContainer = styled.div`
-    max-width:400px;
+    width:400px;
     max-height:600px;
     overflow-y:auto;
     scrollbar-width: none;
