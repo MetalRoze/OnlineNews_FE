@@ -22,7 +22,8 @@ import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import FindIdPage from './pages/findId/FindId'; 
-import FindPassword from './pages/findPassword/FindPassword';
+import FindPasswordPage from './pages/findPassword/FindPassword';
+import FindPasswordResultPage from './pages/findPassword/FindPasswordResult'; 
 
 function App() {
   return (
@@ -53,7 +54,7 @@ const Basic = () => {
     { path: '/signup/success', title:'회원가입'},
     { path: '/findId', title:'아이디 찾기'},
     { path: '/findPassword', title:'비밀번호 찾기'},
-
+    { path: '/findPassword/result', title:'비밀번호 찾기'}
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -78,7 +79,8 @@ const Basic = () => {
         <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
         <Route path="/signup/success" element={<SignupSccessPage />}/>
         <Route path="/findId" element={<FindIdPage />}/>
-        <Route path="/findPassword" element={<FindPassword />}/>
+        <Route path="/findPassword" element={<FindPasswordPage />}/>
+        <Route path="/findPassword/result" element={<FindPasswordResultPage/>}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
