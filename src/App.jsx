@@ -22,6 +22,7 @@ import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import My from './pages/my/My';
+import Search from './pages/search/search';
 
 function App() {
   return (
@@ -49,7 +50,8 @@ const Basic = () => {
     { path: '/signup/journalistTerm', title:'회원가입'},
     { path: '/signup/generalForm', title:'회원가입'},
     { path: '/signup/journalistForm', title:'회원가입'},
-    { path: '/signup/success', title:'회원가입'}
+    { path: '/signup/success', title:'회원가입'},
+    { path: '/search', title: "검색"}
 
   ];
 
@@ -75,6 +77,7 @@ const Basic = () => {
         <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
         <Route path="/signup/success" element={<SignupSccessPage />}/>
         <Route path="/my" element={<My/>}/>
+        <Route path='/search' element={<Search />}/>
 
 
       </Routes>
