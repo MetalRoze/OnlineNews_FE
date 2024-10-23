@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const formatDate = (date) => {
     const options = {
@@ -16,14 +17,28 @@ const formatDate = (date) => {
 };
 const Header = () => {
     const today = new Date();  // Date 객체 생성 
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate('/main'); // /main으로 이동
+    };
+
+    const handleSearchClick = () =>{
+        navigate('/search');
+    }
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <div className='mobile-header' >
-                <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' />
+                <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
+                    style={{ cursor: 'pointer' }} />
                 <div>
                     <div className='taRight'>
-                        <i className="bi bi-search"></i>
+                        <i 
+                        className="bi bi-search"
+                        onClick={handleSearchClick}
+                        style={{cursor: 'pointer'}}>
+                        </i>
                         <i className="bi bi-filter-right"></i>
                     </div>
                     <div className='flex aiCenter'>
