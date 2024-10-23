@@ -24,6 +24,10 @@ import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import My from './pages/my/My';
 import Search from './pages/search/search';
+import FindIdPage from './pages/findId/FindId'; 
+import FindPasswordPage from './pages/findPassword/FindPassword';
+import FindPasswordResultPage from './pages/findPassword/FindPasswordResult'; 
+import FindIdResultPage from './pages/findId/FindIdResult'; 
 
 function App() {
   return (
@@ -52,8 +56,12 @@ const Basic = () => {
     { path: '/signup/generalForm', title:'회원가입'},
     { path: '/signup/journalistForm', title:'회원가입'},
     { path: '/signup/success', title:'회원가입'},
-    { path: '/search', title: "검색"}
-
+    { path: '/search', title: "검색"},
+    { path: '/signup/success', title:'회원가입'},
+    { path: '/findId', title:'아이디 찾기'},
+    { path: '/findPassword', title:'비밀번호 찾기'},
+    { path: '/findPassword/result', title:'비밀번호 찾기'}, 
+    { path: '/findId/result', title:'아이디 찾기'},
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -80,8 +88,10 @@ const Basic = () => {
         <Route path="/signup/success" element={<SignupSccessPage />}/>
         <Route path="/my" element={<My/>}/>
         <Route path='/search' element={<Search />}/>
-
-
+        <Route path="/findId" element={<FindIdPage />}/>
+        <Route path="/findPassword" element={<FindPasswordPage />}/>
+        <Route path="/findPassword/result" element={<FindPasswordResultPage/>}/>
+        <Route path="/findId/result" element={<FindIdResultPage/>}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
