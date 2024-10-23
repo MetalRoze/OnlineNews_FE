@@ -23,11 +23,12 @@ import GeneralFormPage from './pages/signup/GeneralForm'
 import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import My from './pages/my/My';
-import Search from './pages/search/search';
+import Search from './pages/search/Search';
 import FindIdPage from './pages/findId/FindId'; 
 import FindPasswordPage from './pages/findPassword/FindPassword';
 import FindPasswordResultPage from './pages/findPassword/FindPasswordResult'; 
 import FindIdResultPage from './pages/findId/FindIdResult'; 
+import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
 
 function App() {
@@ -63,6 +64,7 @@ const Basic = () => {
     { path: '/findPassword', title:'비밀번호 찾기'},
     { path: '/findPassword/result', title:'비밀번호 찾기'}, 
     { path: '/findId/result', title:'아이디 찾기'},
+    { path: '/subManage', title: '구독 관리'}
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -94,6 +96,7 @@ const Basic = () => {
         <Route path="/findPassword" element={<FindPasswordPage />}/>
         <Route path="/findPassword/result" element={<FindPasswordResultPage/>}/>
         <Route path="/findId/result" element={<FindIdResultPage/>}/>
+        <Route path="/subManage" element={<SubManage/>}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
