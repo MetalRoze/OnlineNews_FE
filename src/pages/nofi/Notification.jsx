@@ -21,7 +21,7 @@ export default function Notification({ notiType, type, userName, title, comment,
         </div>
     );
 }
-const getNotificationDetails = ({ notiType, type, userName, title, comment, reply }) => {
+const getNotificationDetails = ({ notiType, title, comment, reply }) => {
     switch (notiType) {
       case 'commentNoti': // 일반 사용자 알림
         return {

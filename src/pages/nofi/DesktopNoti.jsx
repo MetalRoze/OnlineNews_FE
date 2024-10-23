@@ -16,39 +16,27 @@ export default function DesktopNoti() {
 
     const noties = {
         allNoties: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~' },
-            { id: 2, name: '박영희', type: '기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"' },
-            { id: 3, name: '이민수', type: '시민기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"' },
-            { id: 4, name: '정유진', type: '시민기자', title: '시민기자 등록 요청입니다.' },
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~' }
+            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
+            { id: 2, name: '박영희', type: '기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"', notiType: 'requestNoti' },
+            { id: 3, name: '이민수', type: '시민기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"', notiType: 'requestNoti' },
+            { id: 4, name: '정유진', type: '시민기자', title: '시민기자 등록 요청입니다.', notiType: 'enrollNoti' },
+            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
         ],
         requestNoti: [
-            { id: 2, name: '박영희', type: '기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"' },
-            { id: 3, name: '이민수', type: '시민기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"' },
+            { id: 2, name: '박영희', type: '기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"', notiType: 'requestNoti' },
+            { id: 3, name: '이민수', type: '시민기자', title: '인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"', notiType: 'requestNoti' },
         ],
         enrollNoti: [
-            { id: 4, name: '정유진', type: '시민기자', title: '시민기자 등록 요청입니다.' },
+            { id: 4, name: '정유진', type: '시민기자', title: '시민기자 등록 요청입니다.', notiType: 'enrollNoti' },
         ],
         commentNoti: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~' }
+            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' }
         ],
         replyNoti: [
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~' }
+            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
         ]
     };
-    const getNotiType = (eventKey) => {
-        switch (eventKey) {
-            case 'requestNoti':
-                return 'requestNoti';
-            case 'enrollNoti':
-                return 'enrollNoti';
-            case 'commentNoti':
-                return 'commentNoti';
-            case 'replyNoti':
-                return 'replyNoti';
-            
-        }
-    };
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
@@ -57,7 +45,7 @@ export default function DesktopNoti() {
 
                 {noties[activeTab].map((noti) => (
                     <Notification
-                    notiType={getNotiType(activeTab)}
+                    notiType={noti.notiType}
                     type={noti.type}
                     userName={noti.name}
                     title={noti.title}
