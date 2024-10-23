@@ -12,4 +12,5 @@ const StyledLabel = styled.div`
   color: ${({ color, theme }) => theme.colors[color] || 'var(--color-blue)'};
   border-radius: 0.5rem;
   text-align: center;
+  font-size: 0.875rem;
 `;

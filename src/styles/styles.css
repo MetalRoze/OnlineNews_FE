@@ -206,14 +206,14 @@
     color: var(--color-black);
 }
 
-.desktop-article {
+.desktop-item {
     display: flex;
     width: 25rem;
     height: 8rem;
     background-color: var(--color-gray10);
 }
 
-.desktop-article .ellipsis {
+.desktop-item .ellipsis {
     width: 100%;
     white-space: nowrap;
     word-wrap: break-word;
@@ -221,8 +221,9 @@
     text-overflow: ellipsis;
 }
 
-.desktop-article i,
-.desktop-article p {
+.desktop-item i,
+.desktop-item p,
+.desktop-item small {
     color: var(--color-gray60);
 }
 
