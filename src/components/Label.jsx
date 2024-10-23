@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-export default function Label({width}) {
+export default function Label({text, color, backgroundColor}) {
     return (
-         <label className='label blue taCenter'>시민</label>
+         <div className='label blue taCenter' >{text}</div>
     );
 }

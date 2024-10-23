@@ -4,6 +4,7 @@ import MyCalendar from '../components/Calendar';
 import AdminRequest from '../components/AdminRequest';
 import AdminArticle from '../components/AdminArticle';
 import styled from 'styled-components';
+import Label from '../components/Label';
 
 
 export default function TestPageDT() {
@@ -30,7 +31,8 @@ export default function TestPageDT() {
                 <button>기본 버튼</button> */}
                 <MyCalendar />
                 <div style={{ height: '3rem' }}></div>
-
+                <Label  text={"시민"}/>
+                <Label  text={"정치/경제"} style={{color:'black'}}/>
                 <div className='flex column aiFlexstart' style={{width: '78rem'}}>
                     <h2 className='mb1'>기사 요청 현황</h2>
                     <StyledRequestListWrapper>

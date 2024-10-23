@@ -262,8 +262,8 @@
     cursor: pointer;
 }
 .label{
-    width: 3rem;
-    display: inline-block;
+    width: fit-content;
+    padding: 0 0.5rem;
     background-color: var(--color-blueOp);
     color: var(--color-blue);
     border-radius: 0.5rem;
