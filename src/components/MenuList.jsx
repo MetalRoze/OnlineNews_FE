@@ -2,15 +2,29 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import styled from "styled-components";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'swiper/css/navigation';
+import { useNavigate, useLocation } from 'react-router-dom'; 
 
 export default function MenuList() {
     const categories = ['MY', '랭킹', '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
-    const [activeIndex, setActiveIndex] = useState(null); // 선택된 슬라이드 인덱스를 저장
+    const paths = ['my', 'ranking', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
+    const [activeIndex, setActiveIndex] = useState(null); 
+    const navigate = useNavigate(); 
+    const location = useLocation(); 
+
+    // URL 경로에 맞춰 activeIndex 설정
+    useEffect(() => {
+        const currentPath = location.pathname.split('/')[1]; // 현재 경로의 첫 번째 슬래시 뒤의 부분을 가져옴
+        const currentIndex = paths.indexOf(currentPath); // 경로에 맞는 인덱스 찾기
+        if (currentIndex !== -1) {
+            setActiveIndex(currentIndex); // 해당 경로에 맞는 인덱스를 activeIndex로 설정
+        }
+    }, [location.pathname]); // location.pathname이 변경될 때마다 실행
 
     const handleSlideClick = (index) => {
         setActiveIndex(index); // 클릭된 슬라이드의 인덱스를 저장
+        navigate(`/${paths[index]}`); // 해당 경로로 이동
     };
 
     return (
@@ -87,6 +101,6 @@ const StyledSwiperSlide = styled(SwiperSlide)`
     min-width: 0;
     max-width: calc(100% / 5 - 10px);
     cursor: pointer; /* 클릭 가능한 상태 표시 */
-    font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')}; /* 활성화된 슬라이드에 bold 적용 */
-    color: ${({ isActive }) => (isActive ? 'black' : 'gray')}; /* 활성화된 슬라이드의 글자 색상 변경 */
+    font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')}; 
+    color: ${({ isActive }) => (isActive ? 'black' : 'gray')}; 
 `;
