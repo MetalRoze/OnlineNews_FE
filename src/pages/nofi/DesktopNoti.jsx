@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Notification from './Notification';
 import Sidebar from '../../components/Sidebar';
 import DesktopTab from '../../components/DesktopTab';
+import MyPagination from '../../components/Pagination';
+import { StyledRequestListWrapper, PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
 
 export default function DesktopNoti() {
     const [activeTab, setActiveTab] = useState('allNoties');
@@ -13,7 +15,7 @@ export default function DesktopNoti() {
         { eventKey: 'commentNoti', title: '댓글등록', content: '댓글등록' },
         { eventKey: 'replyNoti', title: '대댓글등록', content: '대댓글등록' },
     ];
-
+    //대댓글, 구독출판사 새 기사: 사용자만/ 대댓글: 사용자, 기자(시민기자, 일반기자), 편집장/ 승인요청: 편집장만 / 기자등록: 편집장만
     const noties = {
         allNoties: [
             { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
@@ -42,18 +44,24 @@ export default function DesktopNoti() {
             <Sidebar />
             <div className="desktop-container">
                 <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
-
-                {noties[activeTab].map((noti) => (
-                    <Notification
-                    notiType={noti.notiType}
-                    type={noti.type}
-                    userName={noti.name}
-                    title={noti.title}
-                    comment={noti.comment}
-                    reply= {noti.reply}
-                />
-                ))}
+                <TotalCount>전체 {noties[activeTab].length}개</TotalCount>
+                <StyledNotiListWrapper>
+                    {noties[activeTab].map((noti) => (
+                        <Notification
+                            notiType={noti.notiType}
+                            type={noti.type}
+                            userName={noti.name}
+                            title={noti.title}
+                            comment={noti.comment}
+                            reply={noti.reply}
+                        />
+                    ))}
+                </StyledNotiListWrapper>
+                <PaginationContainer>
+                    <MyPagination itemsCountPerPage={21} totalItemsCount={noties[activeTab].length} pageRangeDisplayed={5} />
+                </PaginationContainer>
             </div>
         </div>
     );
 }
+const StyledNotiListWrapper = StyledRequestListWrapper;
