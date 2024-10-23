@@ -9,7 +9,7 @@ import './index.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import TestPage from './pages/testPage';
-import TestPageDT from './pages/testPageDT';
+import AdminMain from './pages/adminMain/AdminMain';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login'; 
 import SignupPage from './pages/signup/Signup';
@@ -44,7 +44,7 @@ const Basic = () => {
   const isDetail = location.pathname === '/articleDetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/desktop", "/requestManage", "/articleManage","/staffManage",];
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage","/staffManage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -76,7 +76,7 @@ const Basic = () => {
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/desktop" element={<TestPageDT />} />
+        <Route path="/adminMAin" element={<AdminMain />} />
         <Route path="/requestManage" element={<RequestManage/>}/>
         <Route path="/articleManage" element={<ArticleManage/>}/>
         <Route path="/staffManage" element={<StaffManage/>}/>
