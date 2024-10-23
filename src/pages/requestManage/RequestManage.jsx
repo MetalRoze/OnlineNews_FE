@@ -46,7 +46,7 @@ export default function RequestManage() {
     );
 }
 
-const StyledRequestListWrapper = styled.div`
+export const StyledRequestListWrapper = styled.div`
   width: 52rem;
   display: grid;
   grid-template-rows: repeat(5, 1fr);
@@ -54,14 +54,14 @@ const StyledRequestListWrapper = styled.div`
   gap: 1rem;
 `;
 
-const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div`
   grid-column: 1 / -1; 
   display: flex;
   justify-content: center; 
   margin-top: 1rem; 
 `;
 
-const TotalCount = styled.p`
+export const TotalCount = styled.p`
     color : ${(props) => props.theme.colors.gray50};
-`;
+`; 
 
