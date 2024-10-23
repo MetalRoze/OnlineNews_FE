@@ -4,13 +4,15 @@ import MenuList from "../../components/MenuList";
 import styled from "styled-components";
 import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
+import { useNavigate } from 'react-router-dom';
 
 export default function My() {
     const articles = Array(4).fill(0); // 배열 선언
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
+    const navigate = useNavigate();
 
     const handleSetPub = () => {
-
+        navigate('/subManage');
     }
 
     return (
@@ -25,7 +27,7 @@ export default function My() {
                     ))}
                     <AddIconBox>
                         <CgAddR size={28} 
-                        onClick={() => handleSetPub()}/> {/* 8번째 칸에 아이콘만 표시 */}
+                        onClick={handleSetPub}/> {/* 8번째 칸에 아이콘만 표시 */}
                     </AddIconBox>
                 </GrayBox>
             </CenteredContainer>
