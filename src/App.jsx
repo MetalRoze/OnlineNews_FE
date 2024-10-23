@@ -28,6 +28,7 @@ import FindIdPage from './pages/findId/FindId';
 import FindPasswordPage from './pages/findPassword/FindPassword';
 import FindPasswordResultPage from './pages/findPassword/FindPasswordResult'; 
 import FindIdResultPage from './pages/findId/FindIdResult'; 
+import StaffManage from './pages/staffManage/StaffManage';
 
 function App() {
   return (
@@ -43,7 +44,7 @@ const Basic = () => {
   const isDetail = location.pathname === '/articleDetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/desktop", "/requestManage", "/articleManage",];
+  const excludedPaths = ["/desktop", "/requestManage", "/articleManage","/staffManage",];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -78,6 +79,7 @@ const Basic = () => {
         <Route path="/desktop" element={<TestPageDT />} />
         <Route path="/requestManage" element={<RequestManage/>}/>
         <Route path="/articleManage" element={<ArticleManage/>}/>
+        <Route path="/staffManage" element={<StaffManage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />

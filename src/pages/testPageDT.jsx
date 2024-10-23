@@ -31,13 +31,7 @@ export default function TestPageDT() {
                 <button>기본 버튼</button> */}
                 <MyCalendar />
                 <div style={{ height: '3rem' }}></div>
-                <div className='flex'>
-                <Label  text={"시민"}/>
-                <div style={{width: '0.5rem'}}></div>
-                <Label  text={"정치/경제"} color={'white'} backgroundColor={'blue'}/>
-               
-                </div>
-                <div style={{ height: '3rem' }}></div>
+                
                 <div className='flex column aiFlexstart' style={{width: '78rem'}}>
                     <h2 className='mb1'>기사 요청 현황</h2>
                     <StyledRequestListWrapper>
