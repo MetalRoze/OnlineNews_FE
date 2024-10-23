@@ -53,7 +53,7 @@ export default function StaffManage() {
                         />
                     ))}
                     <PaginationContainer>
-                        <MyPagination itemsCountPerPage={12} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
+                        <MyPagination itemsCountPerPage={21} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
                     </PaginationContainer>
                 </StyledStaffListWrapper>
 
