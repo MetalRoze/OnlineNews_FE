@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from '../../components/Sidebar';
 
 
 export default function AdminMypage() {
-
+    const navigate= useNavigate();
+    const changeBtnClick = async (e) => {
+        e.preventDefault(); 
+        navigate('/login'); 
+    };
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <Sidebar />
@@ -33,9 +38,9 @@ export default function AdminMypage() {
                         </div>
                     </div>
                 </StyledProfileWrapper>
-                <div className='flex mt1' style={{ alignSelf: 'center' }}>
+                <div className='flex mt1'>
                     <button className='mr05'>로그아웃</button>
-                    <button>계정전환</button>
+                    <button onClick={changeBtnClick}>계정전환</button>
                 </div>
             </div>
         </div>
