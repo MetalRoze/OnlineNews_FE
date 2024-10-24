@@ -31,6 +31,7 @@ import FindIdResultPage from './pages/findId/FindIdResult';
 import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
 import DesktopNoti from './pages/nofi/DesktopNoti';
+import AdminMypage from './pages/adminMypage/AdminMypage';
 
 function App() {
   return (
@@ -46,7 +47,7 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage","/staffManage","/desktopNoti"];
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage","/staffManage","/desktopNoti","/adminMypage"];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -84,6 +85,7 @@ const Basic = () => {
         <Route path="/articleManage" element={<ArticleManage/>}/>
         <Route path="/staffManage" element={<StaffManage/>}/>
         <Route path="/desktopNoti" element={<DesktopNoti/>}/>
+        <Route path="/adminMypage" element={<AdminMypage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
