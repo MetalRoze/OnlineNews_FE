@@ -11,10 +11,10 @@ import Footer from './components/Footer';
 import TestPage from './pages/testPage';
 import AdminMain from './pages/adminMain/AdminMain';
 import GoBackHeader from './components/GoBackHeader';
-import LoginPage from './pages/login/Login'; 
+import LoginPage from './pages/login/Login';
 import SignupPage from './pages/signup/Signup';
-import ArticleDtPage from './pages/articleDetail/ArticleDetail'; 
-import GeneralTermPage from './pages/signup/GeneralTerm'; 
+import ArticleDtPage from './pages/articleDetail/ArticleDetail';
+import GeneralTermPage from './pages/signup/GeneralTerm';
 import RequestManage from './pages/requestManage/RequestManage';
 import ArticleManage from './pages/articleManage/ArticleManage';
 import Main from './pages/main/Main';
@@ -43,15 +43,15 @@ function App() {
 const Basic = () => {
   const location = useLocation();
 
-  const isDetail = location.pathname === '/articleDetail';
+  const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
   const excludedPaths = ["/adminMain", "/requestManage", "/articleManage","/staffManage","/desktopNoti"];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
-   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
-   const goBackHeaderPaths = [
+  // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
+  const goBackHeaderPaths = [
     { path: '/login', title: '로그인' },
     { path: '/signup', title: '회원가입' },
     { path: '/signup/generalTerm', title:'회원가입'}, 
@@ -72,10 +72,10 @@ const Basic = () => {
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
   return (
-    <div style={{ width: '100%', height:"100%"}}>
+    <div style={{ width: '100%', height: "100%" }}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
-      
+
       <Routes>
         <Route path="/" element={<TestPage />} />
         <Route path="/main" element={<Main />} />
