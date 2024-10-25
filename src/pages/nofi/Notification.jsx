@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Label from '../../components/Label';
 
-export default function Notification({ notiType, type, userName, title, comment, reply }) {
+export default function Notification({ notiType, type, userName, title, comment, reply, width }) {
     const { label, roleText, message } = getNotificationDetails({ notiType, type, userName, title, comment, reply });
     return (
-        <div className='desktop-item pd10 aiCenter jcCenter'>
-            <div className='flex column jcCenter' style={{ width: '100%' }}>
+        <div className='desktop-item pd10 aiCenter jcCenter' style={{width:width}}>
+            <div className='flex column jcCenter' style={{  width : '100%' }}>
                 <div className='flex spaceBetween mb05 aiCenter'>
                     <Label text={label} color={'white'} backgroundColor={'black'}/>
                     <small className='m0'>1분전</small>
