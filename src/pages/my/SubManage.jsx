@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SubPub from "./SubPub";
 import styled from "styled-components";
+import PubProfile from "./PubProfile";
 
 export default function SubManage() {
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
+    const pubProfiles = Array(12).fill(0); // 12개의 PubProfile 컴포넌트를 생성 (예시)
+    const labels = ["전체", "종합지", "경제지", "매거진", "지역지", "전문지"];
+    const [selectedLabel, setSelectedLabel] = useState("전체"); // 초기 값 '전체'
 
+    const handleLabelClick = (label) => {
+        setSelectedLabel(label);
+        console.log(`${label} 클릭됨`);
+    };
+
+    useEffect(() => {
+        setSelectedLabel("전체"); // 컴포넌트가 처음 렌더링될 때 '전체'를 선택
+    }, []);
 
     return (
         <div className='mobile-header column'>
@@ -16,25 +28,72 @@ export default function SubManage() {
                 </GrayBox>
             </CenteredContainer>
 
+            <LabelContainer className="mt1 labels-container">
+                {labels.map((label) => (
+                    <Label
+                        key={label}
+                        isSelected={selectedLabel === label}
+                        onClick={() => handleLabelClick(label)}
+                    > 
+                        {label}
+                    </Label>
+                ))}
+            </LabelContainer>
+
+            <ProfileContainer>
+                {pubProfiles.map((_, index) => (
+                    <PubProfile key={index} />
+                ))}
+            </ProfileContainer>
         </div>
     );
 }
 
 const CenteredContainer = styled.div`
     display: flex;
-    justify-content: center; /* GrayBox를 부모 컨테이너에서 중앙 정렬 */
-    width: 100%; /* 부모 컨테이너 전체 너비 */
-    margin-top : 1rem;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1rem;
 `;
 
 const GrayBox = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4개의 동일 너비의 열 */
-    gap: 1.0rem; /* 그리드 항목들 간의 간격 */
-    width: auto; /* 너비를 부모의 중앙 정렬에 맞춤 */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     background-color: #ccc;
-    padding: 1.0rem;
+    padding: 1rem;
     border-radius: 1rem;
-    box-sizing: border-box;
-    max-width: 48rem; /* 그레이 박스의 최대 너비 제한 */
+    max-width: 48rem;
+`;
+
+const Label = styled.div`
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: ${(props) => (props.isSelected ? "blue" : "#F2F2F7")};
+    color: ${(props) => (props.isSelected ? "white" : "black")};
+    cursor: pointer;
+    margin-right: 0.5rem;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+`;
+
+const LabelContainer = styled.div`
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
+`;
+
+const ProfileContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4개씩 열 */
+    gap: 1rem;
+    width: 90%;
+    max-width: 48rem;
+    // background : black;
+    margin: 0 auto; /* 중앙 정렬 */
+    
 `;
