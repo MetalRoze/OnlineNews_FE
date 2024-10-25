@@ -33,6 +33,10 @@ import StaffManage from './pages/staffManage/StaffManage';
 import DesktopNoti from './pages/nofi/DesktopNoti';
 import MobileNoti from './pages/nofi/MobileNoti';
 import AdminMypage from './pages/adminMypage/AdminMypage';
+import GeneralMyPage from './pages/mypage/GeneralMyPage'; 
+import JournalistMyPage from './pages/mypage/JournalistMyPage';
+import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit'; 
+import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 
 function App() {
   return (
@@ -67,7 +71,11 @@ const Basic = () => {
     { path: '/findPassword', title:'비밀번호 찾기'},
     { path: '/findPassword/result', title:'비밀번호 찾기'}, 
     { path: '/findId/result', title:'아이디 찾기'},
-    { path: '/subManage', title: '구독 관리'}
+    { path: '/subManage', title: '구독 관리'},
+    { path: '/myPageGeneral', title:'계정' }, 
+    { path: '/myPageGeneral/edit',title:'계정' }, 
+    { path: '/myPageJournalist', title:'계정'}, 
+    { path: '/myPageJournalist/edit',title:'계정' }, 
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -103,6 +111,10 @@ const Basic = () => {
         <Route path="/findPassword/result" element={<FindPasswordResultPage/>}/>
         <Route path="/findId/result" element={<FindIdResultPage/>}/>
         <Route path="/subManage" element={<SubManage/>}/>
+        <Route path="/myPageGeneral" element={<GeneralMyPage/>}/>
+        <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />}/>
+        <Route path="/myPageJournalist" element={<JournalistMyPage />}/>
+        <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />}/>   
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
