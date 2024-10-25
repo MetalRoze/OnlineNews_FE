@@ -190,8 +190,7 @@ export default function JournalistMyPageEdit() {
                 <ProfileTextWrapper>
                     <NameWrapper>
                         <NameText>홍기자</NameText>
-                        <EditSpace onClick={() => handleEditClick('닉네임', '현재 닉네임')}>
-                            <EditIcon src={editIcon} />
+                        <EditSpace>
                         </EditSpace>
                     </NameWrapper>
                     <BioWrapper>
@@ -249,7 +248,7 @@ export default function JournalistMyPageEdit() {
             <PasswordInputModal
                 showModal={showPasswordModal}
                 handleClose={() => setShowPasswordModal(false)}
-                handleSave={handleSavePassword}
+                onSave={handleSavePassword}
             />
             <PhoneInputModal
                 showModal={showPhoneModal}
