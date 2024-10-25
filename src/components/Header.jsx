@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import MyDropdown from './DropDown';
 
 const formatDate = (date) => {
     const options = {
@@ -39,7 +40,7 @@ const Header = () => {
                         onClick={handleSearchClick}
                         style={{cursor: 'pointer'}}>
                         </i>
-                        <i className="bi bi-filter-right"></i>
+                        <MyDropdown/>
                     </div>
                     <div className='flex aiCenter'>
                         <span className='date'>{formatDate(today)}</span>
