@@ -5,15 +5,16 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 function MyDropdown() {
     return (
         <CustomDropdown id="dropdown-basic-button" title="메뉴" drop={'start'}>
-            <Dropdown.Item href="#/action-1">계정</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">알림</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">내 활동</Dropdown.Item>
+            <Dropdown.Item href="../mypage">계정</Dropdown.Item>
+            <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>
+            <Dropdown.Item href="../log">내 활동</Dropdown.Item>
         </CustomDropdown>
     );
 }
 
 const CustomDropdown = styled(DropdownButton)`
     #dropdown-basic-button{
+        
         width: fit-content;
         padding: 0;
         background-color: transparent;
