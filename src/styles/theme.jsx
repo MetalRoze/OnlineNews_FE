@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     --color-black: #1c1c1c;
     --color-red: #FF3B30;
     --color-blue: #007AFF;
+    --color-blueOp:  rgba(0, 122, 255, 0.15);
     --color-gray10: #F2F2F7;
     --color-gray20: #E5E5EA;
     --color-gray30: #D1D1D6;
@@ -21,6 +22,7 @@ export const theme = {
     black: 'var(--color-black)',
     red: 'var(--color-red)',
     blue: 'var(--color-blue)',
+    blueOp: 'var(--color-blueOp)',
     gray10: 'var(--color-gray10)',
     gray20: 'var(--color-gray20)',
     gray30: 'var(--color-gray30)',

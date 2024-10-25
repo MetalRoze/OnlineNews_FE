@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import MyDropdown from './DropDown';
 
 const formatDate = (date) => {
     const options = {
@@ -33,13 +34,13 @@ const Header = () => {
                 <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
                     style={{ cursor: 'pointer' }} />
                 <div>
-                    <div className='taRight'>
+                    <div className='flex aiCenter' style={{width: 'fit-content', justifySelf:'flex-end'}}>
                         <i 
-                        className="bi bi-search"
+                        className="bi bi-search mr1"
                         onClick={handleSearchClick}
                         style={{cursor: 'pointer'}}>
                         </i>
-                        <i className="bi bi-filter-right"></i>
+                        <MyDropdown/>
                     </div>
                     <div className='flex aiCenter'>
                         <span className='date'>{formatDate(today)}</span>
