@@ -31,6 +31,7 @@ import FindIdResultPage from './pages/findId/FindIdResult';
 import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
 import DesktopNoti from './pages/nofi/DesktopNoti';
+import MobileNoti from './pages/nofi/MobileNoti';
 import AdminMypage from './pages/adminMypage/AdminMypage';
 
 function App() {
@@ -85,6 +86,7 @@ const Basic = () => {
         <Route path="/articleManage" element={<ArticleManage/>}/>
         <Route path="/staffManage" element={<StaffManage/>}/>
         <Route path="/desktopNoti" element={<DesktopNoti/>}/>
+        <Route path="/mobileNoti" element={<MobileNoti/>}/>
         <Route path="/adminMypage" element={<AdminMypage/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
