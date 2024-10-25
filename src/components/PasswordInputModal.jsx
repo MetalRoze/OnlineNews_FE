@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const PasswordModal = ({ showModal, handleClose }) => {
+const PasswordModal = ({ showModal, handleClose, onSave}) => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,6 +12,7 @@ const PasswordModal = ({ showModal, handleClose }) => {
             setError('비밀번호가 일치하지 않습니다.');
         } else {
             console.log('비밀번호가 저장되었습니다.');
+            onSave(newPassword);  
             handleClose();
         }
     };

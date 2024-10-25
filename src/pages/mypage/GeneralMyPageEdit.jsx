@@ -1,4 +1,4 @@
-import React, { useState } from 'react';  // useState 임포트 확인
+import React, { useState} from 'react';  // useState 임포트 확인
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -249,7 +249,7 @@ export default function GeneralMyPageEdit() {
             <PasswordInputModal
                 showModal={showPasswordModal}
                 handleClose={() => setShowPasswordModal(false)}
-                handleSave={handleSavePassword}
+                onSave={handleSavePassword}
             />
             <PhoneInputModal
                 showModal={showPhoneModal}
