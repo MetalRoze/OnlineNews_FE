@@ -176,6 +176,7 @@ select {
   padding: 5px;
   outline: none;
   border: none;
+  text-align: center;
 }
 
 /* quill editor */
@@ -195,5 +196,9 @@ select {
 }
 
 .ql-snow .ql-picker.ql-size {
+  margin: auto;
+}
+
+.ql-formats{
   margin: auto;
 }
