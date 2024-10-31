@@ -121,6 +121,9 @@
     margin-bottom: 20px;
     text-align: center;
 }
+.desktop-sidebar.folded {
+    width: 5rem;
+}
 
 .mobile-back-header {
     width: 600px;
