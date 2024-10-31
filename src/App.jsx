@@ -24,19 +24,20 @@ import JurnalistFormPage from './pages/signup/JournalistForm'
 import SignupSccessPage from './pages/signup/SignupSuccess'
 import My from './pages/my/My';
 import Search from './pages/search/Search';
-import FindIdPage from './pages/findId/FindId'; 
+import FindIdPage from './pages/findId/FindId';
 import FindPasswordPage from './pages/findPassword/FindPassword';
-import FindPasswordResultPage from './pages/findPassword/FindPasswordResult'; 
-import FindIdResultPage from './pages/findId/FindIdResult'; 
+import FindPasswordResultPage from './pages/findPassword/FindPasswordResult';
+import FindIdResultPage from './pages/findId/FindIdResult';
 import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
 import DesktopNoti from './pages/nofi/DesktopNoti';
 import MobileNoti from './pages/nofi/MobileNoti';
 import AdminMypage from './pages/adminMypage/AdminMypage';
-import GeneralMyPage from './pages/mypage/GeneralMyPage'; 
+import GeneralMyPage from './pages/mypage/GeneralMyPage';
 import JournalistMyPage from './pages/mypage/JournalistMyPage';
-import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit'; 
+import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
+import ArticleWrite from './pages/articleWrite/ArticleWrite';
 
 function App() {
   return (
@@ -52,7 +53,7 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage","/staffManage","/desktopNoti","/adminMypage"];
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"];
   const isDesktop = excludedPaths.includes(location.pathname);
 
 
@@ -60,22 +61,23 @@ const Basic = () => {
   const goBackHeaderPaths = [
     { path: '/login', title: '로그인' },
     { path: '/signup', title: '회원가입' },
-    { path: '/signup/generalTerm', title:'회원가입'}, 
-    { path: '/signup/journalistTerm', title:'회원가입'},
-    { path: '/signup/generalForm', title:'회원가입'},
-    { path: '/signup/journalistForm', title:'회원가입'},
-    { path: '/signup/success', title:'회원가입'},
-    { path: '/search', title: "검색"},
-    { path: '/signup/success', title:'회원가입'},
-    { path: '/findId', title:'아이디 찾기'},
-    { path: '/findPassword', title:'비밀번호 찾기'},
-    { path: '/findPassword/result', title:'비밀번호 찾기'}, 
-    { path: '/findId/result', title:'아이디 찾기'},
-    { path: '/subManage', title: '구독 관리'},
-    { path: '/myPageGeneral', title:'계정' }, 
-    { path: '/myPageGeneral/edit',title:'계정' }, 
-    { path: '/myPageJournalist', title:'계정'}, 
-    { path: '/myPageJournalist/edit',title:'계정' }, 
+    { path: '/signup/generalTerm', title: '회원가입' },
+    { path: '/signup/journalistTerm', title: '회원가입' },
+    { path: '/signup/generalForm', title: '회원가입' },
+    { path: '/signup/journalistForm', title: '회원가입' },
+    { path: '/signup/success', title: '회원가입' },
+    { path: '/search', title: "검색" },
+    { path: '/signup/success', title: '회원가입' },
+    { path: '/findId', title: '아이디 찾기' },
+    { path: '/findPassword', title: '비밀번호 찾기' },
+    { path: '/findPassword/result', title: '비밀번호 찾기' },
+    { path: '/findId/result', title: '아이디 찾기' },
+    { path: '/subManage', title: '구독 관리' },
+    { path: '/myPageGeneral', title: '계정' },
+    { path: '/myPageGeneral/edit', title: '계정' },
+    { path: '/myPageJournalist', title: '계정' },
+    { path: '/myPageJournalist/edit', title: '계정' },
+    { path: '/articleWrite', title: '기사 작성' },
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -90,31 +92,32 @@ const Basic = () => {
         <Route path="/" element={<TestPage />} />
         <Route path="/main" element={<Main />} />
         <Route path="/adminMAin" element={<AdminMain />} />
-        <Route path="/requestManage" element={<RequestManage/>}/>
-        <Route path="/articleManage" element={<ArticleManage/>}/>
-        <Route path="/staffManage" element={<StaffManage/>}/>
-        <Route path="/desktopNoti" element={<DesktopNoti/>}/>
-        <Route path="/mobileNoti" element={<MobileNoti/>}/>
-        <Route path="/adminMypage" element={<AdminMypage/>}/>
+        <Route path="/requestManage" element={<RequestManage />} />
+        <Route path="/articleManage" element={<ArticleManage />} />
+        <Route path="/staffManage" element={<StaffManage />} />
+        <Route path="/desktopNoti" element={<DesktopNoti />} />
+        <Route path="/mobileNoti" element={<MobileNoti />} />
+        <Route path="/adminMypage" element={<AdminMypage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
         <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
-        <Route path="/signup/journalistTerm" element={<JurnalistTermPage />}/>
-        <Route path="/signup/generalForm" element={<GeneralFormPage />}/>
-        <Route path="/signup/journalistForm" element={<JurnalistFormPage />}/>
-        <Route path="/signup/success" element={<SignupSccessPage />}/>
-        <Route path="/my" element={<My/>}/>
-        <Route path='/search' element={<Search />}/>
-        <Route path="/findId" element={<FindIdPage />}/>
-        <Route path="/findPassword" element={<FindPasswordPage />}/>
-        <Route path="/findPassword/result" element={<FindPasswordResultPage/>}/>
-        <Route path="/findId/result" element={<FindIdResultPage/>}/>
-        <Route path="/subManage" element={<SubManage/>}/>
-        <Route path="/myPageGeneral" element={<GeneralMyPage/>}/>
-        <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />}/>
-        <Route path="/myPageJournalist" element={<JournalistMyPage />}/>
-        <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />}/>   
+        <Route path="/signup/journalistTerm" element={<JurnalistTermPage />} />
+        <Route path="/signup/generalForm" element={<GeneralFormPage />} />
+        <Route path="/signup/journalistForm" element={<JurnalistFormPage />} />
+        <Route path="/signup/success" element={<SignupSccessPage />} />
+        <Route path="/my" element={<My />} />
+        <Route path='/search' element={<Search />} />
+        <Route path="/findId" element={<FindIdPage />} />
+        <Route path="/findPassword" element={<FindPasswordPage />} />
+        <Route path="/findPassword/result" element={<FindPasswordResultPage />} />
+        <Route path="/findId/result" element={<FindIdResultPage />} />
+        <Route path="/subManage" element={<SubManage />} />
+        <Route path="/myPageGeneral" element={<GeneralMyPage />} />
+        <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />} />
+        <Route path="/myPageJournalist" element={<JournalistMyPage />} />
+        <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
+        <Route path='/articleWrite' element={<ArticleWrite />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
