@@ -1,6 +1,6 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-/* 테이블, 스크롤바, input, select, textarea, label, ol/ul/li 정의해야 함 */
+/* 테이블, 스크롤바, select,label, ol/ul/li 정의해야 함 */
 
 :root {
   --color-white: #ffffff;
@@ -146,6 +146,7 @@ button:hover {
 hr {
   border-top: 1px var(--color-gray20) solid;
   opacity: 1;
+  margin: 0;
 }
 
 textarea {
@@ -154,4 +155,50 @@ textarea {
   border-radius: 10px;
   border: 1px solid var(--color-gray50);
   resize: none;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  resize: none;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+select {
+  border-radius: 10px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  appearance: none;
+  padding: 5px;
+  outline: none;
+  border: none;
+  text-align: center;
+}
+
+/* quill editor */
+.ql-size-small,
+.ql-size span[data-value="small"]::before {
+  font-size: 0.875rem !important;
+}
+
+.ql-size-large,
+.ql-size span[data-value="large"]::before {
+  font-size: 1.25rem !important;
+}
+
+.ql-size-huge,
+.ql-size span[data-value="huge"]::before {
+  font-size: 1.5rem !important;
+}
+
+.ql-snow .ql-picker.ql-size {
+  margin: auto;
+}
+
+.ql-formats{
+  margin: auto;
 }

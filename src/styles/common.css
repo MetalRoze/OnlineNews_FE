@@ -27,6 +27,18 @@
     margin-left: auto;
  }
 
+ .mrAuto {
+    margin-right: auto;
+ }
+
+ .mtAuto {
+    margin-top: auto;
+ }
+
+ .mbAuto {
+    margin-bottom: auto;
+ }
+
  .spaceBetween {
     justify-content: space-between;
  }
@@ -107,6 +119,10 @@
 
  .mt2 {
     margin-top: 2rem;
+ }
+
+ .mtb1 {
+    margin-block: 1rem;
  }
 
  /* border */
