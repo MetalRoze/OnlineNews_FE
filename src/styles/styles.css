@@ -73,7 +73,8 @@
 
 
 .desktop-sidebar {
-    width: 300px;
+    width: 250px;
+    min-width: 250px;
     min-height: 100vh;
     background-color: var(--color-black);
     color: var(--color-white);
@@ -120,6 +121,9 @@
 .desktop-sidebar .logout {
     margin-bottom: 20px;
     text-align: center;
+}
+.desktop-sidebar.folded {
+    width: 5rem;
 }
 
 .mobile-back-header {
