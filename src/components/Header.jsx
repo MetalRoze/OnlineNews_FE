@@ -26,7 +26,17 @@ const Header = () => {
 
     const handleSearchClick = () =>{
         navigate('/search');
-    }
+    }; 
+
+    const handleLoginClick = (e) => {
+        e.preventDefault(); 
+        navigate('/login'); 
+    }; 
+
+    const handleSignupClick = (e) => {
+        e.preventDefault(); 
+        navigate('/signup'); 
+    }; 
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -45,9 +55,9 @@ const Header = () => {
                     <div className='flex aiCenter'>
                         <span className='date'>{formatDate(today)}</span>
                         <div className='link'>
-                            <a href='#'>로그인</a>
+                            <a href='#' onClick={handleLoginClick} style={{cursor:'pointer'}}>로그인</a>
                             <span> | </span>
-                            <a href='#'>회원가입</a>
+                            <a href='#' onClick={handleSignupClick} style={{cursor:'pointer'}}>회원가입</a>
                         </div>
                     </div>
                 </div>
