@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
     return (
         <div className="desktop-sidebar">
-            <div className='flex'>
-                <img src="https://placehold.co/100x50" alt="Bootstrap" className='logo' />
-                <i className="bi bi-book mAuto" style={{ textAlign: "right" }}></i>
-            </div>
+            <img src="https://placehold.co/100x50" alt="Bootstrap" className='logo' />
             <div className='list'>
                 <div className='ul'>
                     <Link to="/articleManage"><i className="bi bi-search mr15 mb1"></i>기사 검색</Link>
