@@ -167,3 +167,23 @@ input[type="text"] {
 input[type="text"]:focus {
   outline: none;
 }
+
+/* quill editor */
+.ql-size-small,
+.ql-size span[data-value="small"]::before {
+  font-size: 0.875rem !important;
+}
+
+.ql-size-large,
+.ql-size span[data-value="large"]::before {
+  font-size: 1.25rem !important;
+}
+
+.ql-size-huge,
+.ql-size span[data-value="huge"]::before {
+  font-size: 1.5rem !important;
+}
+
+.ql-snow .ql-picker.ql-size {
+  margin: auto;
+}
