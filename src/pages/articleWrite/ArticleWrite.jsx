@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import QuillEditor from './QuillEditor.jsx';
 
 const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
@@ -56,6 +57,14 @@ const ArticleWrite = () => {
     //     console.log('DB에 저장할 HTML:', html);
     // };
 
+    const navigate = useNavigate(); 
+    const handleSubmit2 = () => {
+        const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
+    
+        if (isConfirmed) {
+            navigate('/main');
+        } 
+    };
     return (
         <div className='mobile-container'>
             <input type='text' className='mtb1' placeholder='제목을 입력해 주세요' />
@@ -75,7 +84,7 @@ const ArticleWrite = () => {
             <hr />
             <QuillEditor onChange={handleEditorChange} />
             <div className='mlAuto'>
-                <button onClick={handleSubmit}>승인 요청</button>
+                <button onClick={handleSubmit2}>승인 요청</button>
             </div>
 
             {/* <hr />
