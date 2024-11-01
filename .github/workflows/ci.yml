@@ -1,0 +1,26 @@
+name: Check Build Possibility
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # 1. Vite 프로젝트 빌드 테스트
+  build-test:
+    runs-on: ubuntu-20.04
+    env:
+      DISABLE_ESLINT_PLUGIN: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: "18.x"
+      - name: Install dependencies
+        run: npm install
+      - name: Try build
+        run: npm run build
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
