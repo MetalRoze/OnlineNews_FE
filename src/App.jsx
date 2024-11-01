@@ -1,38 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import '../src/styles/styles.css';
+import '../src/styles/common.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './index.css';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+import TestPage from './pages/testPage';
+import AdminMain from './pages/adminMain/AdminMain';
+import GoBackHeader from './components/GoBackHeader';
+import LoginPage from './pages/login/Login';
+import SignupPage from './pages/signup/Signup';
+import ArticleDtPage from './pages/articleDetail/ArticleDetail';
+import GeneralTermPage from './pages/signup/GeneralTerm';
+import RequestManage from './pages/requestManage/RequestManage';
+import ArticleManage from './pages/articleManage/ArticleManage';
+import Main from './pages/main/Main';
+import JurnalistTermPage from './pages/signup/JournalistTerm';
+import GeneralFormPage from './pages/signup/GeneralForm'
+import JurnalistFormPage from './pages/signup/JournalistForm'
+import SignupSccessPage from './pages/signup/SignupSuccess'
+import My from './pages/my/My';
+import Search from './pages/search/Search';
+import FindIdPage from './pages/findId/FindId';
+import FindPasswordPage from './pages/findPassword/FindPassword';
+import FindPasswordResultPage from './pages/findPassword/FindPasswordResult';
+import FindIdResultPage from './pages/findId/FindIdResult';
+import SubManage from './pages/my/SubManage';
+import StaffManage from './pages/staffManage/StaffManage';
+import DesktopNoti from './pages/nofi/DesktopNoti';
+import MobileNoti from './pages/nofi/MobileNoti';
+import AdminMypage from './pages/adminMypage/AdminMypage';
+import GeneralMyPage from './pages/mypage/GeneralMyPage';
+import JournalistMyPage from './pages/mypage/JournalistMyPage';
+import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
+import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
+import ArticleWrite from './pages/articleWrite/ArticleWrite';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p className="read-the-docs">
-        제발요;;
-      </p>
-    </>
-  )
+    <Router>
+      <Basic />
+    </Router>
+  );
 }
 
-export default App
+const Basic = () => {
+  const location = useLocation();
+
+  const isDetail = location.pathname.toLowerCase() === '/articledetail';
+
+  // 데스크탑 푸터 사용할 페이지 경로
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
+
+
+  // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
+  const goBackHeaderPaths = [
+    { path: '/login', title: '로그인' },
+    { path: '/signup', title: '회원가입' },
+    { path: '/signup/generalTerm', title: '회원가입' },
+    { path: '/signup/journalistTerm', title: '회원가입' },
+    { path: '/signup/generalForm', title: '회원가입' },
+    { path: '/signup/journalistForm', title: '회원가입' },
+    { path: '/signup/success', title: '회원가입' },
+    { path: '/search', title: "검색" },
+    { path: '/signup/success', title: '회원가입' },
+    { path: '/findId', title: '아이디 찾기' },
+    { path: '/findPassword', title: '비밀번호 찾기' },
+    { path: '/findPassword/result', title: '비밀번호 찾기' },
+    { path: '/findId/result', title: '아이디 찾기' },
+    { path: '/subManage', title: '구독 관리' },
+    { path: '/myPageGeneral', title: '계정' },
+    { path: '/myPageGeneral/edit', title: '계정' },
+    { path: '/myPageJournalist', title: '계정' },
+    { path: '/myPageJournalist/edit', title: '계정' },
+    { path: '/articleWrite', title: '기사 작성' },
+  ];
+
+  const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
+  const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
+  const backHeaderTitle = isBackHeader ? currentPath.title : '';
+  return (
+    <div style={{ width: '100%', height: "100%" }}>
+      {!isDetail && !isBackHeader && !isDesktop && <Header />}
+      {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
+
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/main" element={<Main />} />
+        <Route path="/adminMain" element={<AdminMain />} />
+        <Route path="/requestManage" element={<RequestManage />} />
+        <Route path="/articleManage" element={<ArticleManage />} />
+        <Route path="/staffManage" element={<StaffManage />} />
+        <Route path="/desktopNoti" element={<DesktopNoti />} />
+        <Route path="/mobileNoti" element={<MobileNoti />} />
+        <Route path="/adminMypage" element={<AdminMypage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/articleDetail" element={<ArticleDtPage />} />
+        <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
+        <Route path="/signup/journalistTerm" element={<JurnalistTermPage />} />
+        <Route path="/signup/generalForm" element={<GeneralFormPage />} />
+        <Route path="/signup/journalistForm" element={<JurnalistFormPage />} />
+        <Route path="/signup/success" element={<SignupSccessPage />} />
+        <Route path="/my" element={<My />} />
+        <Route path='/search' element={<Search />} />
+        <Route path="/findId" element={<FindIdPage />} />
+        <Route path="/findPassword" element={<FindPasswordPage />} />
+        <Route path="/findPassword/result" element={<FindPasswordResultPage />} />
+        <Route path="/findId/result" element={<FindIdResultPage />} />
+        <Route path="/subManage" element={<SubManage />} />
+        <Route path="/myPageGeneral" element={<GeneralMyPage />} />
+        <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />} />
+        <Route path="/myPageJournalist" element={<JournalistMyPage />} />
+        <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
+        <Route path='/articleWrite' element={<ArticleWrite />} />
+      </Routes>
+      <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
+    </div>
+  );
+};
+
+export default App;

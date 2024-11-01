@@ -10,8 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@xeger/quill-image-actions": "^0.7.2",
+    "@xeger/quill-image-formats": "^0.7.2",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "i": "^0.3.7",
+    "moment": "^2.30.1",
+    "npm": "^10.9.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-bootstrap": "^2.10.5",
+    "react-calendar": "^5.0.0",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
+    "react-js-pagination": "^3.0.3",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.27.0",
+    "styled-components": "^6.1.13",
+    "swiper": "^11.1.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
