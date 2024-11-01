@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuillEditor from './QuillEditor.jsx';
+import ArticlePreview from './ArticlePreview.jsx'; // ArticlePreview를 임포트
 
 const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
 
 const ArticleWrite = () => {
     const [editorContent, setEditorContent] = useState('');
-    const [title, setTitle] = useState(''); // 제목 상태 추가
-    const [subtitle, setSubtitle] = useState(''); // 소제목 상태 추가
+    const [title, setTitle] = useState('');
+    const [subtitle, setSubtitle] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태 관리
 
     const handleEditorChange = (content) => {
         setEditorContent(content);
     };
 
-    const navigate = useNavigate();
-
     const handlePreview = () => {
-        navigate('/ArticlePreview', { state: { title, subtitle, content: editorContent } });
+        setIsModalOpen(true); // 모달 열기
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false); // 모달 닫기
     };
 
     return (
@@ -26,7 +30,7 @@ const ArticleWrite = () => {
                 className='mtb1'
                 placeholder='제목을 입력해 주세요'
                 value={title}
-                onChange={(e) => setTitle(e.target.value)} // 제목 입력 처리
+                onChange={(e) => setTitle(e.target.value)}
             />
             <hr />
             <input
@@ -34,7 +38,7 @@ const ArticleWrite = () => {
                 type='text'
                 placeholder='소제목을 입력해 주세요'
                 value={subtitle}
-                onChange={(e) => setSubtitle(e.target.value)} // 소제목 입력 처리
+                onChange={(e) => setSubtitle(e.target.value)}
             />
             <hr />
             <div className='flex mtb1'>
@@ -52,6 +56,16 @@ const ArticleWrite = () => {
             <div className='mlAuto'>
                 <button onClick={handlePreview}>미리보기</button>
             </div>
+
+            {/* ArticlePreview를 모달로 표시 */}
+            {isModalOpen && (
+                <ArticlePreview
+                    title={title}
+                    subtitle={subtitle}
+                    content={editorContent}
+                    onClose={handleCloseModal} // 모달 닫기 함수 전달
+                />
+            )}
         </div>
     );
 };
