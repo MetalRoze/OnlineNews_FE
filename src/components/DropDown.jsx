@@ -5,22 +5,23 @@ import { useNavigate } from 'react-router-dom';
 
 
 function MyDropdown() {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const isJournalist = false; //일단 백엔드 연결 전이라 일반회원 페이지 연결 되도록 했습니다
 
     const handleAccountClick = () => {
-        if(isJournalist) {
-            navigate('../myPageJournalist'); 
-        }else{
-            navigate('../myPageGeneral'); 
+        if (isJournalist) {
+            navigate('../myPageJournalist');
+        } else {
+            navigate('../myPageGeneral');
         }
-    }; 
+    };
 
     return (
         <CustomDropdown id="dropdown-basic-button" title="메뉴" drop={'start'}>
             <Dropdown.Item onClick={handleAccountClick}>계정</Dropdown.Item>
             <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>
             <Dropdown.Item href="../log">내 활동</Dropdown.Item>
+            <Dropdown.Item href="../articleWrite">기사 작성</Dropdown.Item>
         </CustomDropdown>
     );
 }

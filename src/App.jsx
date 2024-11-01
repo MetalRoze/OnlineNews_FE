@@ -89,7 +89,7 @@ const Basic = () => {
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>
-        <Route path="/" element={<TestPage />} />
+        <Route path="/" element={<Main />} />
         <Route path="/main" element={<Main />} />
         <Route path="/adminMAin" element={<AdminMain />} />
         <Route path="/requestManage" element={<RequestManage />} />
