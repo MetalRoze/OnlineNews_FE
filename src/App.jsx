@@ -38,6 +38,7 @@ import JournalistMyPage from './pages/mypage/JournalistMyPage';
 import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
+import ArticlePreview from './pages/articleWrite/ArticlePreview';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ const Basic = () => {
     { path: '/myPageJournalist', title: '계정' },
     { path: '/myPageJournalist/edit', title: '계정' },
     { path: '/articleWrite', title: '기사 작성' },
+    { path: '/articlePreview', title: '기사 미리보기' },
   ];
 
   const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
@@ -118,6 +120,7 @@ const Basic = () => {
         <Route path="/myPageJournalist" element={<JournalistMyPage />} />
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
+        <Route path='/articlePreview' element={<ArticlePreview />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
