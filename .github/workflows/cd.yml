@@ -17,6 +17,7 @@ jobs:
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
+          name: artifact  # 아티팩트 이름
           path: ./dist
 
       # 3. SSH로 EC2 서버에 빌드 파일 전송
@@ -29,7 +30,7 @@ jobs:
           source: "dist/*"
           target: "/home/ubuntu/OnlineNews_FE/dist"
 
-      # 4. Nginx 
+      # 4. Nginx 재시작
       - name: Restart Nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
