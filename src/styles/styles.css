@@ -9,7 +9,8 @@
     align-items: center;
     text-align: center;
 }
-.mobile-header i{
+
+.mobile-header i {
     color: var(--color-gray60);
 }
 
@@ -20,8 +21,9 @@
 
 .mobile-header .date {
     text-align: left;
-    color: var(--color-gray60);
-    margin: auto 0 auto 10px;
+    color: var(--color-gray50);
+    margin-left: 1rem;
+    margin-top: auto;
 }
 
 .mobile-header i {
@@ -122,6 +124,7 @@
     margin-bottom: 20px;
     text-align: center;
 }
+
 .desktop-sidebar.folded {
     width: 5rem;
 }
@@ -187,19 +190,24 @@
     background-color: var(--color-white);
     color: var(--color-blue);
 }
-.desktop-request-3buttons-check{
+
+.desktop-request-3buttons-check {
     background-color: var(--color-gray20);
 }
-.desktop-request-3buttons-check button{
+
+.desktop-request-3buttons-check button {
     background-color: transparent;
     color: var(--color-gray50);
 }
+
 .desktop-request-3buttons-check button:hover,
 .desktop-request-3buttons-check button:active,
 .desktop-request-3buttons-check button.pending,
 .desktop-request-3buttons-check button.rejected {
-    background-color: var(--color-white); /* 호버 및 특정 상태에서 배경색 변경 */
+    background-color: var(--color-white);
+    /* 호버 및 특정 상태에서 배경색 변경 */
 }
+
 .desktop-request-privatebutton {
     width: auto;
     padding: 0;
@@ -207,7 +215,8 @@
     color: var(--color-gray50);
     text-decoration-line: underline;
 }
-.desktop-request-privatebutton:hover{
+
+.desktop-request-privatebutton:hover {
     background-color: transparent;
     color: var(--color-black);
 }
@@ -269,7 +278,7 @@
     cursor: pointer;
 }
 
-.basicArticle{
+.basicArticle {
     align-self: flex-start;
 }
 
@@ -310,12 +319,12 @@
     cursor: pointer;
     transition: color 0.3s ease;
 }
-  
+
 .textButton.active {
     color: var(--color-black);
     font-weight: bold;
 }
-  
+
 .textButton:hover {
     color: var(--color-black);
 }

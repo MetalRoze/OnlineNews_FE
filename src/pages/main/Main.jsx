@@ -2,20 +2,23 @@ import React from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
-import styled from "styled-components"; 
+import styled from "styled-components";
 
 export default function Main() {
-    const articles = Array(4).fill(0);
+    const articles = Array(6).fill(0);
 
-    return(
-        <div className='flex column mobile-header m0 pd0'>
-            <MenuList/>
+    return (
+        <div className='flex column mobile-container m0 pd0'>
+            <MenuList />
             <HeadlineArticle></HeadlineArticle>
 
             {/* <Divider />  */}
 
             {articles.map((_, index) => (
-                <BasicArticle key={index} />
+                <div>
+                    <BasicArticle key={index} />
+                    <hr></hr>
+                </div>
             ))}
         </div>
     );

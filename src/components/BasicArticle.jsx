@@ -1,17 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
+import { useNavigate } from 'react-router-dom';
 
 export default function BasicArticle() {
-    return (
-        <div className='mobile-header basicArticle' style={{cursor:"pointer", display: "flex"}}>
-            <img className='m0' style={{marginLeft:"0.5rem", width:"13rem", height:"8rem"}} />
-            <ArticleInfo>
-                <Title>‘논술로 대학 가볼까’....수시모집 지원자 44% 몰려</Title>
-                <Source>서울신문</Source>
-            </ArticleInfo>
-        </div>
-    );
+  const navigate = useNavigate();
+
+  const handleArticleClick = () => {
+    navigate('/articleDetail');
+  };
+
+  return (
+    <div className='basicArticle pd10' style={{ cursor: "pointer", display: "flex" }} onClick={handleArticleClick}>
+      <img className='m0' style={{ marginLeft: "0.5rem", marginRight: "0.5rem", width: "13rem", height: "8rem" }} />
+      <ArticleInfo>
+        <Title>‘논술로 대학 가볼까’....수시모집 지원자 44% 몰려</Title>
+        <Source>서울신문</Source>
+      </ArticleInfo>
+    </div>
+  );
 }
 
 const ArticleInfo = styled.div`
