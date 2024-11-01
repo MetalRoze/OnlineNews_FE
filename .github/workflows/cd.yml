@@ -17,8 +17,7 @@ jobs:
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist
+          path: ./dist
 
       # 3. SSH로 EC2 서버에 빌드 파일 전송
       - name: Upload files to EC2
