@@ -19,7 +19,7 @@ export default function SubManage() {
     }, []);
 
     return (
-        <div className='mobile-header column'>
+        <div className='mobile-container column'>
             <CenteredContainer>
                 <GrayBox>
                     {subPubs.map((_, index) => (
