@@ -11,7 +11,7 @@ jobs:
     env:
       DISABLE_ESLINT_PLUGIN: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3.5.1
         with:
           node-version: "18.x"
@@ -20,7 +20,7 @@ jobs:
       - name: Try build
         run: npm run build
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
