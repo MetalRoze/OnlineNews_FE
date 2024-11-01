@@ -1,0 +1,41 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      # 1. 코드를 받아옵니다.
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. 아티팩트 다운로드 (빌드된 dist 파일)
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+
+      # 3. SSH로 EC2 서버에 빌드 파일 전송
+      - name: Upload files to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: "dist/*"
+          target: "/home/ubuntu/OnlineNews_FE/dist"
+
+      # 4. Nginx 
+      - name: Restart Nginx
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          script: |
+            sudo systemctl restart nginx
