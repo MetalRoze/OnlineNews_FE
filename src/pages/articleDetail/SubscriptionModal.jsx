@@ -39,11 +39,11 @@ const SubscriptionModal = ({ isOpen, onClose, onUnsubscribe, onEmailSubscribe, o
         <ModalOverlay>
             <ModalContent>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
-                <h3 onClick={onEmailSubscribe}><i class="bi bi-envelope-check"></i>&nbsp;&nbsp;&nbsp;메일 수신</h3>
+                <h3 onClick={onEmailSubscribe}><i className="bi bi-envelope-check"></i>&nbsp;&nbsp;&nbsp;메일 수신</h3>
                 <hr style={{ margin: '1rem 0' }}></hr>
-                <h3 onClick={onEmailUnsubscribe}><i class="bi bi-envelope-x-fill"></i>&nbsp;&nbsp;&nbsp;메일 미수신</h3>
+                <h3 onClick={onEmailUnsubscribe}><i className="bi bi-envelope-x-fill"></i>&nbsp;&nbsp;&nbsp;메일 미수신</h3>
                 <hr style={{ margin: '1rem 0' }}></hr>
-                <h3 onClick={onUnsubscribe}><i class="bi bi-dash-circle"></i>&nbsp;&nbsp;&nbsp;구독 취소</h3>
+                <h3 onClick={onUnsubscribe}><i className="bi bi-dash-circle"></i>&nbsp;&nbsp;&nbsp;구독 취소</h3>
             </ModalContent>
         </ModalOverlay>
     );

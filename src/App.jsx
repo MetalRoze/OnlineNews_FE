@@ -53,8 +53,8 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"];
-  const isDesktop = excludedPaths.includes(location.pathname);
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
 
 
   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
@@ -91,7 +91,7 @@ const Basic = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/adminMAin" element={<AdminMain />} />
+        <Route path="/adminMain" element={<AdminMain />} />
         <Route path="/requestManage" element={<RequestManage />} />
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />

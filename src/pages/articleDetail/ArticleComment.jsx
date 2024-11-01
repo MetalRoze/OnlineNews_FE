@@ -161,7 +161,7 @@ const ArticleComment = () => {
                         <p className='mt05'>{comment.content}</p>
                         <div className='flex mb1'>
                             <small className={`cursor-pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.commentId)}>
-                                답글 {comment.replies.length} {comment.isReplyVisible ? <i class="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
+                                답글 {comment.replies.length} {comment.isReplyVisible ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
                             </small>
 
                             <i
