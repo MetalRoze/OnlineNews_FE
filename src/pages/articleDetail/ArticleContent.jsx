@@ -78,7 +78,7 @@ const ArticleContent = () => {
                     <img className='br50' src="https://placehold.co/50x50" alt="Author" />
                 </div>
             </div>
-            <hr />
+            <hr style={{ margin: '1rem 0' }} />
             <div>
                 <h2>{articleSubtit}</h2>
                 <br />
@@ -118,7 +118,7 @@ const ArticleContent = () => {
                 &nbsp;{isSubscribed ? '구독중' : '구독'}
             </button>
 
-            <hr className='mt1' />
+            <hr className='mt1' style={{ margin: '1rem 0' }} />
 
             <div className='flex'>
                 <div>

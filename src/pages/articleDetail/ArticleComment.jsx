@@ -190,7 +190,7 @@ const ArticleComment = () => {
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>
-                                        <hr></hr>
+                                        <hr style={{ margin: '1rem 0' }}></hr>
                                     </div>
                                 ))}
 
@@ -210,7 +210,7 @@ const ArticleComment = () => {
                                 </div>
                             </div>
                         )}
-                        <hr />
+                        <hr style={{ margin: '1rem 0' }} />
                     </div>
                 ))}
             </div>
