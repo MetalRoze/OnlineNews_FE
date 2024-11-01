@@ -24,40 +24,42 @@ const Header = () => {
         navigate('/main'); // /main으로 이동
     };
 
-    const handleSearchClick = () =>{
+    const handleSearchClick = () => {
         navigate('/search');
-    }; 
+    };
 
     const handleLoginClick = (e) => {
-        e.preventDefault(); 
-        navigate('/login'); 
-    }; 
+        e.preventDefault();
+        navigate('/login');
+    };
 
     const handleSignupClick = (e) => {
-        e.preventDefault(); 
-        navigate('/signup'); 
-    }; 
+        e.preventDefault();
+        navigate('/signup');
+    };
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <div className='mobile-header' >
-                <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
-                    style={{ cursor: 'pointer' }} />
+                <div className='flex'>
+                    <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
+                        style={{ cursor: 'pointer' }} />
+                    <div className='date'>{formatDate(today)}</div>
+                </div>
                 <div>
-                    <div className='flex aiCenter' style={{width: 'fit-content', justifySelf:'flex-end'}}>
-                        <i 
-                        className="bi bi-search mr1"
-                        onClick={handleSearchClick}
-                        style={{cursor: 'pointer'}}>
+                    <div className='flex aiCenter' style={{ width: 'fit-content', justifySelf: 'flex-end' }}>
+                        <i
+                            className="bi bi-search mr1"
+                            onClick={handleSearchClick}
+                            style={{ cursor: 'pointer' }}>
                         </i>
-                        <MyDropdown/>
+                        <MyDropdown />
                     </div>
                     <div className='flex aiCenter'>
-                        <span className='date'>{formatDate(today)}</span>
                         <div className='link'>
-                            <a href='#' onClick={handleLoginClick} style={{cursor:'pointer'}}>로그인</a>
-                            <span> | </span>
-                            <a href='#' onClick={handleSignupClick} style={{cursor:'pointer'}}>회원가입</a>
+                            <a href='#' onClick={handleLoginClick} style={{ cursor: 'pointer' }}>로그인</a>
+                            <span> &nbsp;&nbsp;|&nbsp;&nbsp; </span>
+                            <a href='#' onClick={handleSignupClick} style={{ cursor: 'pointer' }}>회원가입</a>
                         </div>
                     </div>
                 </div>
