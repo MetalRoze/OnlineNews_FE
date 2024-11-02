@@ -38,6 +38,13 @@ import JournalistMyPage from './pages/mypage/JournalistMyPage';
 import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
+import Economy from './pages/main/Economy';
+import Politics from './pages/main/Politics';
+import Entertainment from './pages/main/Entertainment';
+import Lifestyle from './pages/main/Lifestyle';
+import Society from './pages/main/Society';
+import Opinion from './pages/main/Opinion';
+import Tech from './pages/main/Tech';
 
 function App() {
   return (
@@ -118,6 +125,13 @@ const Basic = () => {
         <Route path="/myPageJournalist" element={<JournalistMyPage />} />
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
+        <Route path='/economy' element={<Economy/>} />
+        <Route path='/politics' element={<Politics/>}/>
+        <Route path='/entertainment' element={<Entertainment/>}/>
+        <Route path='/lifestyle' element={<Lifestyle/>}/>
+        <Route path='/society' element={<Society/>}/>
+        <Route path='/opinion' element={<Opinion/>}/>
+        <Route path='/tech' element={<Tech/>}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
