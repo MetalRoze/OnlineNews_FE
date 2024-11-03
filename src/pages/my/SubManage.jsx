@@ -63,7 +63,6 @@ const GrayBox = styled.div`
     background-color: #ccc;
     padding: 1rem;
     border-radius: 1rem;
-    max-width: 48rem;
 `;
 
 const Label = styled.div`
@@ -92,8 +91,11 @@ const ProfileContainer = styled.div`
     grid-template-columns: repeat(4, 1fr); /* 4개씩 열 */
     gap: 1rem;
     width: 90%;
-    max-width: 48rem;
-    // background : black;
+    // max-width: 48rem; 
     margin: 0 auto; /* 중앙 정렬 */
+
+    @media (max-width: 600px) {
+        gap: 0.3rem;
+    }
     
 `;

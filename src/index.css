@@ -203,23 +203,16 @@ select {
   margin: auto;
 }
 
-/* 전체 스크롤바 스타일 */
+/* 스크롤바 */ 
 ::-webkit-scrollbar {
-  width: 8px; /* 스크롤바의 너비 */
+  width: 8px; 
 }
-
-/* 스크롤바 트랙 (배경) 스타일 */
-::-webkit-scrollbar-track {
-  background: transparent; /* 투명 배경 */
-}
-
-/* 스크롤바 핸들 스타일 */
+ 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5); /* 반투명 핸들 */
-  border-radius: 10px; /* 둥근 모서리 */
+  background: rgba(0, 0, 0, 0.5);  
+  border-radius: 10px;  
 }
-
-/* 스크롤바 핸들 호버 시 스타일 */
+ 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.8); /* 호버 시 색상 변경 */
+  background: var(--color-black)
 }
