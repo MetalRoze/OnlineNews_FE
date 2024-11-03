@@ -10,7 +10,8 @@ import PasswordInputModal from '../../components/PasswordInputModal';
 import PhoneInputModal from '../../components/PhoneInputModal';
 
 const HeadWrapper = styled.div`
-    width: 600px;
+    max-width: 600px;
+    width:100%;
     min-height: 100vh; 
     padding:0px; 
     display: flex; 

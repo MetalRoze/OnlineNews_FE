@@ -5,7 +5,8 @@ import GeneralOptionIcon from '../../assets/generaluserIcon.png'
 import JournalistOptionIcon from '../../assets/journalistIcon.png'
 
 const HeadWrapper = styled.div`
-    width: 600px;
+max-width: 600px;
+width:100%;
     min-height: 100vh; 
     padding: 20px; 
     display: flex; 
