@@ -6,7 +6,8 @@ import checkIcon from '../../assets/check-circle.svg';
 
 
 const HeadWrapper = styled.div`
-    width: 600px;
+max-width: 600px;
+width:100%;
     min-height: 100vh; 
     padding: 20px; 
     display: flex; 
