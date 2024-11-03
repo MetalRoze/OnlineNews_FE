@@ -21,6 +21,7 @@ export default function My() {
             <div className="flex column mobile-container">
                 <h4 style={{ textAlign: 'left', width: '95%', marginLeft: "0.5rem", marginTop: "1rem" }}>My</h4>
 
+                <div>
                 <CenteredContainer>
                     <GrayBox>
                         {subPubs.map((_, index) => (
@@ -32,6 +33,7 @@ export default function My() {
                         </AddIconBox>
                     </GrayBox>
                 </CenteredContainer>
+                </div>
 
                 <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
 
@@ -48,20 +50,18 @@ export default function My() {
 
 const CenteredContainer = styled.div`
     display: flex;
-    justify-content: center; /* GrayBox를 부모 컨테이너에서 중앙 정렬 */
-    width: 100%; /* 부모 컨테이너 전체 너비 */
+    justify-content: center; /* GrayBox를 부모 컨테이너에서 중앙 정렬 */ 
 `;
 
 const GrayBox = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4개의 동일 너비의 열 */
-    gap: 1.0rem; /* 그리드 항목들 간의 간격 */
-    width: auto; /* 너비를 부모의 중앙 정렬에 맞춤 */
+    gap: 1.0rem; /* 그리드 항목들 간의 간격 */ 
     background-color: #ccc;
     padding: 1.0rem;
     border-radius: 1rem;
-    box-sizing: border-box;
-    max-width: 48rem; /* 그레이 박스의 최대 너비 제한 */
+    box-sizing: border-box; 
+    width:95%;
 `;
 
 const AddIconBox = styled.div`

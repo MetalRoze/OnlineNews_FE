@@ -21,7 +21,7 @@ const ArticleContent = () => {
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
-        "https://placehold.co/560x300",
+        "https://placehold.co/300x200",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
     ]);
 

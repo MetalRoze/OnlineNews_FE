@@ -8,7 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function MenuList({ backgroundColor = 'var(--color-white)', textColor = 'var(--color-black)' }) {
     const categories = ['MY', '랭킹', '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
-    const paths = ['my', 'ranking', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
+    const paths = ['my', 'main', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
     // const [activeIndex, setActiveIndex] = useState(null); active 확인해 보려고 넣었음. 나중에 이걸로 변경
     const [activeIndex, setActiveIndex] = useState(1);
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 /* 헤더 */
 .mobile-header {
-    width: 100%;
+    width: calc(100vw - 8px);
     max-width: 600px;
     padding: 10px;
     display: flex;
@@ -46,14 +46,13 @@
 }
 
 .mobile-footer {
-    width: 100%;
+    width: calc(100vw - 8px);
     max-width: 600px;
     background-color: var(--color-gray20);
 }
 
-.mobile-container {
-    min-width: 320px;
-    width: 100%;
+.mobile-container { 
+    width: calc(100vw - 8px);
     max-width: 600px;
     min-height: 100vh;
     margin: 0 auto;
@@ -132,8 +131,7 @@
     width: 5rem;
 }
 
-.mobile-back-header {
-    width: 100%;
+.mobile-back-header {width: calc(100vw - 8px);
     max-width: 600px;
     display: flex;
     background-color: var(--color-white);
