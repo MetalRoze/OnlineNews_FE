@@ -43,6 +43,10 @@
     justify-content: space-between;
  }
 
+ .jfCcenter{
+   justify-content: center;
+ }
+
  .aiCenter {
     align-items: center;
  }
@@ -162,3 +166,5 @@
  .pointer {
     cursor: pointer;
  }
+
+ 

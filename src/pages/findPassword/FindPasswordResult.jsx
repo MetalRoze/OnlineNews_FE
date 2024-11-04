@@ -3,17 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'; 
 import TextButton from '../../components/TextButton'; 
 
-const HeadWrapper = styled.div
-` max-width: 600px;
-  width:100%;
-  min-height: 100vh; 
-  padding: 20px; 
-  display: flex; 
-  flex-direction:column;
-  justify-content: center; 
-  align-items: center; 
-  background-color: var(--color-white); `
-; 
 
 const MenuWrapper = styled.div
 `  display: flex;
@@ -64,8 +53,6 @@ export default function FindPasswordResult(){
 
     const [activeMenu, setActiveMenu] = useState("password"); 
     
-
-
     const handleFindId = () => {
         navigate('/findId')
     }
@@ -75,7 +62,7 @@ export default function FindPasswordResult(){
     }
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <MenuWrapper>
                 <TextButton
                     label="이메일 찾기"
@@ -100,7 +87,7 @@ export default function FindPasswordResult(){
             </ResultWrapper>
             <button onClick={handleSubmit} className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>로그인 하러 가기</button>
 
-        </HeadWrapper>
+        </div>
     )
  
 }

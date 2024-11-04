@@ -5,17 +5,6 @@ import styled from 'styled-components';
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
 
-const HeadWrapper = styled.div`
-max-width: 600px;
-width:100%;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -155,7 +144,7 @@ export default function JournalistMyPage() {
     };
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <ProfileWrapper>
                 <ProfileImage 
                     src={profileIcon}
@@ -206,7 +195,7 @@ export default function JournalistMyPage() {
             <NextButton onClick={handleEditInfo}>정보수정</NextButton>
             <NextButton onClick={handleLogout}>로그아웃</NextButton>
             <NextButton onClick={handleDeleteAccount}>회원 탈퇴</NextButton>
-        </HeadWrapper>
+        </div>
     
     ); 
 
