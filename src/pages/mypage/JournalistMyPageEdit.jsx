@@ -9,17 +9,6 @@ import InputInfoModal from '../../components/InputInfoModal';
 import PasswordInputModal from '../../components/PasswordInputModal';
 import PhoneInputModal from '../../components/PhoneInputModal';
 
-const HeadWrapper = styled.div`
-max-width: 600px;
-width:100%;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -185,7 +174,7 @@ export default function JournalistMyPageEdit() {
     };
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <ProfileWrapper>
                 <ProfileImage src={profileIcon} />
                 <ProfileTextWrapper>
@@ -256,6 +245,6 @@ export default function JournalistMyPageEdit() {
                 handleClose={() => setShowPhoneModal(false)}
                 handleSave={handleSavePhone}
             />
-        </HeadWrapper>
+        </div>
     );
 }

@@ -4,17 +4,6 @@ import styled from 'styled-components';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
-const HeadWrapper = styled.div`
-max-width: 600px;
-width:100%;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
 
 const InputContainer = styled.div`
     max-width:400px;
@@ -218,7 +207,7 @@ export default function JournalistForm() {
     const navigate = useNavigate(); 
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <TitleWrapper>
                 <Title>회원정보</Title>
                 <SubTitle>입력항목중<SmallText>(</SmallText><SmallRedText>*</SmallRedText><SmallText>)</SmallText>는 필수입력 표시입니다.</SubTitle>
@@ -361,7 +350,7 @@ export default function JournalistForm() {
             </InputContainer>
     
             <NextButton onClick={handleSubmit}>등록하기</NextButton>
-        </HeadWrapper>
+        </div>
     
     ); 
 
