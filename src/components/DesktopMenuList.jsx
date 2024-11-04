@@ -23,7 +23,7 @@ const DesktopMenuList = () => {
 
 // StyledNavbar 컴포넌트 정의
 const StyledNavbar = styled(Navbar)`
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray50};
     padding: 0;
     position: relative;
     font-size: 1.25rem;

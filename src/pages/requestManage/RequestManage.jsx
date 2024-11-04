@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import SearchBar from '../../components/SearchBar';
-import Sidebar from '../../components/Sidebar';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import AdminRequest from '../../components/AdminRequest';
@@ -18,16 +16,34 @@ export default function RequestManage() {
 
     const requests = {
         allRequests: [1, 2, 3, 4, 5, 6],
-        approved: [1, 2], 
+        approved: [1, 2],
         pending: [3],
-        rejected: [4], 
-        unread: [], 
+        rejected: [4],
+        unread: [],
     };
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container">
-                <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
+                <div className='flex aiCenter spaceBetween mb1'>
+                    <h2> 승인요청내역 </h2>
+                    <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
+                </div>
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
+
+                {/* list */}
+                <ul >
+                    <RequestListItem>
+                        <ListHeader>
+                            {/* 젤 상단 */}
+                            <ListHeaderItem>접수일자</ListHeaderItem>
+                            <ListHeaderItem>이름</ListHeaderItem>
+                            <ListHeaderItem>구분</ListHeaderItem>
+                            <ListHeaderItem>제목</ListHeaderItem>
+                            <ListHeaderItem>처리구분</ListHeaderItem>
+                            <ListHeaderItem>승인일자</ListHeaderItem>
+                        </ListHeader>
+                    </RequestListItem>
+                </ul>
                 {/* <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
                         <AdminRequest activeTab={activeTab} />
@@ -59,5 +75,19 @@ export const PaginationContainer = styled.div`
 
 export const TotalCount = styled.p`
     color : ${(props) => props.theme.colors.gray50};
-`; 
-
+`;
+const RequestListItem = styled.li`
+    list-style: none;
+`;
+const ListHeader = styled.div`
+    border-top: 3px solid ${(props) => props.theme.colors.black};
+    display:grid;
+    grid-template-columns: 1fr 0.8fr 0.8fr 2fr 1fr 1fr;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray50};
+    padding: 10px;
+`;
+const ListHeaderItem = styled.div`
+    display:block;
+    align-items: center;
+    text-align: center;
+`;

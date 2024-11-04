@@ -6,7 +6,6 @@ import Tabs from 'react-bootstrap/Tabs';
 const StyledTabs = styled(Tabs)`
     width: fit-content;
     border: none;
-
   .nav-link {
     width: auto;
     padding: 1rem 1rem 1rem 0rem;
