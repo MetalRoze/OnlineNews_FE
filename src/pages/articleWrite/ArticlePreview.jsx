@@ -15,7 +15,8 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
     return (
         <ModalOverlay>
             <ModalContent>
-                <div className='mlAuto pointer' onClick={onClose}><i class="bi bi-x-circle"></i></div>
+                <div className='mlAuto pointer' onClick={onClose}>
+                    <i style={{ fontSize: "1.25rem", color: "var(--color-black)" }} class="bi bi-x-circle"></i></div>
                 <div>
                     <h1 className='mt1'>{title}</h1>
 
@@ -57,7 +58,7 @@ const ModalContent = styled.div`
     border-radius: 10px;
     width: 100%;
     max-width: 580px; 
-    margin-left:15px;
+    margin-left:10px;
     height:80vh;
     display:flex;
     flex-direction:column;

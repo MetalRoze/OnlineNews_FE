@@ -39,6 +39,10 @@ const ArticleWrite = () => {
 
     return (
         <div className="mobile-container">
+
+            <div className="mr1 mtbAuto">
+                제목
+            </div>
             <input
                 type="text"
                 className="mtb1"
