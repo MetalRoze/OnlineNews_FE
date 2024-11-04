@@ -1,6 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+const ArticlePreview = ({ title, subTitles, content, onClose }) => {
+    const [articleDate, setArticleDate] = useState("입력 yyyy.mm.dd 오전 hh:mm");
+    const [authorName, setAuthorName] = useState("홍길동");
+
+    const handleSubmit = () => {
+        const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
+
+        if (isConfirmed) {
+            navigate('/main');
+        }
+    };
+    return (
+        <ModalOverlay>
+            <ModalContent>
+                <div className='mlAuto pointer' onClick={onClose}><i class="bi bi-x-circle"></i></div>
+                <div>
+                    <h1 className='mt1'>{title}</h1>
+
+                    {subTitles.map((subtitle, index) => (
+                        <SubTitle className='mt1 mb1'>{subtitle}</SubTitle>
+                    ))}
+                    <small className='gray40'>{articleDate}</small>
+                    <div className='mt1 taRight'>
+                        <p className='mr1 inline'>{authorName} 기자</p>
+                        <img className='br50' src="https://placehold.co/50x50" alt="Author" />
+                    </div>
+                    <hr style={{ margin: '1rem 0' }} />
+                    <div className='pd20'>
+                        <div dangerouslySetInnerHTML={{ __html: content }} />
+                    </div>
+                </div>
+                <button className='subsButton mtAuto' onClick={handleSubmit}>제출</button>
+            </ModalContent>
+        </ModalOverlay>
+    );
+};
+
+
 const ModalOverlay = styled.div`
     position: fixed;
     top: 0;
@@ -23,40 +61,19 @@ const ModalContent = styled.div`
     height:80vh;
     display:flex;
     flex-direction:column;
+    overflow-y:auto;
+     
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer */
+    
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
 `;
 
-const ArticlePreview = ({ title, subtitle, content, onClose }) => {
-    const [articleDate, setArticleDate] = useState("입력 yyyy.mm.dd 오전 hh:mm");
-    const [authorName, setAuthorName] = useState("홍길동");
-
-    const handleSubmit = () => {
-        const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
-
-        if (isConfirmed) {
-            navigate('/main');
-        }
-    };
-    return (
-        <ModalOverlay>
-            <ModalContent>
-                <div className='mlAuto' onClick={onClose}>x</div>
-                <div>
-                    <h1 className='mt1'>{title}</h1>
-                    <h3 className='mt1'>{subtitle}</h3>
-                    <small className='mt1 gray40'>{articleDate}</small>
-                    <div className='mt1 taRight'>
-                        <p className='mr1 inline'>{authorName} 기자</p>
-                        <img className='br50' src="https://placehold.co/50x50" alt="Author" />
-                    </div>
-                </div>
-                <hr style={{ margin: '1rem 0' }} />
-                <div className='pd20'>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
-                </div>
-                <button className='subsButton' onClick={handleSubmit}>제출</button>
-            </ModalContent>
-        </ModalOverlay>
-    );
-};
-
+const SubTitle = styled.div`
+    color: var(--color-gray60);
+    border-left: 4px solid var(--color-gray60);
+    padding-left: 1rem
+`;
 export default ArticlePreview;
