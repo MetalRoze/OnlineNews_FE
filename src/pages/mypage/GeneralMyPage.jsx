@@ -6,7 +6,8 @@ import profileIcon  from '../../assets/profileDefault.png';
 import profileResetIcon from '../../assets/x-square.svg'; 
 
 const HeadWrapper = styled.div`
-    width: 600px;
+max-width: 600px;
+width:100%;
     min-height: 100vh; 
     padding:0px; 
     display: flex; 
