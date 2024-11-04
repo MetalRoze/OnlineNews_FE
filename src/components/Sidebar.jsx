@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import blueLogo from '../assets/myeongbo_blue.svg'; 
 
 const Sidebar = () => {
     return (
         <div className="desktop-sidebar">
-            <img src="https://placehold.co/100x50" alt="Bootstrap" className='logo' />
+            <img src={blueLogo} alt="Bootstrap" className='logo' />
             <div className='list'>
                 <div className='ul'>
                     <Link to="/articleManage"><i className="bi bi-search mr15 mb1"></i>기사 검색</Link>
