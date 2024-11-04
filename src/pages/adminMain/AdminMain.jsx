@@ -16,8 +16,7 @@ export default function AdminMain() {
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container">
-            <DesktopHeader/>
-            <DesktopMenuList/>
+                
             </div>
         </div>
     );

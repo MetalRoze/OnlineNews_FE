@@ -1,6 +1,7 @@
 import React from 'react';
 import blackLogo from '../assets/myeongbo_black.svg';
 import { useNavigate } from 'react-router-dom';
+import DesktopMenuList from './DesktopMenuList';
 
 const formatDate = (date) => {
     const options = {
@@ -21,7 +22,7 @@ const DesktopHeader = () => {
     const navigate = useNavigate();
 
     const handleLogoClick = () => {
-        navigate('/adminMain'); 
+        navigate('/adminMain');
     };
     const handleLogoutClick = (e) => {
         e.preventDefault();
@@ -33,14 +34,17 @@ const DesktopHeader = () => {
         //calendar 뜨게
     };
     return (
-        <div className="desktop-header">
-            <div className='date' style={{cursor: 'pointer'}} onClick={handleDateClick}>{formatDate(today)}</div>
-            <div >
-                <img src={blackLogo} alt="Bootstrap" className='logo' style={{ width: '15rem', cursor: 'pointer' }} onClick={handleLogoClick} />
+        <div style={{position:'fixed', width:'100vw'}}>
+            <div className="desktop-header">
+                <div className='date' style={{ cursor: 'pointer' }} onClick={handleDateClick}>{formatDate(today)}</div>
+                <div >
+                    <img src={blackLogo} alt="Bootstrap" className='logo' style={{ width: '15rem', cursor: 'pointer' }} onClick={handleLogoClick} />
+                </div>
+                <div className='link'>
+                    <a href='#' onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>로그아웃</a>
+                </div>
             </div>
-            <div className='link'>
-                <a href='#' onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>로그아웃</a>
-            </div>
+            <DesktopMenuList />
         </div>
     );
 };
