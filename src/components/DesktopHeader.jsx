@@ -21,33 +21,26 @@ const DesktopHeader = () => {
     const navigate = useNavigate();
 
     const handleLogoClick = () => {
-        navigate('/main'); // /main으로 이동
+        navigate('/adminMain'); 
     };
-
-    const handleSearchClick = () => {
-        navigate('/search');
-    };
-
-    const handleLoginClick = (e) => {
+    const handleLogoutClick = (e) => {
         e.preventDefault();
+        //나중에 토큰 삭제
         navigate('/login');
     };
-
-    const handleSignupClick = (e) => {
+    const handleDateClick = (e) => {
         e.preventDefault();
-        navigate('/signup');
+        //calendar 뜨게
     };
     return (
         <div className="desktop-header">
-            <div className='date'>{formatDate(today)}</div>
-            {/* 중간 로고 */}
+            <div className='date' style={{cursor: 'pointer'}} onClick={handleDateClick}>{formatDate(today)}</div>
             <div >
-                <img src={blackLogo} alt="Bootstrap" className='logo' style={{ width: '15rem' }} />
+                <img src={blackLogo} alt="Bootstrap" className='logo' style={{ width: '15rem', cursor: 'pointer' }} onClick={handleLogoClick} />
             </div>
             <div className='link'>
-                <a href='#' onClick={handleLoginClick} style={{ cursor: 'pointer' }}>로그아웃</a>
+                <a href='#' onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>로그아웃</a>
             </div>
-
         </div>
     );
 };
