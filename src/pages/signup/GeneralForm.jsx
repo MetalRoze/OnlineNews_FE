@@ -150,7 +150,6 @@ const CancelButton = styled.button`
 `;
 
 
-
 export default function GeneralForm() {
     const [formData, setFormData] = useState({
         name: '',
