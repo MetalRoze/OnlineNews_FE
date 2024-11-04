@@ -34,7 +34,7 @@ const DesktopHeader = () => {
         //calendar 뜨게
     };
     return (
-        <div style={{position:'fixed', width:'100vw'}}>
+        <div style={{ width:'100vw'}}>
             <div className="desktop-header">
                 <div className='date' style={{ cursor: 'pointer' }} onClick={handleDateClick}>{formatDate(today)}</div>
                 <div >
