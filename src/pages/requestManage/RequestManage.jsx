@@ -13,7 +13,6 @@ export default function RequestManage() {
         { eventKey: 'allRequests', title: '전체요청', content: '전체 요청 내용' },
         { eventKey: 'approved', title: '승인', content: '승인된 요청 내용' },
         { eventKey: 'pending', title: '보류', content: '보류된 요청 내용' },
-        { eventKey: 'rejected', title: '거절', content: '거절된 요청 내용' },
         { eventKey: 'unread', title: '미열람', content: '미열람된 요청 내용' },
     ];
 
@@ -26,20 +25,17 @@ export default function RequestManage() {
     };
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <Sidebar />
             <div className="desktop-container">
-                <SearchBar />
-                <div style={{ height: '3rem' }}></div>
                 <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
-                <StyledRequestListWrapper>
+                {/* <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
                         <AdminRequest activeTab={activeTab} />
                     ))}
                     <PaginationContainer>
                         <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
                     </PaginationContainer>
-                </StyledRequestListWrapper>
+                </StyledRequestListWrapper> */}
                 <div style={{ height: '3rem' }}></div>
             </div>
         </div>
