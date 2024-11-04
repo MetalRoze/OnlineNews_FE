@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
 const HeadWrapper = styled.div`
-    width: 600px;
+max-width: 600px;
+width:100%;
     min-height: 100vh; 
     padding:0px; 
     display: flex; 
@@ -96,6 +97,17 @@ const PhoneInputWrapper = styled.div`
     margin-bottom:10px;
 `;
 
+const RadioGroup = styled.div`
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+    margin: 15px 0px;
+`;
+
+const RadioLabel = styled.label`
+    font-size: 1rem;
+`;
+
 const PhoneInput = styled.input`
     width: 30%;
     padding: 10px;
@@ -148,6 +160,8 @@ const CancelButton = styled.button`
     }
 `;
 
+
+
 export default function GeneralForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -156,6 +170,7 @@ export default function GeneralForm() {
         passwordCheck: '',
         nickname: '',  // 닉네임 추가
         cellphone: { part1: '', part2: '', part3: '' },
+        gender:'', 
     });
 
     const [profileImg, setProfileImg] = useState(profileIcon);
@@ -168,7 +183,8 @@ export default function GeneralForm() {
         if (!formData.password) missingFields.push("비밀번호");
         if (!formData.passwordCheck) missingFields.push("비밀번호 확인");
         if (!formData.cellphone.part1 || !formData.cellphone.part2 || !formData.cellphone.part3) missingFields.push("휴대폰 번호");
-    
+        if (!formData.gender) missingFields.push("성별"); 
+
         if (missingFields.length > 0) {
             alert(`${missingFields[0]} 항목을 입력해주세요`);
             return;
@@ -226,7 +242,7 @@ export default function GeneralForm() {
                 <InputWrapper>
                     <InputLabel>닉네임</InputLabel>
                     <input 
-                        type="text"
+                        type="nickname"
                         id="nickname"
                         value={formData.nickname}
                         onChange={(e) => setFormData({ ...formData, nickname: e.target.value })}
@@ -280,7 +296,7 @@ export default function GeneralForm() {
                     <InputLabel>휴대전화 <SmallRedText>*</SmallRedText></InputLabel>
                     <PhoneInputWrapper>
                         <PhoneInput 
-                            type="text"
+                            type="cellphone-part1"
                             id="cellphone-part1"
                             value={formData.cellphone.part1}
                             onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part1: e.target.value } })}
@@ -291,7 +307,7 @@ export default function GeneralForm() {
                         />
                         <Dash>-</Dash>
                         <PhoneInput 
-                            type="text"
+                            type="cellphone-part2"
                             id="cellphone-part2"
                             value={formData.cellphone.part2}
                             onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part2: e.target.value } })}
@@ -302,7 +318,7 @@ export default function GeneralForm() {
                         />
                         <Dash>-</Dash>
                         <PhoneInput 
-                            type="text"
+                            type="cellphone-part3"
                             id="cellphone-part3"
                             value={formData.cellphone.part3}
                             onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part3: e.target.value } })} 
@@ -312,6 +328,27 @@ export default function GeneralForm() {
                             aria-label='휴대전화 뒷자리 입력 필드'
                         />
                     </PhoneInputWrapper>
+                </InputWrapper>
+                <InputWrapper>
+                    <InputLabel>성별 <SmallRedText>*</SmallRedText></InputLabel>
+                    <RadioGroup>
+                        <RadioLabel>
+                            <input 
+                                type="radio" 
+                                value="male" 
+                                checked={formData.gender === "male"} 
+                                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                            />  남성
+                        </RadioLabel>
+                        <RadioLabel>
+                            <input 
+                                type="radio" 
+                                value="female" 
+                                checked={formData.gender === "female"} 
+                                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                            />  여성
+                        </RadioLabel>
+                    </RadioGroup>
                 </InputWrapper>
                 <InputWrapper>
                     <InputLabel>프로필 사진</InputLabel>

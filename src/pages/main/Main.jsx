@@ -9,6 +9,7 @@ export default function Main() {
 
     return (
         <div className='flex column mobile-container m0 pd0'>
+            <h1>제발되라고!!!!</h1>
             <MenuList />
             <HeadlineArticle></HeadlineArticle>
 
