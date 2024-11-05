@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Staff from './Staff';
-import Sidebar from '../../components/Sidebar';
-import SearchBar from '../../components/SearchBar';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
-import { StyledRequestListWrapper, PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
+import styled from 'styled-components';
+import { DesktopList } from '../../components/DesktopList';
+
 
 export default function StaffManage() {
     const [activeTab, setActiveTab] = useState('allStaffs');
@@ -33,32 +32,38 @@ export default function StaffManage() {
             { id: 6, name: '정유진', email: 'jung@example.com', phone: '010-7777-8888', type: '시민기자' }
         ]
     };
+    const headers = ["구분", "이름", "전화번호", "이메일"];
+    const contents = [
+        {
+            구분: "시민",
+            이름: "홍길동",
+            전화번호: "010-2843-9317",
+            수정일자: "wlstj9317@naver.com"
+        },
+        {
+            구분: "시민",
+            이름: "홍길동",
+            전화번호: "010-2843-9317",
+            수정일자: "wlstj9317@naver.com"
+        },
+    ];
+    const columns = "1fr 1fr 2fr 2fr";
 
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <Sidebar />
             <div className="desktop-container">
-                <SearchBar />
-                <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
+                <div className='flex aiCenter spaceBetween mb1'>
+                    <h2> 직원 </h2>
+                    <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
+                </div>
                 <TotalCount>전체 {staffs[activeTab].length}개</TotalCount>
-                <StyledStaffListWrapper>
-                    {staffs[activeTab].map((staff) => (
-                        <Staff
-                            key={staff.id}
-                            activeTab={activeTab}
-                            type={staff.type}
-                            staffName={staff.name}
-                            address={staff.email}
-                            phoneNumber={staff.phone}
-                        />
-                    ))}
-                    <PaginationContainer>
-                        <MyPagination itemsCountPerPage={21} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
-                    </PaginationContainer>
-                </StyledStaffListWrapper>
 
+                <DesktopList contents={contents} headers={headers} columns={columns} />
+                <MyPagination itemsCountPerPage={12} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
     );
 };
-const StyledStaffListWrapper = StyledRequestListWrapper;
+const TotalCount = styled.p`
+    color : ${(props) => props.theme.colors.gray50};
+`;
