@@ -69,7 +69,9 @@ body {
   display: flex;
   background-color: var(--color-gray10);
 }
-
+ul, ol{
+  padding: 0;
+}
 
 p {
   font-size: 1rem;
