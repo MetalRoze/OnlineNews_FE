@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import AdminRequest from '../../components/AdminRequest';
+import { DesktopList } from '../../components/DesktopList';
 
 export default function RequestManage() {
     const [activeTab, setActiveTab] = useState('allRequests');
@@ -21,6 +22,28 @@ export default function RequestManage() {
         rejected: [4],
         unread: [],
     };
+
+    const headers = ["접수일자", "이름", "구분", "제목", "처리구분", "승인일자"];
+    const contents = [
+        {
+            접수일자: "2023-10-01",
+            이름: "홍길동",
+            구분: "문의",
+            제목: "서비스 관련 문의",
+            처리구분: "대기 중",
+            승인일자: "2023-10-03"
+        },
+        {
+            접수일자: "2023-10-01",
+            이름: "홍길동",
+            구분: "문의",
+            제목: "서비스 관련 문의",
+            처리구분: "대기 중",
+            승인일자: "2023-10-03"
+        }
+    ];
+    const columns = "1fr 0.8fr 0.8fr 2fr 1fr 1fr";
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container">
@@ -31,30 +54,7 @@ export default function RequestManage() {
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
 
                 {/* list */}
-                <ul >
-                    <RequestListItem>
-                        <ListHeader>
-                            {/* 젤 상단 */}
-                            <ListHeaderItem>접수일자</ListHeaderItem>
-                            <ListHeaderItem>이름</ListHeaderItem>
-                            <ListHeaderItem>구분</ListHeaderItem>
-                            <ListHeaderItem>제목</ListHeaderItem>
-                            <ListHeaderItem>처리구분</ListHeaderItem>
-                            <ListHeaderItem>승인일자</ListHeaderItem>
-                        </ListHeader>
-                    </RequestListItem>
-                    <RequestListItem>
-                        <ListItemWrapper>
-                            <ListItem>접수일자</ListItem>
-                            <ListItem>접수일자</ListItem>
-                            <ListItem>접수일자</ListItem>
-                            <ListItem>접수일자</ListItem>
-                            <ListItem>접수일자</ListItem>
-                            <ListItem>접수일자</ListItem>
-                        </ListItemWrapper>
-
-                    </RequestListItem>
-                </ul>
+                <DesktopList contents={contents} headers={headers} columns={columns} />
                 {/* <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
                         <AdminRequest activeTab={activeTab} />
