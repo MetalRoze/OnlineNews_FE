@@ -53,29 +53,12 @@ export default function RequestManage() {
                 </div>
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
 
-                {/* list */}
                 <DesktopList contents={contents} headers={headers} columns={columns} />
-                {/* <StyledRequestListWrapper>
-                    {requests[activeTab].map((request) => (
-                        <AdminRequest activeTab={activeTab} />
-                    ))}
-                    <PaginationContainer>
-                        <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
-                    </PaginationContainer>
-                </StyledRequestListWrapper> */}
-                <div style={{ height: '3rem' }}></div>
+                <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
     );
 }
-
-export const StyledRequestListWrapper = styled.div`
-  width: 52rem;
-  display: grid;
-  grid-template-rows: repeat(5, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-`;
 
 export const PaginationContainer = styled.div`
   grid-column: 1 / -1; 
@@ -86,30 +69,4 @@ export const PaginationContainer = styled.div`
 
 export const TotalCount = styled.p`
     color : ${(props) => props.theme.colors.gray50};
-`;
-const RequestListItem = styled.li`
-    list-style: none;
-`;
-export const ListHeader = styled.div`
-    border-top: 3px solid ${(props) => props.theme.colors.black};
-    display:grid;
-    grid-template-columns: 1fr 0.8fr 0.8fr 2fr 1fr 1fr;
-    border-bottom: 1px solid ${(props) => props.theme.colors.gray50};
-    padding: 10px;
-`;
-const ListHeaderItem = styled.div`
-    display:block;
-    align-items: center;
-    text-align: center;
-`;
-const ListItemWrapper = styled.div`
-    display:grid;
-    grid-template-columns: 1fr 0.8fr 0.8fr 2fr 1fr 1fr;
-    border-bottom: 1px solid ${(props) => props.theme.colors.gray10};
-    padding: 10px;
-`;
-const ListItem = styled.div`
-    display:block;
-    align-items: center;
-    text-align: center;
 `;
