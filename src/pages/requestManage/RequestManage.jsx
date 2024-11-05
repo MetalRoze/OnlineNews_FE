@@ -43,6 +43,17 @@ export default function RequestManage() {
                             <ListHeaderItem>승인일자</ListHeaderItem>
                         </ListHeader>
                     </RequestListItem>
+                    <RequestListItem>
+                        <ListItemWrapper>
+                            <ListItem>접수일자</ListItem>
+                            <ListItem>접수일자</ListItem>
+                            <ListItem>접수일자</ListItem>
+                            <ListItem>접수일자</ListItem>
+                            <ListItem>접수일자</ListItem>
+                            <ListItem>접수일자</ListItem>
+                        </ListItemWrapper>
+
+                    </RequestListItem>
                 </ul>
                 {/* <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
@@ -79,7 +90,7 @@ export const TotalCount = styled.p`
 const RequestListItem = styled.li`
     list-style: none;
 `;
-const ListHeader = styled.div`
+export const ListHeader = styled.div`
     border-top: 3px solid ${(props) => props.theme.colors.black};
     display:grid;
     grid-template-columns: 1fr 0.8fr 0.8fr 2fr 1fr 1fr;
@@ -87,6 +98,17 @@ const ListHeader = styled.div`
     padding: 10px;
 `;
 const ListHeaderItem = styled.div`
+    display:block;
+    align-items: center;
+    text-align: center;
+`;
+const ListItemWrapper = styled.div`
+    display:grid;
+    grid-template-columns: 1fr 0.8fr 0.8fr 2fr 1fr 1fr;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray10};
+    padding: 10px;
+`;
+const ListItem = styled.div`
     display:block;
     align-items: center;
     text-align: center;
