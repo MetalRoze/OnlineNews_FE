@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const DesktopList = ({ contents, headers, columns }) => {
+export const DesktopList = ({ className, contents, headers, columns }) => {
     return (
         <ul>
             <StyledLi>
