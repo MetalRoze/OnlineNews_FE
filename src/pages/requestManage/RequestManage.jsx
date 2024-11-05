@@ -53,7 +53,6 @@ export default function RequestManage() {
                 </div>
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
 
-                {/* list */}
                 <DesktopList contents={contents} headers={headers} columns={columns} />
                 {/* <StyledRequestListWrapper>
                     {requests[activeTab].map((request) => (
@@ -63,7 +62,7 @@ export default function RequestManage() {
                         <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
                     </PaginationContainer>
                 </StyledRequestListWrapper> */}
-                <div style={{ height: '3rem' }}></div>
+                <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
     );
