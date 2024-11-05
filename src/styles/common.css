@@ -43,6 +43,10 @@
     justify-content: space-between;
  }
 
+ .jfCcenter{
+   justify-content: center;
+ }
+
  .aiCenter {
     align-items: center;
  }
@@ -158,3 +162,9 @@
  .taLeft {
     text-align: left;
  }
+
+ .pointer {
+    cursor: pointer;
+ }
+
+ 

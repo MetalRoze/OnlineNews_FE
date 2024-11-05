@@ -7,8 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 
 import Header from './components/Header';
+import DesktopHeader from './components/DesktopHeader';
 import Footer from './components/Footer';
-import TestPage from './pages/testPage';
 import AdminMain from './pages/adminMain/AdminMain';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login';
@@ -93,6 +93,7 @@ const Basic = () => {
   return (
     <div style={{ width: '100%', height: "100%" }}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
+      {isDesktop && <DesktopHeader/>}
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>

@@ -19,6 +19,12 @@ const WhiteBox = styled.div`
     border-radius: 0.5rem;
     box-sizing: border-box; /* 패딩, 보더 포함한 박스 크기 */
     padding: 1rem; /* 내부 패딩 추가 */
+ 
+    @media (max-width: 600px) {
+        width: 5.8rem; /* 작은 화면에서 너비 변경 */
+        height: 3.2rem; /* 작은 화면에서 높이 변경 */
+        padding: 0.5rem; /* 내부 패딩 조정 */
+    } 
 `;
 
 const Text = styled.p`

@@ -6,16 +6,6 @@ import termsOfService from './term/TermsOfService'
 import privacyPolicy from './term/TermsOfPrivacy';
 import parseTerms from './term/ParseTerms'; 
 
-const HeadWrapper = styled.div`
-    width: 600px;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
 
 const TitleWrapper = styled.div`
     width:100%; 
@@ -158,7 +148,7 @@ export default function GeneralTerm() {
     }; 
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <TitleWrapper>
                 <TermTitle>이용약관</TermTitle>
                 <TermSubTitle>회원가입을 통해 다양한 혜택을 누리시기 바랍니다.</TermSubTitle>
@@ -229,6 +219,6 @@ export default function GeneralTerm() {
             <NextButton onClick={handleNext}>
                 동의합니다
             </NextButton>
-        </HeadWrapper>
+        </div>
     ); 
 }

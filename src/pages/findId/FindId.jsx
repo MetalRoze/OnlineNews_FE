@@ -3,16 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'; 
 import TextButton from '../../components/TextButton'; 
 
-const HeadWrapper = styled.div
-` width: 600px;
-  min-height: 100vh; 
-  padding: 20px; 
-  display: flex; 
-  flex-direction:column;
-  justify-content: center; 
-  align-items: center; 
-  background-color: var(--color-white); `
-; 
 
 const MenuWrapper = styled.div
 `  display: flex;
@@ -94,7 +84,7 @@ export default function FindId(){
     }
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <MenuWrapper>
                 <TextButton
                     label="이메일 찾기"
@@ -128,7 +118,7 @@ export default function FindId(){
                 <InputLabel>휴대전화</InputLabel>
                 <PhoneInputWrapper>
                   <PhoneInput 
-                    type="text"
+                    type="tecellphone-part1"
                     id="cellphone-part1"
                     value={formData.cellphone.part1}
                     onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part1: e.target.value } })}
@@ -139,7 +129,7 @@ export default function FindId(){
                 />
                 <Dash>-</Dash>
                 <PhoneInput 
-                    type="text"
+                    type="cellphone-part2"
                     id="cellphone-part2"
                     value={formData.cellphone.part2}
                     onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part2: e.target.value } })}
@@ -150,7 +140,7 @@ export default function FindId(){
                 />
                 <Dash>-</Dash>
                 <PhoneInput 
-                    type="text"
+                    type="cellphone-part3"
                     id="cellphone-part3"
                     value={formData.cellphone.part3}
                     onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part3: e.target.value } })} 
@@ -166,7 +156,7 @@ export default function FindId(){
             <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>이메일 찾기</button>
 
 
-        </HeadWrapper>
+        </div>
     )
  
 }

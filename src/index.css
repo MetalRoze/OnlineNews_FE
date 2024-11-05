@@ -69,7 +69,9 @@ body {
   display: flex;
   background-color: var(--color-gray10);
 }
-
+ul, ol{
+  padding: 0;
+}
 
 p {
   font-size: 1rem;
@@ -201,4 +203,18 @@ select {
 
 .ql-formats{
   margin: auto;
+}
+
+/* 스크롤바 */ 
+::-webkit-scrollbar {
+  width: 8px; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);  
+  border-radius: 10px;  
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-black)
 }
