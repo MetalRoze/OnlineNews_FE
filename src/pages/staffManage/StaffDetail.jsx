@@ -14,7 +14,7 @@ export default function StaffDetail() {
                     <h1>홍길동 기자</h1>
                     <p className='mb2'>example@example.com</p>
                 </StyledBackground>
-                <div className='desktop-staff-detail aiCenter boxShadow'>
+                <div className='desktop-detail aiCenter boxShadow'>
                     <StyledProfileWrapper>
                         <img src="https://placehold.co/150x200" alt="Bootstrap" />
                         <ProfileInfoTable>

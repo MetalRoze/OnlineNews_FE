@@ -53,7 +53,7 @@ export default function RequestManage() {
                 </div>
                 <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
 
-                <DesktopList contents={contents} headers={headers} columns={columns} />
+                <DesktopList pathTo={'requestDetail'}  contents={contents} headers={headers} columns={columns} />
                 <MyPagination itemsCountPerPage={12} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
