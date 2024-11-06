@@ -10,6 +10,9 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
         const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
 
         if (isConfirmed) {
+
+            // 여기에서 api 연결
+            const mergedSubTitles = subTitles.join(',./');
             navigate('/main');
         }
     };
@@ -17,7 +20,7 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
         <ModalOverlay>
             <ModalContent>
                 <div className='mlAuto pointer' onClick={onClose}>
-                    <i style={{ fontSize: "1.25rem", color: "var(--color-black)" }} class="bi bi-x-circle"></i></div>
+                    <i style={{ fontSize: "1.25rem", color: "var(--color-black)" }} className="bi bi-x-circle"></i></div>
                 <div>
                     <h1 className='mt1'>{title}</h1>
 
