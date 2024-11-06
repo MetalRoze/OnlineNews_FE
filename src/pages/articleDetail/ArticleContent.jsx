@@ -16,7 +16,8 @@ const ArticleContent = () => {
     const [authorEmail, setAuthorEmail] = useState("hong@yu.com");
     const [publisherUrl, setPublisherUrl] = useState("www.yu.ac.kr");
     const [authorDescription, setAuthorDescription] = useState("간단 한줄 소개문구입니다.");
-    const [articleSubtit, setArticleSubtit] = useState("| Lorem, ipsum dolor sit amet consectetur.");
+    const [articleSubtit, setArticleSubtit] = useState("Lorem, ipsum dolor sit amet consectetur.,./소제목2,./소제목3");
+    const [subTitles, setSubTitles] = useState([]);
     const [articleContent, setArticleContent] = useState([
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
@@ -24,6 +25,11 @@ const ArticleContent = () => {
         "https://placehold.co/300x200",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
     ]);
+
+    useEffect(() => {
+        const splitSubtitles = articleSubtit.split(',./').map(sub => sub.trim()).filter(sub => sub !== "");
+        setSubTitles(splitSubtitles);
+    }, [articleSubtit]);
 
     const handleArticleLikeToggle = () => {
         setIsArticleLiked(prevState => {
@@ -80,7 +86,10 @@ const ArticleContent = () => {
             </div>
             <hr style={{ margin: '1rem 0' }} />
             <div>
-                <h2>{articleSubtit}</h2>
+                {/* 소제목 배열을 출력 */}
+                {subTitles.map((subtitle, index) => (
+                    <h2 className='articleSubtitle' key={index}>{subtitle}</h2>
+                ))}
                 <br />
                 {articleContent.map((content, index) => (
                     <div key={index}>
