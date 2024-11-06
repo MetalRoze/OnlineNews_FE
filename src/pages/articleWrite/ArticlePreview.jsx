@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 const ArticlePreview = ({ title, subTitles, content, onClose }) => {
@@ -9,6 +10,9 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
         const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
 
         if (isConfirmed) {
+
+            // 여기에서 api 연결
+            const mergedSubTitles = subTitles.join(',./');
             navigate('/main');
         }
     };
@@ -16,7 +20,7 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
         <ModalOverlay>
             <ModalContent>
                 <div className='mlAuto pointer' onClick={onClose}>
-                    <i style={{ fontSize: "1.25rem", color: "var(--color-black)" }} class="bi bi-x-circle"></i></div>
+                    <i style={{ fontSize: "1.25rem", color: "var(--color-black)" }} className="bi bi-x-circle"></i></div>
                 <div>
                     <h1 className='mt1'>{title}</h1>
 
@@ -29,8 +33,10 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
                         <img className='br50' src="https://placehold.co/50x50" alt="Author" />
                     </div>
                     <hr style={{ margin: '1rem 0' }} />
-                    <div className='pd20'>
-                        <div dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className='pd20 ql-snow'>
+                        <div className='ql-editor'>
+                            <div dangerouslySetInnerHTML={{ __html: content }} />
+                        </div>
                     </div>
                 </div>
                 <button className='subsButton mtAuto' onClick={handleSubmit}>제출</button>

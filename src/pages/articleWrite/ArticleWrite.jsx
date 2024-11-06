@@ -6,16 +6,57 @@ import ArticlePreview from './ArticlePreview.jsx';
 const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
 
 const ArticleWrite = () => {
-    const [editorContent, setEditorContent] = useState('');
+    const [originalContent, setOriginalContent] = useState('');
+    const [changeImgContent, setChangeImgContent] = useState('');
+    const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
     const [subTitles, setSubTitles] = useState(['']);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleEditorChange = (content) => {
-        setEditorContent(content);
+        setOriginalContent(content);
+        setChangeImgContent(content);
     };
 
-    const handlePreview = () => {
+    const handleSubmit = async () => {
+
+        if (!title || subTitles.some(subtitle => subtitle === '') || changeImgContent === '') {
+            alert("모든 필드를 작성해 주세요.");
+            return;
+        }
+
+        // DB 저장을 위해 base64 to blob
+        const imgRegex = /<img[^>]+src="([^">]+)"/g;
+        const imagePromises = [];
+        let match;
+        while ((match = imgRegex.exec(originalContent)) !== null) {
+            const imgSrc = match[1];
+            if (imgSrc.startsWith('data:image/')) {
+                const response = await fetch(imgSrc);
+                const blob = await response.blob();
+                const newImgUrl = URL.createObjectURL(blob);
+                imagePromises.push(Promise.resolve(newImgUrl));
+            }
+        }
+        const imageUrls = await Promise.all(imagePromises);
+        // console.log('변환된 이미지 URL들:', imageUrls);
+
+        const updatedHtml = changeImgContent.replace(imgRegex, (match, p1) => {
+            const newUrl = imageUrls.shift();
+            return match.replace(p1, newUrl);
+        });
+        setContent(JSON.stringify(updatedHtml))
+
+
+        console.log('원본 HTML:', originalContent);
+        console.log('이미지만 변환한 HTML:', changeImgContent);
+        console.log('이스케이프 처리한 html:', content);
+        try {
+            console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
+        } catch (error) {
+            console.log('파싱 필요없음')
+        }
+
         setIsModalOpen(true);
     };
 
@@ -58,9 +99,8 @@ const ArticleWrite = () => {
                 <i className="bi bi-plus-circle" onClick={addSubtitle} style={{ cursor: 'pointer' }}></i>
             </div>
             {subTitles.map((subtitle, index) => (
-                <div>
+                <div key={index}>
                     <input
-                        key={index}
                         className="mtb1"
                         type="text"
                         placeholder={`소제목 ${index + 1}를 입력해 주세요`}
@@ -84,14 +124,14 @@ const ArticleWrite = () => {
             <hr />
             <QuillEditor onChange={handleEditorChange} />
             <div className="mlAuto">
-                <button onClick={handlePreview}>미리보기</button>
+                <button onClick={handleSubmit}>미리보기</button>
             </div>
 
             {isModalOpen && (
                 <ArticlePreview
                     title={title}
                     subTitles={subTitles}
-                    content={editorContent}
+                    content={changeImgContent}
                     onClose={handleCloseModal}
                 />
             )}
