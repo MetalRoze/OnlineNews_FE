@@ -38,6 +38,7 @@ import JournalistMyPage from './pages/mypage/JournalistMyPage';
 import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
+import StaffDetail from './pages/staffManage/StaffDetail';
 
 function App() {
   return (
@@ -53,9 +54,9 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage","/staffManage/staffDetail", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
   const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
-
+  const DesktopModal = "/staffManage/staffDetail";
 
   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
   const goBackHeaderPaths = [
@@ -86,7 +87,7 @@ const Basic = () => {
   return (
     <div style={{ width: '100%', height: "100%" }}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
-      {isDesktop && <DesktopHeader/>}
+      {isDesktop && !DesktopModal &&<DesktopHeader/>}
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>
@@ -96,6 +97,7 @@ const Basic = () => {
         <Route path="/requestManage" element={<RequestManage />} />
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
+        <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />

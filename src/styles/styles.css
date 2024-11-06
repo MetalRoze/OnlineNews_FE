@@ -254,11 +254,18 @@
     color: var(--color-black);
 }
 
+.desktop-staff-detail {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+
 .desktop-item {
     display: flex;
-    width: 25rem;
-    height: 8rem;
-    background-color: var(--color-gray10);
+    width: 100%;
+    border-bottom: 1px solid var(--color-gray20);
+    /* background-color: var(--color-gray10); */
 }
 
 .desktop-item .ellipsis {
@@ -271,10 +278,10 @@
 
 .desktop-item i,
 .desktop-item p,
+.desktop-item h3,
 .desktop-item small {
     color: var(--color-gray60);
 }
-
 .long-input-field {
     width: 100%;
     padding: 10px;

@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-export const DesktopList = ({ className, contents, headers, columns }) => {
+export const DesktopList = ({ pathTo, contents, headers, columns }) => {
+    const navigate= useNavigate();
+
+    const navigateToPath = (pathTo) => {
+        navigate(`${pathTo}`);
+    };
     return (
         <ul>
             <StyledLi>
@@ -15,7 +21,7 @@ export const DesktopList = ({ className, contents, headers, columns }) => {
                 <StyledLi key={index}>
                     <ListItemWrapper columns={columns}>
                         {Object.values(item).map((item, i) => (
-                            <ListItem key={i}>{item}</ListItem>
+                            <ListItem key={i} onClick={()=>navigateToPath(pathTo)} style={{cursor:'pointer'}}>{item}</ListItem>
                         ))}
                     </ListItemWrapper>
                 </StyledLi>

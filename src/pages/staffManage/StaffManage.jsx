@@ -32,6 +32,7 @@ export default function StaffManage() {
             { id: 6, name: '정유진', email: 'jung@example.com', phone: '010-7777-8888', type: '시민기자' }
         ]
     };
+
     const headers = ["구분", "이름", "전화번호", "이메일"];
     const contents = [
         {
@@ -58,7 +59,7 @@ export default function StaffManage() {
                 </div>
                 <TotalCount>전체 {staffs[activeTab].length}개</TotalCount>
 
-                <DesktopList contents={contents} headers={headers} columns={columns} />
+                <DesktopList pathTo={'staffDetail'} contents={contents} headers={headers} columns={columns} />
                 <MyPagination itemsCountPerPage={12} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
