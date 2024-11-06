@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 const ArticlePreview = ({ title, subTitles, content, onClose }) => {
@@ -29,8 +30,10 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
                         <img className='br50' src="https://placehold.co/50x50" alt="Author" />
                     </div>
                     <hr style={{ margin: '1rem 0' }} />
-                    <div className='pd20'>
-                        <div dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className='pd20 ql-snow'>
+                        <div className='ql-editor'>
+                            <div dangerouslySetInnerHTML={{ __html: content }} />
+                        </div>
                     </div>
                 </div>
                 <button className='subsButton mtAuto' onClick={handleSubmit}>제출</button>
