@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuillEditor from './QuillEditor.jsx';
 import ArticlePreview from './ArticlePreview.jsx';
-import axios from 'axios';
 
 const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
 
@@ -35,60 +34,24 @@ const ArticleWrite = () => {
             if (imgSrc.startsWith('data:image/')) {
                 const response = await fetch(imgSrc);
                 const blob = await response.blob();
-                imagePromises.push(Promise.resolve(blob));
+                const newImgUrl = URL.createObjectURL(blob);
+                imagePromises.push(Promise.resolve(newImgUrl)); 
             }
         }
-
-        const imageBlobs = await Promise.all(imagePromises);
-        console.log('변환된 Blob들:', imageBlobs);
-
-        const formData = new FormData();
-        imageBlobs.forEach((blob, index) => {
-            const fileName = `image${index + 1}.jpg`;
-            formData.append("file", blob, fileName);
-        });
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-
-        const uploadedImageUrls='';
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:8080/api/article/photo',
-            headers: { 
-            //   'Authorization': 'Bearer ' + yourAuthToken
-            },
-            data : formData
-          };
-          
-          axios.request(config)
-          .then((response) => {
-            uploadedImageUrls = JSON.stringify(response.data); // 업로드된 이미지 URL 저장
-            console.log('업로드된 이미지 URL들:', uploadedImageUrls);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-        // S3에서 업로드된 이미지 URL을 응답으로 받음
-        console.log('업로드된 이미지 URL들:', uploadedImageUrls);
-
+        const imageUrls = await Promise.all(imagePromises);
+        // console.log('변환된 이미지 URL들:', imageUrls);
+        
         const updatedHtml = changeImgContent.replace(imgRegex, (match, p1) => {
-            const newUrl = uploadedImageUrls.shift();  // 업로드된 URL 중 하나를 사용
-            return match.replace(p1, newUrl);  // 기존 src를 새로운 URL로 변경
+            const newUrl = imageUrls.shift();
+            return match.replace(p1, newUrl);
         });
-        // const updatedHtml = changeImgContent.replace(imgRegex, (match, p1) => {
-        //     const newUrl = imageUrls.shift();
-        //     return match.replace(p1, newUrl);
-        // });
         setContent(JSON.stringify(updatedHtml))
 
         
-        // console.log('원본 HTML:', originalContent);
-        // console.log('이미지만 변환한 HTML:', changeImgContent);
-        // console.log('이스케이프 처리한 html:', content);
-        // console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
+        console.log('원본 HTML:', originalContent);
+        console.log('이미지만 변환한 HTML:', changeImgContent);
+        console.log('이스케이프 처리한 html:', content);
+        console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
 
         setIsModalOpen(true);
     };
