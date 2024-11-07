@@ -40,6 +40,7 @@ import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
 import StaffDetail from './pages/staffManage/StaffDetail';
 import RequestDetail from './pages/requestManage/RequestDetail';
+import TestComponent from './apis/test';
 
 function App() {
   return (
@@ -93,6 +94,7 @@ const Basic = () => {
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>
+        <Route path="/test" element={<TestComponent/>}/>
         <Route path="/" element={<Main />} />
         <Route path="/main" element={<Main />} />
         <Route path="/adminMain" element={<AdminMain />} />
