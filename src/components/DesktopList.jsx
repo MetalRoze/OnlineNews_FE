@@ -21,7 +21,7 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
                 <StyledLi key={index}>
                     <ListItemWrapper columns={columns}>
                         {Object.values(item).map((item, i) => (
-                            <ListItem key={i} onClick={()=>navigateToPath(pathTo)} style={{cursor:'pointer'}}>{item}</ListItem>
+                            <ListItem className="cursor" key={i} onClick={()=>navigateToPath(pathTo)}>{item}</ListItem>
                         ))}
                     </ListItemWrapper>
                 </StyledLi>

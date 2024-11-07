@@ -194,10 +194,10 @@
 .desktop-request {
     display: flex;
     flex-direction: column;
-    width: 25rem;
-    height: 10rem;
-    background-color: var(--color-gray10);
+    width: 100%;
+    border: 1px solid var(--color-gray20);
 }
+
 
 .desktop-request .ellipsis {
     width: 100%;
@@ -254,10 +254,11 @@
     color: var(--color-black);
 }
 
-.desktop-staff-detail {
+.desktop-detail {
     display: flex;
     flex-direction: column;
     width: 60%;
+    background-color: var(--color-white);
 }
 
 

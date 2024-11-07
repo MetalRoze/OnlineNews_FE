@@ -39,6 +39,7 @@ import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
 import StaffDetail from './pages/staffManage/StaffDetail';
+import RequestDetail from './pages/requestManage/RequestDetail';
 
 function App() {
   return (
@@ -54,7 +55,7 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail","/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
   const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
 
 
@@ -99,6 +100,7 @@ const Basic = () => {
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
         <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
+        <Route path="/requestManage/requestDetail" element={<RequestDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />
