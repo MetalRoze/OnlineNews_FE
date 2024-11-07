@@ -25,7 +25,7 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
                     <h1 className='mt1'>{title}</h1>
 
                     {subTitles.map((subtitle, index) => (
-                        <SubTitle className='mt1 mb1'>{subtitle}</SubTitle>
+                        <div className='mt1 mb1 articleSubtitle'>{subtitle}</div>
                     ))}
                     <small className='gray40'>{articleDate}</small>
                     <div className='mt1 taRight'>
@@ -76,11 +76,5 @@ const ModalContent = styled.div`
     &::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera */
     }
-`;
-
-const SubTitle = styled.div`
-    color: var(--color-gray60);
-    border-left: 4px solid var(--color-gray60);
-    padding-left: 1rem
 `;
 export default ArticlePreview;
