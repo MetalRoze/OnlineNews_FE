@@ -12,6 +12,7 @@ const DesktopMenuList = () => {
                     <Nav.Link href="/articleManage">기사</Nav.Link>
                     <Nav.Link href="/requestManage">승인</Nav.Link>
                     <Nav.Link href="/staffManage">직원</Nav.Link>
+                    <Nav.Link href="/desktopNoti">알림</Nav.Link>
                 </Nav>
             </Container>
             <div className='side-menu' style={{ position: 'absolute', bottom: '0', left: '1rem' }}>
@@ -23,7 +24,7 @@ const DesktopMenuList = () => {
 
 // StyledNavbar 컴포넌트 정의
 const StyledNavbar = styled(Navbar)`
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid ${(props) => props.theme.colors.gray50};
     padding: 0;
     position: relative;
     font-size: 1.25rem;

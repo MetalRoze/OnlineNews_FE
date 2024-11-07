@@ -21,6 +21,11 @@ const ArticleWrite = () => {
 
     const handleSubmit = async () => {
 
+        if (!title || subTitles.some(subtitle => subtitle === '') || changeImgContent === '') {
+            alert("모든 필드를 작성해 주세요.");
+            return;
+        }
+
         // DB 저장을 위해 base64 to blob
         const imgRegex = /<img[^>]+src="([^">]+)"/g;
         const imagePromises = [];
@@ -127,9 +132,8 @@ const ArticleWrite = () => {
                 <i className="bi bi-plus-circle" onClick={addSubtitle} style={{ cursor: 'pointer' }}></i>
             </div>
             {subTitles.map((subtitle, index) => (
-                <div>
+                <div key={index}>
                     <input
-                        key={index}
                         className="mtb1"
                         type="text"
                         placeholder={`소제목 ${index + 1}를 입력해 주세요`}
