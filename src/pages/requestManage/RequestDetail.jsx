@@ -7,12 +7,12 @@ export default function RequestDetail() {
 
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <div className="desktop-container aiCenter" style={{ padding: 0 }}>
+            <div className="desktop-container aiCenter" style={{ padding: 0}}>
                 <StyledBackground>
                     <h1>홍길동 기자</h1>
                     <p className='mb2'>example@example.com</p>
                 </StyledBackground>
-                <div className='desktop-detail aiCenter boxShadow'>
+                <div className='desktop-detail aiCenter boxShadow' style={{width: 'fit-content'}}>
                     <div className='pd20'>
                         <ArticleDetail />
                     </div>
