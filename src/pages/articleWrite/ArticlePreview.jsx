@@ -25,7 +25,7 @@ const ArticlePreview = ({ title, subTitles, content, onClose }) => {
                     <h1 className='mt1'>{title}</h1>
 
                     {subTitles.map((subtitle, index) => (
-                        <div className='mt1 mb1 articleSubtitle'>{subtitle}</div>
+                        <div key={index} className='mt1 mb1 articleSubtitle'>{subtitle}</div>
                     ))}
                     <small className='gray40'>{articleDate}</small>
                     <div className='mt1 taRight'>

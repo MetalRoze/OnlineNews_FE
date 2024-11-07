@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuillEditor from './QuillEditor.jsx';
 import ArticlePreview from './ArticlePreview.jsx';
@@ -35,23 +35,19 @@ const ArticleWrite = () => {
                 const response = await fetch(imgSrc);
                 const blob = await response.blob();
                 const newImgUrl = URL.createObjectURL(blob);
-                imagePromises.push(Promise.resolve(newImgUrl)); 
+                imagePromises.push(Promise.resolve(newImgUrl));
             }
         }
         const imageUrls = await Promise.all(imagePromises);
         // console.log('변환된 이미지 URL들:', imageUrls);
-        
-        const updatedHtml = changeImgContent.replace(imgRegex, (match, p1) => {
+
+        const updatedHtml = originalContent.replace(imgRegex, (match, p1) => {
             const newUrl = imageUrls.shift();
             return match.replace(p1, newUrl);
         });
         setContent(JSON.stringify(updatedHtml))
 
-        
         console.log('원본 HTML:', originalContent);
-        console.log('이미지만 변환한 HTML:', changeImgContent);
-        console.log('이스케이프 처리한 html:', content);
-        console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
 
         setIsModalOpen(true);
     };
@@ -73,7 +69,17 @@ const ArticleWrite = () => {
         updatedSubTitles[index] = value;
         setSubTitles(updatedSubTitles);
     };
+    useEffect(() => {
+        if (content) {
 
+            console.log('이스케이프 처리한 html:', content);
+            try {
+                console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
+            } catch (error) {
+                console.log('파싱 필요없음');
+            }
+        }
+    }, [content]);
     return (
         <div className="mobile-container">
 
