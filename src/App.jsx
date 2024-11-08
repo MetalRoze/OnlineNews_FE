@@ -41,6 +41,7 @@ import ArticleWrite from './pages/articleWrite/ArticleWrite';
 import StaffDetail from './pages/staffManage/StaffDetail';
 import RequestDetail from './pages/requestManage/RequestDetail';
 import MyArticle from './pages/myArticle/MyArticle';
+import MyDetail from './pages/myArticle/MyDetail';
 
 function App() {
   return (
@@ -84,6 +85,7 @@ const Basic = () => {
     { path: '/articleWrite', title: '기사 작성' },
     { path: '/articleWrite/:articleId', title: '기사 수정' },
     { path: '/myArticle', title: '작성한 기사' },
+    { path: '/myDetail/:articleId', title: '작성한 기사' },
   ];
 
   const currentPath = goBackHeaderPaths.find(item => {
@@ -132,6 +134,7 @@ const Basic = () => {
         <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
         <Route path='/myArticle' element={<MyArticle />} />
+        <Route path='/myDetail/:articleId' element={<MyDetail />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>

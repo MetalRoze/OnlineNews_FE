@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SubscriptionModal from './SubscriptionModal';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
-
+import { useLocation } from 'react-router-dom';
 
 
 const ArticleContent = () => {
+    const location = useLocation();
+    const isArticleDetail = location.pathname.includes('articleDetail');
+
     const [articleLikeCount, setArticleLikeCount] = useState(0);
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
@@ -103,50 +106,56 @@ const ArticleContent = () => {
                 ))}
             </div>
 
-            <div className='mt1 flex'>
-                <img src="https://placehold.co/130x50" alt="Bootstrap" />
-                <div className='mlAuto'>
-                    <p className='m0'>{authorName} 기자 {authorEmail}</p>
-                    <small className='gray40'>{authorDescription}</small>
-                </div>
-            </div>
-            <a className='gray40 mt1'>{publisherUrl} &gt;</a>
-            <button
-                className={`mt2 ${isSubscribed ? 'unsubsButton' : 'subsButton'}`}
-                onClick={() => {
-                    if (isSubscribed) {
-                        handleSubscriptionToggle();
-                    } else {
-                        handleSubscribe();
-                    }
-                }}
-            >
-                {isSubscribed && isEmailSubscribed !== null && (
-                    <i className={`bi ${isEmailSubscribed ? 'bi-envelope-check' : 'bi-envelope-x-fill'}`}></i>
-                )}
-                &nbsp;{isSubscribed ? '구독중' : '구독'}
-            </button>
+            {/* ArticleDetail일 때만 아래 UI 표시 */}
+            {isArticleDetail && (
+                <>
 
-            <hr className='mt1' style={{ margin: '1rem 0' }} />
+                    <div className='mt1 flex'>
+                        <img src="https://placehold.co/130x50" alt="Bootstrap" />
+                        <div className='mlAuto'>
+                            <p className='m0'>{authorName} 기자 {authorEmail}</p>
+                            <small className='gray40'>{authorDescription}</small>
+                        </div>
+                    </div>
+                    <a className='gray40 mt1'>{publisherUrl} &gt;</a>
+                    <button
+                        className={`mt2 ${isSubscribed ? 'unsubsButton' : 'subsButton'}`}
+                        onClick={() => {
+                            if (isSubscribed) {
+                                handleSubscriptionToggle();
+                            } else {
+                                handleSubscribe();
+                            }
+                        }}
+                    >
+                        {isSubscribed && isEmailSubscribed !== null && (
+                            <i className={`bi ${isEmailSubscribed ? 'bi-envelope-check' : 'bi-envelope-x-fill'}`}></i>
+                        )}
+                        &nbsp;{isSubscribed ? '구독중' : '구독'}
+                    </button>
 
-            <div className='flex'>
-                <div>
-                    <i
-                        className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                        onClick={handleArticleLikeToggle}
-                    ></i>
-                    <small className='taCenter block'>{articleLikeCount}</small>
-                </div>
-                <KakaoShare title={articleTitle} content={articleSubtit} link="articleDetail" THU="http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png" />
-            </div>
+                    <hr className='mt1' style={{ margin: '1rem 0' }} />
 
-            <SubscriptionModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onEmailSubscribe={handleEmailSubscribe}
-                onEmailUnsubscribe={handleEmailUnsubscribe}
-                onUnsubscribe={handleUnsubscribe}
-            />
+                    <div className='flex'>
+                        <div>
+                            <i
+                                className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                onClick={handleArticleLikeToggle}
+                            ></i>
+                            <small className='taCenter block'>{articleLikeCount}</small>
+                        </div>
+                        <KakaoShare title={articleTitle} content={articleSubtit} link="articleDetail" THU="http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png" />
+                    </div>
+
+                    <SubscriptionModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onEmailSubscribe={handleEmailSubscribe}
+                        onEmailUnsubscribe={handleEmailUnsubscribe}
+                        onUnsubscribe={handleUnsubscribe}
+                    />
+                </>
+            )}
 
         </div>
     );

@@ -2,7 +2,6 @@
  .flex {
     display: flex;
  }
-
  .inline {
     display: inline;
  }
@@ -11,6 +10,9 @@
     display: block;
  }
 
+ .fixed {
+   position: fixed;
+}
  .column {
     flex-direction: column;
  }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const articles = [
     {
@@ -25,11 +26,17 @@ const articles = [
 ];
 
 function MyArticle() {
+    const navigate = useNavigate();
+
+    const handleClick = (id) => {
+        navigate(`/myDetail/${id}`);
+    };
+
     return (
         <div className='mobile-container'>
             <ul className='myArticle'>
                 {articles.map((article) => (
-                    <li key={article.id} className='item'>
+                    <li key={article.id}  onClick={() => handleClick(article.id)} className='item'>
                         <div className='flex spaceBetween mb03'>
                             <h4 className='mr1 mtbAuto'>{article.title}</h4>
                             <span className='mlAuto gray40 mtbAuto'>{article.date}</span>
