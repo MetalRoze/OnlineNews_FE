@@ -1,10 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import QuillEditor from './QuillEditor';
 import HorizontalScroll from '../../components/HorizontalScroll';
 
 const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
 
-const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory, setSelectedCategory }) => {
+const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory, 
+    setSelectedCategory, content }) => {
+
+        useEffect(() => {
+            if (!selectedCategory) {
+                setSelectedCategory('정치');
+            }
+        }, [selectedCategory, setSelectedCategory]);
+    
+        useEffect(() => {
+            console.log("현재 선택된 카테고리:", selectedCategory);
+        }, [selectedCategory]);
 
     return (
         <div>
@@ -58,7 +69,7 @@ const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSub
             </div>
             <hr />
 
-            <QuillEditor onChange={handleEditorChange} />
+            <QuillEditor onChange={handleEditorChange} content={content}/>
             <div className="flex">
                 <button className='mlAuto' onClick={handleContent}>미리보기</button>
             </div>
