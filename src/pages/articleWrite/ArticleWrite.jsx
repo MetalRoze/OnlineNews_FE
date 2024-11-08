@@ -121,14 +121,16 @@ const ArticleWrite = () => {
                     title: "임시 제목",
                     subtitle: "소제목1,./소제목2,./소제목3",
                     content: "<p>임시 본문 내용입니다.</p>",
-                    category: "사회"
+                    category: "사회",
+                    authorName: "홍길동"
                 };
         
                 try {
                     setTitle(article.title);
                     setSubTitles(article.subtitle.split(',./'));
-                    setContent(article.content);
+                    setOriginalContent(article.content);
                     setSelectedCategory(article.category);
+                    setAuthorName(article.authorName);
                 } catch (error) {
                     console.error("기사를 불러오는 중 오류가 발생했습니다.", error);
                 }
@@ -153,7 +155,7 @@ const ArticleWrite = () => {
                 handleEditorChange={handleEditorChange}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
-                content={content}
+                content={originalContent}
             ></ArticleWriteForm>
 
             {isModalOpen && (
