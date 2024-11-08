@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import SearchBar from '../../components/SearchBar';
+import MyPagination from '../../components/Pagination';
 
 const articles = [
     {
@@ -34,9 +36,17 @@ function MyArticle() {
 
     return (
         <div className='mobile-container'>
-            <ul className='myArticle'>
+            <div className='flex space mb1' style={{ width: '100%' }}>
+                <select className='mr1'>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="category">카테고리</option>
+                </select>
+                <SearchBar width={'100%'}/>
+            </div>
+            <ul className='myArticle mb1'>
                 {articles.map((article) => (
-                    <li key={article.id}  onClick={() => handleClick(article.id)} className='item'>
+                    <li key={article.id} onClick={() => handleClick(article.id)} className='item'>
                         <div className='flex spaceBetween mb03'>
                             <h4 className='mr1 mtbAuto'>{article.title}</h4>
                             <span className='mlAuto gray40 mtbAuto'>{article.date}</span>
@@ -48,6 +58,8 @@ function MyArticle() {
                     </li>
                 ))}
             </ul>
+
+            <MyPagination itemsCountPerPage={12} totalItemsCount={300} pageRangeDisplayed={5} />
         </div>
     );
 }
