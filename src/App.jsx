@@ -40,6 +40,7 @@ import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
 import StaffDetail from './pages/staffManage/StaffDetail';
 import RequestDetail from './pages/requestManage/RequestDetail';
+import MyArticle from './pages/myArticle/MyArticle';
 
 function App() {
   return (
@@ -82,6 +83,7 @@ const Basic = () => {
     { path: '/myPageJournalist/edit', title: '계정' },
     { path: '/articleWrite', title: '기사 작성' },
     { path: '/articleWrite/:articleId', title: '기사 수정' },
+    { path: '/myArticle', title: '작성한 기사' },
   ];
 
   const currentPath = goBackHeaderPaths.find(item => {
@@ -129,6 +131,7 @@ const Basic = () => {
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
         <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
+        <Route path='/myArticle' element={<MyArticle />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
