@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const ArticleWrite = () => {
 
     const navigate = useNavigate();
 
+    const { articleId } = useParams(); // URL 파라미터에서 articleId를 가져옵니다.
+    const [isEdit, setIsEdit] = useState(!!articleId); // articleId가 있으면 수정 모드로 설정합니다.
+    
     const [originalContent, setOriginalContent] = useState('');
     const [content, setContent] = useState('');
     const [authorName, setAuthorName] = useState('홍길동');
@@ -109,7 +113,31 @@ const ArticleWrite = () => {
         else
             handleCloseModal();
     };
+    useEffect(() => {
+        console.log('isEdit 상태:', isEdit, 'articleId:', articleId);
+        if (isEdit) {
+            const fetchArticleData = async () => {
+                const article = {
+                    title: "임시 제목",
+                    subtitle: "소제목1,./소제목2,./소제목3",
+                    content: "<p>임시 본문 내용입니다.</p>",
+                    category: "사회"
+                };
+        
+                try {
+                    setTitle(article.title);
+                    setSubTitles(article.subtitle.split(',./'));
+                    setContent(article.content);
+                    setSelectedCategory(article.category);
+                } catch (error) {
+                    console.error("기사를 불러오는 중 오류가 발생했습니다.", error);
+                }
+            };
+            fetchArticleData();
+        }
+    }, [isEdit, articleId]);
 
+    
     return (
         <div className="mobile-container">
             <ArticleWriteForm
@@ -125,6 +153,7 @@ const ArticleWrite = () => {
                 handleEditorChange={handleEditorChange}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                content={content}
             ></ArticleWriteForm>
 
             {isModalOpen && (

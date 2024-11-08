@@ -7,7 +7,7 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
 
-const QuillEditor = ({ onChange }) => {
+const QuillEditor = ({ onChange, content }) => {
     const [editorContent, setEditorContent] = useState('');
 
     const handleEditorChange = (content) => {
@@ -15,6 +15,10 @@ const QuillEditor = ({ onChange }) => {
         onChange(content); // 부모에게 내용 전달
     };
 
+    React.useEffect(() => {
+        setEditorContent(content); // content가 변경되면 에디터 내용도 업데이트
+      }, [content]);
+      
     const formats = [
         'float',
         'width',

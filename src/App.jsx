@@ -123,6 +123,7 @@ const Basic = () => {
         <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />} />
         <Route path="/myPageJournalist" element={<JournalistMyPage />} />
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
+        <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
