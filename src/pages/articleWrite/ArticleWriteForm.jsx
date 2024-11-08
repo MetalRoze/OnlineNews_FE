@@ -23,7 +23,7 @@ const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSub
                 <h4 className="mr1 mtbAuto">
                     소제목
                 </h4>
-                <i className="bi bi-plus-circle" onClick={addSubtitleForm} style={{ cursor: 'pointer' }}></i>
+                <i className="bi bi-plus-square-fill" onClick={addSubtitleForm} style={{ cursor: 'pointer', fontSize: '1.15rem' }}></i>
             </div>
             {subTitles.map((subtitle, index) => (
                 <div key={index}>
@@ -35,8 +35,8 @@ const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSub
                             value={subtitle}
                             onChange={(e) => handleSubtitleChange(index, e.target.value)}
                         />
-                        <i className="bi bi-dash-circle mAuto"
-                            onClick={() => minusSubtitleForm(index)} style={{ cursor: 'pointer' }}></i>
+                        <i className="bi bi-dash-square-fill mAuto"
+                            onClick={() => minusSubtitleForm(index)} style={{ cursor: 'pointer', fontSize: '1.15rem' }}></i>
                     </div>
                     <hr />
                 </div>

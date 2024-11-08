@@ -29,7 +29,7 @@ const ArticleWrite = () => {
         }
 
         if (subTitles.length == 1) {
-            alert('최소 한 개는 작성하여야 합니다.');
+            alert('소제목은 필수 항목입니다.');
         }
     };
     const handleSubtitleChange = (index, value) => {
