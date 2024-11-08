@@ -51,8 +51,8 @@ const QuillEditor = ({ onChange }) => {
     return (
         <div style={{ height: '70vh' }}>
             <ReactQuill
-                value={editorContent} // editorContent 상태 값을 value에 연결
-                onChange={handleEditorChange} // onChange 이벤트 연결
+                value={editorContent}
+                onChange={handleEditorChange}
                 style={{ width: '100%', height: '80%' }}
                 theme="snow"
                 modules={modules}
