@@ -81,9 +81,13 @@ const Basic = () => {
     { path: '/myPageJournalist', title: '계정' },
     { path: '/myPageJournalist/edit', title: '계정' },
     { path: '/articleWrite', title: '기사 작성' },
+    { path: '/articleWrite/:articleId', title: '기사 수정' },
   ];
 
-  const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
+  const currentPath = goBackHeaderPaths.find(item => {
+    const pathRegex = new RegExp(`^${item.path.replace(':articleId', '[^/]+')}$`, 'i');
+    return pathRegex.test(location.pathname);
+});
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
   return (
