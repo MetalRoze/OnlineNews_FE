@@ -61,8 +61,9 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail","/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
   const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
+
 
 
   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
@@ -86,15 +87,19 @@ const Basic = () => {
     { path: '/myPageJournalist', title: '계정' },
     { path: '/myPageJournalist/edit', title: '계정' },
     { path: '/articleWrite', title: '기사 작성' },
+    { path: '/articleWrite/:articleId', title: '기사 수정' },
   ];
 
-  const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
+  const currentPath = goBackHeaderPaths.find(item => {
+    const pathRegex = new RegExp(`^${item.path.replace(':articleId', '[^/]+')}$`, 'i');
+    return pathRegex.test(location.pathname);
+});
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
   return (
     <div style={{ width: '100%', height: "100%" }}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
-      {isDesktop && <DesktopHeader/>}
+      {isDesktop && <DesktopHeader />}
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>
@@ -104,6 +109,8 @@ const Basic = () => {
         <Route path="/requestManage" element={<RequestManage />} />
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
+        <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
+        <Route path="/requestManage/requestDetail" element={<RequestDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />
@@ -126,6 +133,7 @@ const Basic = () => {
         <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />} />
         <Route path="/myPageJournalist" element={<JournalistMyPage />} />
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
+        <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
         <Route path='/economy' element={<Economy/>} />
         <Route path='/politics' element={<Politics/>}/>
