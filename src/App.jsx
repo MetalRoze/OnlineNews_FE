@@ -45,6 +45,7 @@ import Lifestyle from './pages/main/Lifestyle';
 import Society from './pages/main/Society';
 import Opinion from './pages/main/Opinion';
 import Tech from './pages/main/Tech';
+import Ranking from './pages/main/Ranking';
 
 function App() {
   return (
@@ -133,6 +134,7 @@ const Basic = () => {
         <Route path='/society' element={<Society/>}/>
         <Route path='/opinion' element={<Opinion/>}/>
         <Route path='/tech' element={<Tech/>}/>
+        <Route path='/ranking' element={<Ranking/>}/>
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
