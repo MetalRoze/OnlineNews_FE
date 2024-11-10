@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function SubManage() {
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
-    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "전문지"];
+    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "지역지", "전문지"];
     const [selectedLabel, setSelectedLabel] = useState("전체"); // 초기 값 '전체'
     const [publishers, setPublishers] = useState([]);
 
@@ -15,6 +15,7 @@ export default function SubManage() {
         인터넷: "INTERNET",
         매거진: "MAGAZINE",
         "방송/엔터": "ENTERTAINMENT",
+        지역지 : "LOCAL",
         전문지: "SPECIALIZED"
     };
 
@@ -27,7 +28,7 @@ export default function SubManage() {
             axios.get("/api/publisher") // "전체"는 /api/publisher로 요청
                 .then(response => {
                     setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
-                    console.log(response.data);
+                    // console.log(response.data);
                 })
                 .catch(error => {
                     console.error('Error fetching publishers:', error);
@@ -40,7 +41,7 @@ export default function SubManage() {
                 axios.get(`/api/publisher/type?pub_type=${type}`)
                     .then(response => {
                         setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
-                        console.log(response.data);
+                        // console.log(response.data);
                     })
                     .catch(error => {
                         console.error('Error fetching publishers:', error);
@@ -131,10 +132,24 @@ const Label = styled.div`
 const LabelContainer = styled.div`
     display: flex;
     gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 1rem;
+    justify-content: start;
+    margin: 0 auto 1rem auto; // 중앙 정렬
+    width: 90%; // 너비를 80%로 줄이기
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+    margin-top : 0.5rem;
+    
+    /* 모든 브라우저에서 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer와 Edge */
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
 `;
+
+
 
 const ProfileContainer = styled.div`
     display: grid;
