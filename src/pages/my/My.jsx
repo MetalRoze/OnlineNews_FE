@@ -18,9 +18,9 @@ export default function My() {
     }
 
     useEffect(() => {
-        axios.get('/api/publisher', {
+        axios.get('/api/subscription', {
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2RmQGdtYWlsLmNvbSIsInJvbGUiOlsiUk9MRV9HRU5FUkFMX01FTUJFUiJdLCJleHAiOjE3MzEyMjIwNTIsImlhdCI6MTczMTIxODQ1Mn0.sLQOIeJ25EHbaU_ZpJ-EpqejqavipAAzPxJJDincbDc`
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjI0MDkxLCJpYXQiOjE3MzEyMjA0OTF9.F-La75z9CGqMMFYw0A5nmPIOsxNw53UfOYf1NPB9sEA`
             }
         })
             .then((response) => {
