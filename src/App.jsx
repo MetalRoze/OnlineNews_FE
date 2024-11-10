@@ -46,6 +46,8 @@ import Society from './pages/main/Society';
 import Opinion from './pages/main/Opinion';
 import Tech from './pages/main/Tech';
 import Ranking from './pages/main/Ranking';
+import RequestDetail from './pages/requestManage/RequestDetail';
+import StaffDetail from './pages/staffManage/StaffDetail';
 
 function App() {
   return (
