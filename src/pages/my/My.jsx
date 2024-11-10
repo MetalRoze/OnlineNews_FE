@@ -1,19 +1,36 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import BasicArticle from "../../components/BasicArticle";
 import MenuList from "../../components/MenuList";
 import styled from "styled-components";
 import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 export default function My() {
     const articles = Array(7).fill(0); // 배열 선언
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
     const navigate = useNavigate();
+    const [publishers, setPublishers] = useState([]); // API에서 가져온 데이터를 저장할 상태
 
     const handleSetPub = () => {
         navigate('/subManage');
     }
+
+    useEffect(() => {
+        axios.get('/api/publisher', {
+            headers: {
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2RmQGdtYWlsLmNvbSIsInJvbGUiOlsiUk9MRV9HRU5FUkFMX01FTUJFUiJdLCJleHAiOjE3MzEyMjIwNTIsImlhdCI6MTczMTIxODQ1Mn0.sLQOIeJ25EHbaU_ZpJ-EpqejqavipAAzPxJJDincbDc`
+            }
+        })
+            .then((response) => {
+                setPublishers(response.data); // 불러온 데이터를 상태에 저장
+                console.log(publishers);
+            })
+            .catch((error) => {
+                console.error("Error fetching publishers:", error);
+            });
+    }, []);
 
     return (
         <div>
