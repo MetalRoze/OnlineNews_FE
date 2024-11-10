@@ -19,14 +19,10 @@ export default function My() {
     }
 
     useEffect(() => {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        console.log('API URL:', apiUrl); // 확인
-
-
         // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
-        axios.get(`${apiUrl}/api/subscription`, {
+        axios.get('/api/subscription', {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjI2Njc3LCJpYXQiOjE3MzEyMjMwNzd9.1p71Bgku3jas40NR9TToMgflCmy5bvcPkEFy2ZyJZZU`
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjUwOTY5LCJpYXQiOjE3MzEyNDczNjl9.wRfgQnCFATY9mJISzszrQhiEEPWg_OtgpDLpe-hg0UU`
             }
         })
         .then(response => {
