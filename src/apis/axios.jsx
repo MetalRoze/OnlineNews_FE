@@ -34,6 +34,8 @@ const postRequest = (url, data, headers = {}) => {
   return apiClient.post(url, data, { headers });
 };
 
+//POST 요청 함수 + 
+
 // PUT 요청 함수
 const putRequest = (url, data, headers = {}) => {
   return apiClient.put(url, data, { headers });

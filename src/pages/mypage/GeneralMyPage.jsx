@@ -1,6 +1,7 @@
-import React, { useState } from 'react';  // useState 임포트 확인
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
 
@@ -126,14 +127,50 @@ const NextButton = styled.button`
 
 export default function GeneralMyPage() {
     const navigate = useNavigate(); 
+    const [userData, setUserData] = useState({
+        nickname: '',
+        bio: '',
+        name: '',
+        email: '',
+        phoneNumber: '',
+        gender: '',
+    });
+
+    // 회원 정보 가져오는 함수
+    const getUserData = async () => {
+        try {
+            const response = await axios.get('/api/user/myPage', {
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                }
+            });
+
+              // API 응답 받은 데이터로 상태 업데이트
+              setUserData({
+                nickname: response.data.nickname,
+                bio: response.data.bio,
+                name: response.data.name,
+                email: response.data.email,
+                phoneNumber: response.data.cp, 
+                gender: response.data.sex, 
+            });
+        } catch (error) {
+            console.error("회원 정보 불러오기 실패", error);
+        }
+    };
+
+    useEffect(() => {
+        getUserData();
+    }, []);
 
     const handleEditInfo = () => {
         navigate('/myPageGeneral/edit');
     };
 
     const handleLogout = () => {
+        sessionStorage.removeItem('authToken');
         alert('로그아웃되었습니다.');
-        navigate('/login');
+        navigate('/main');
     };
 
     const handleDeleteAccount = () => {
@@ -152,12 +189,12 @@ export default function GeneralMyPage() {
                 </ProfileImage>
                 <ProfileTextWrapper>
                     <NameWrapper>
-                        <NameText>닉네임</NameText>
-                        <EditSpace></EditSpace>
+                    <NameText>{userData.nickname || '익명'}</NameText>
+                    <EditSpace></EditSpace>
                     </NameWrapper>
                     <BioWrapper>
                         <VerticalLine></VerticalLine>
-                        <BioText>자기소개가 오는 자리입니다. 최대 25자입니다.</BioText>
+                        <BioText>{userData.bio || '자기소개는 아직 없어요. 추가해보세요!'}</BioText>
                         <EditSpace></EditSpace>
                     </BioWrapper>
                 </ProfileTextWrapper>
@@ -166,17 +203,17 @@ export default function GeneralMyPage() {
             <InfoWrapper>
                 <InfoColumn>
                     <InfoLabel>이름</InfoLabel>
-                    <InfoText>홍길동</InfoText>
+                    <InfoText>{userData.name }</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>이메일</InfoLabel>
-                    <InfoText>hong12@gmail.com</InfoText>
+                    <InfoText>{userData.email }</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>휴대폰 번호</InfoLabel>
-                    <InfoText>000-1111-2222</InfoText>
+                    <InfoText>{userData.phoneNumber}</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
@@ -186,7 +223,7 @@ export default function GeneralMyPage() {
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>성별</InfoLabel>
-                    <InfoText>남성</InfoText>
+                    <InfoText>{userData.gender}</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
             </InfoWrapper>
