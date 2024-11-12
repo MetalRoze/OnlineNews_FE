@@ -33,7 +33,6 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // 로그인 처리 로직
 
         const data={
             email: email,
@@ -44,6 +43,8 @@ export default function Login() {
                 console.log(response.data);
                 sessionStorage.setItem('authToken', response.data.accessToken);
                 console.log('저장된 authToken:', sessionStorage.getItem('authToken'));
+            
+                navigate('/main')
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
