@@ -123,6 +123,7 @@ const Basic = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
+        <Route path="/articleDetail/:articleId" element={<ArticleDtPage />} />
         <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
         <Route path="/signup/journalistTerm" element={<JurnalistTermPage />} />
         <Route path="/signup/generalForm" element={<GeneralFormPage />} />

@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 export default function RankingArticle({ rank }) {
   const navigate = useNavigate();
 
-  const handleArticleClick = () => {
-    navigate('/articleDetail');
+  const handleArticleClick = (articleId) => {
+    navigate(`/articleDetail/${articleId}`);  // articleId를 URL에 포함시켜서 이동
   };
 
   return (
-    <div className='basicArticle pd10' style={{ cursor: "pointer", display: "flex" }} onClick={handleArticleClick}>
+    <div className='basicArticle pd10' style={{ cursor: "pointer", display: "flex" }} onClick={() => handleArticleClick(1)}>
       <ArticleInfo>
         <h4>{rank}</h4>
         <Title>‘논술로 대학 가볼까’....수시모집 지원자 44% 몰려</Title>
