@@ -42,6 +42,8 @@ export default function Login() {
         postRequest('/api/user/login', data)
             .then(response => {
                 console.log(response.data);
+                sessionStorage.setItem('authToken', response.data.accessToken);
+                console.log('저장된 authToken:', sessionStorage.getItem('authToken'));
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
