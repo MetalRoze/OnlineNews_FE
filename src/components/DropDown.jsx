@@ -2,11 +2,43 @@ import styled from "styled-components";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useNavigate } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function MyDropdown() {
     const navigate = useNavigate();
-    const isJournalist = false; //일단 백엔드 연결 전이라 일반회원 페이지 연결 되도록 했습니다
+    const [isJournalist, setIsJournalist] = useState(false);  // 회원 유형을 상태로 관리
+
+    const checkUserType = async () => {
+        const accessToken = sessionStorage.getItem('authToken');  // sessionStorage에서 토큰을 가져옴
+        if (!accessToken) {
+            console.error('No access token found');
+            return;  // 토큰이 없으면 API 호출을 하지 않음
+        }
+        try {
+            const response = await axios.get('/api/user/checkUserType', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`  // 가져온 토큰을 사용
+                }
+            });
+    
+            const userType = response.data;
+    
+            if (userType === 'GENERAL_MEMBER') {
+                setIsJournalist(false);
+            } else {
+                setIsJournalist(true);
+            }
+        } catch (error) {
+            console.error("회원 유형 확인 실패", error);
+        }
+    };
+
+    // 컴포넌트가 마운트 될 때 API 호출
+    useEffect(() => {
+        checkUserType();
+    }, []);
+    
 
     const handleAccountClick = () => {
         if (isJournalist) {
@@ -21,8 +53,13 @@ function MyDropdown() {
             <Dropdown.Item onClick={handleAccountClick}>계정</Dropdown.Item>
             <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>
             <Dropdown.Item href="../log">내 활동</Dropdown.Item>
-            <Dropdown.Item href="../articleWrite">기사 작성</Dropdown.Item>
-            <Dropdown.Item href="../myArticle">작성한 기사</Dropdown.Item>
+            {/* 기자일 때만 보여지는 메뉴 */}
+            {isJournalist && (
+                <>
+                    <Dropdown.Item href="../articleWrite">기사 작성</Dropdown.Item>
+                    <Dropdown.Item href="../myArticle">작성한 기사</Dropdown.Item>
+                </>
+            )}
         </CustomDropdown>
     );
 }
