@@ -1,9 +1,11 @@
 import React, { useState } from 'react';  // useState 임포트 확인
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
+
+import { postRequest } from '../../apis/noTokenAxios';
 
 const InputContainer = styled.div`
     max-width:400px;
@@ -172,46 +174,32 @@ export default function JournalistForm() {
 
     const handleSignupApi = async () => {
         try {
-            // 새로운 FormData 객체 생성
             const formDataToSubmit = new FormData();
-        
-            // formData 상태에서 값들을 가져와서 FormData에 추가
-            formDataToSubmit.append('user_name', formData.name);
-            formDataToSubmit.append('user_email', formData.email);
-            formDataToSubmit.append('user_pw', formData.password);
-            formDataToSubmit.append('user_pw2', formData.passwordCheck);
-            formDataToSubmit.append('user_cp', `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
-            formDataToSubmit.append('user_sex', formData.gender);
-            formDataToSubmit.append('publisher', formData.publisher);
-
-            // 프로필 이미지가 있으면 추가
+            formDataToSubmit.append("user_name", formData.name);
+            formDataToSubmit.append("user_email", formData.email);
+            formDataToSubmit.append("user_pw", formData.password);
+            formDataToSubmit.append("user_pw2", formData.passwordCheck);
+            formDataToSubmit.append("user_cp", `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
+            formDataToSubmit.append("user_sex", formData.gender);
+            formDataToSubmit.append("publisher", formData.publisher);
+            
             if (formData.profileImg) {
-                formDataToSubmit.append('user_img', formData.profileImg);
+                formDataToSubmit.append("user_img", formData.profileImg);
             }
     
-            // 서버에 POST 요청
-            const response = await axios.post('/api/user/signup/journalist', formDataToSubmit, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            // API 호출 전에 FormData의 모든 key-value 쌍을 출력
-            for (const [key, value] of formDataToSubmit.entries()) {
-                console.log(`${key}:`, value);
-            }    
+            const response = await postRequest('/api/user/signup/journalist', formDataToSubmit);
+            console.log('응답 상태:', response.status);  
 
             if (response.status === 200) {
                 navigate('/signup/success');
-            }
-            else{
+            } else {
                 alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
             }
         } catch (error) {
             console.error("회원가입 오류:", error);
             alert("회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.");
         }
-    }; 
+    };
 
     const validateFormState = () => {
         let missingFields = [];
