@@ -17,13 +17,27 @@ function MyDetail() {
             navigate('/main');
         }
     };
+    const article = {
+        title: "기사 제목",
+        date: "2024.11.10 오전 10:00",
+        authorName: "홍길동",
+        authorEmail: "hong@yu.com",
+        publisherUrl: "www.yu.ac.kr",
+        authorDescription: "간단한 소개",
+        subtitles: "소제목1,./소제목2,./소제목3",
+        content: [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "https://placehold.co/300x200",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        ]
+    };
     return (
         <div className='mobile-container'>
             <div className='flex mlAuto'>
                 <div onClick={clickEdit} className='mr1 pointer'>수정</div>
                 <div onClick={clickPrivate} className='pointer'>비공개</div>
             </div>
-            <ArticleContent></ArticleContent>
+            <ArticleContent article={article}></ArticleContent>
         </div>
     );
 }

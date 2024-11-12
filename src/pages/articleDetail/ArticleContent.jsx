@@ -4,7 +4,7 @@ import KakaoShare from '/src/utils/KakaoShare.jsx';
 import { useLocation } from 'react-router-dom';
 
 
-const ArticleContent = () => {
+const ArticleContent = ({ article }) => {
     const location = useLocation();
     const isArticleDetail = location.pathname.includes('articleDetail');
 
@@ -12,22 +12,15 @@ const ArticleContent = () => {
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
 
-
-    const [articleTitle, setArticleTitle] = useState("Lorem ipsum dolor sit amet adipisicing elit.");
-    const [articleDate, setArticleDate] = useState("입력 yyyy.mm.dd 오전 hh:mm");
-    const [authorName, setAuthorName] = useState("홍길동");
-    const [authorEmail, setAuthorEmail] = useState("hong@yu.com");
-    const [publisherUrl, setPublisherUrl] = useState("www.yu.ac.kr");
-    const [authorDescription, setAuthorDescription] = useState("간단 한줄 소개문구입니다.");
-    const [articleSubtit, setArticleSubtit] = useState("Lorem, ipsum dolor sit amet consectetur.,./소제목2,./소제목3");
+    const [articleTitle, setArticleTitle] = useState(article.title);
+    const [articleDate, setArticleDate] = useState(article.date);
+    const [authorName, setAuthorName] = useState(article.authorName);
+    const [authorEmail, setAuthorEmail] = useState(article.authorEmail);
+    const [publisherUrl, setPublisherUrl] = useState(article.publisherUrl);
+    const [authorDescription, setAuthorDescription] = useState(article.authorDescription);
+    const [articleSubtit, setArticleSubtit] = useState(article.subtitles);
     const [subTitles, setSubTitles] = useState([]);
-    const [articleContent, setArticleContent] = useState([
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
-        "https://placehold.co/300x200",
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus minima, cupiditate asperiores reiciendis repellat fugiat at tenetur voluptatibus quam aut tempora nam officiis autem!",
-    ]);
+    const [articleContent, setArticleContent] = useState(article.content);
 
     useEffect(() => {
         const splitSubtitles = articleSubtit.split(',./').map(sub => sub.trim()).filter(sub => sub !== "");
