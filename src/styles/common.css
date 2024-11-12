@@ -2,7 +2,6 @@
  .flex {
     display: flex;
  }
-
  .inline {
     display: inline;
  }
@@ -11,6 +10,9 @@
     display: block;
  }
 
+ .fixed {
+   position: fixed;
+}
  .column {
     flex-direction: column;
  }
@@ -79,7 +81,9 @@
  .pd0 {
     padding: 0;
  }
-
+.pdl05 {
+   padding-left: 0.5rem;
+}
  .pdlr20 {
     padding-inline: 20px;
  }
@@ -109,6 +113,9 @@
     margin-bottom: 0.5rem;
  }
 
+ .mb03 {
+   margin-bottom: 0.3rem;
+}
  .mb1 {
     margin-bottom: 1rem;
  }
@@ -151,6 +158,9 @@
     color: var(--color-gray40);
  }
 
+ .gray60{
+   color: var(--color-gray60);
+ }
  .blue {
     color: var(--color-blue);
  }

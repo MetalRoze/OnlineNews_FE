@@ -68,17 +68,18 @@ const ArticleWrite = () => {
                 const blob = await response.blob();
                 const newImgUrl = URL.createObjectURL(blob);
                 imagePromises.push(Promise.resolve(newImgUrl));
+            } else {
+                imagePromises.push(Promise.resolve(imgSrc));
             }
         }
         const imageUrls = await Promise.all(imagePromises);
         // console.log('변환된 이미지 URL들:', imageUrls);
 
-        const updatedHtml = originalContent.replace(imgRegex, (match, p1) => {
-            const newUrl = imageUrls.shift();
-            return match.replace(p1, newUrl);
+        const updatedHtml = originalContent.replace(imgRegex, () => {
+            return `<img src="${imageUrls.shift()}"`;
         });
-        setContent(JSON.stringify(updatedHtml))
 
+        setContent(JSON.stringify(updatedHtml))
         console.log('원본 HTML:', originalContent);
 
         setIsModalOpen(true);
@@ -120,7 +121,7 @@ const ArticleWrite = () => {
                 const article = {
                     title: "임시 제목",
                     subtitle: "소제목1,./소제목2,./소제목3",
-                    content: "<p>임시 본문 내용입니다.</p>",
+                    content: "<p>d<img src=\"https://onlinen-news-bucket.s3.amazonaws.com/articleImg/331234c1-9420-4207-9fff-c7a4c71bde87.jpeg\" height=\"500\" width=\"375\"></p>",
                     category: "사회",
                     authorName: "홍길동"
                 };

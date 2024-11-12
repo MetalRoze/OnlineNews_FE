@@ -22,6 +22,7 @@ function MyDropdown() {
             <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>
             <Dropdown.Item href="../log">내 활동</Dropdown.Item>
             <Dropdown.Item href="../articleWrite">기사 작성</Dropdown.Item>
+            <Dropdown.Item href="../myArticle">작성한 기사</Dropdown.Item>
         </CustomDropdown>
     );
 }
