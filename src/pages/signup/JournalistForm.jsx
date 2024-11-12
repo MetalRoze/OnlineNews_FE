@@ -1,7 +1,7 @@
 import React, { useState } from 'react';  // useState 임포트 확인
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import axios from 'axios';
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
 
@@ -158,12 +158,62 @@ export default function JournalistForm() {
         passwordCheck: '',
         cellphone: { part1: '', part2: '', part3: '' },
         gender:'', 
-
+        profileImg:'', 
+        publisher:'경향신문' //DB 업데이트 시 명보 신문으로 수정 예정 
     });
 
     const [profileImg, setProfileImg] = useState(profileIcon);
 
     const handleSubmit = () => {
+        if(validateFormState()){
+            handleSignupApi(); 
+        }
+    };
+
+    const handleSignupApi = async () => {
+        try {
+            // 새로운 FormData 객체 생성
+            const formDataToSubmit = new FormData();
+        
+            // formData 상태에서 값들을 가져와서 FormData에 추가
+            formDataToSubmit.append('user_name', formData.name);
+            formDataToSubmit.append('user_email', formData.email);
+            formDataToSubmit.append('user_pw', formData.password);
+            formDataToSubmit.append('user_pw2', formData.passwordCheck);
+            formDataToSubmit.append('user_cp', `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
+            formDataToSubmit.append('user_sex', formData.gender);
+            formDataToSubmit.append('publisher', formData.publisher);
+
+            // 프로필 이미지가 있으면 추가
+            if (formData.profileImg) {
+                formDataToSubmit.append('user_img', formData.profileImg);
+            }
+    
+            // 서버에 POST 요청
+            const response = await axios.post('/api/user/signup/journalist', formDataToSubmit, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            // API 호출 전에 FormData의 모든 key-value 쌍을 출력
+            for (const [key, value] of formDataToSubmit.entries()) {
+                console.log(`${key}:`, value);
+            }    
+
+            if (response.status === 200) {
+                navigate('/signup/success');
+            }
+            else{
+                alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
+            }
+        } catch (error) {
+            console.error("회원가입 오류:", error);
+            alert("회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+    }; 
+
+    const validateFormState = () => {
         let missingFields = [];
 
         if (!formData.name) missingFields.push("이름");
@@ -175,28 +225,42 @@ export default function JournalistForm() {
 
         if (missingFields.length > 0) {
             alert(`${missingFields[0]} 항목을 입력해주세요`);
-            return;
+            return false;
         }
     
         if (formData.password !== formData.passwordCheck) {
             alert("비밀번호가 일치하지 않습니다.");
-            return;
+            return false;
         }
     
         if (formData.cellphone.part1.length !== 3 || formData.cellphone.part2.length !== 4 || formData.cellphone.part3.length !== 4) {
             alert("휴대폰 번호 형식이 올바르지 않습니다.");
-            return;
+            return false;
         }
-        navigate('/signup/success');
-    };
-    
+
+        return true; 
+    }; 
 
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setProfileImg(URL.createObjectURL(file));
-        }
+            setFormData((prevData) => ({
+                ...prevData,
+                profileImg: file 
+            }));
+         }
     };
+
+        const handleCellphoneChange = (part, value) => {
+            setFormData(prevData => ({
+                ...prevData,
+                cellphone: {
+                    ...prevData.cellphone,
+                    [part]: value 
+                }
+            }));
+        };
+    
 
 
     const handleCancelProfile = () => {
@@ -274,7 +338,7 @@ export default function JournalistForm() {
                             type="cellphone-part1"
                             id="cellphone-part1"
                             value={formData.cellphone.part1}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part1: e.target.value } })}
+                            onChange={(e) => handleCellphoneChange('part1', e.target.value)}
                             required
                             placeholder="010"
                             maxLength="3"
@@ -285,7 +349,7 @@ export default function JournalistForm() {
                             type="cellphone-part2"
                             id="cellphone-part2"
                             value={formData.cellphone.part2}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part2: e.target.value } })}
+                            onChange={(e) => handleCellphoneChange('part2', e.target.value)}
                             required
                             placeholder="1234"
                             maxLength="4"
@@ -296,7 +360,7 @@ export default function JournalistForm() {
                             type="cellphone-part3"
                             id="cellphone-part3"
                             value={formData.cellphone.part3}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part3: e.target.value } })} 
+                            onChange={(e) => handleCellphoneChange('part3', e.target.value)}
                             required
                             placeholder="5678"
                             maxLength="4"
@@ -310,16 +374,16 @@ export default function JournalistForm() {
                         <RadioLabel>
                             <input 
                                 type="radio" 
-                                value="male" 
-                                checked={formData.gender === "male"} 
+                                value="M" 
+                                checked={formData.gender === "M"} 
                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                             />  남성
                         </RadioLabel>
                         <RadioLabel>
                             <input 
                                 type="radio" 
-                                value="female" 
-                                checked={formData.gender === "female"} 
+                                value="F" 
+                                checked={formData.gender === "F"} 
                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                             />  여성
                         </RadioLabel>
