@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import {postRequest} from '../../apis/axios'
 
 const LoginTitle = styled.h1`
 margin-bottom: 10px; 
@@ -33,6 +34,21 @@ export default function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         // 로그인 처리 로직
+
+        const data={
+            email: email,
+            password: password
+        }
+        postRequest('/api/user/login', data)
+            .then(response => {
+                console.log(response.data);
+                sessionStorage.setItem('authToken', response.data.accessToken);
+                console.log('저장된 authToken:', sessionStorage.getItem('authToken'));
+            })
+            .catch(error => {
+                console.error('Error fetching subscriptions:', error);
+            });
+
         console.log('Logging in with:', { email, password });
     };
 
