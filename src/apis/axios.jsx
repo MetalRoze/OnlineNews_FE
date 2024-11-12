@@ -5,6 +5,7 @@ const apiClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true, 
 });
 
 // 요청 인터셉터 설정
@@ -33,6 +34,8 @@ const getRequest = (url, params = {}, headers = {}) => {
 const postRequest = (url, data, headers = {}) => {
   return apiClient.post(url, data, { headers });
 };
+
+//POST 요청 함수 + 
 
 // PUT 요청 함수
 const putRequest = (url, data, headers = {}) => {
