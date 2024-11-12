@@ -5,7 +5,7 @@ import ArticleHeader from './ArticleHeader';
 import ArticleContent from './ArticleContent';
 import ArticleComment from './ArticleComment';
 import GoogleAdsense from '../../components/GoogleAdsense';
-import { getRequest }  from '../../apis/axios';  // api.js에서 getRequest 임포트
+import {getRequest}  from '../../apis/axios';
 
 // const ArticleDetail = () => {
 //     const article = {
@@ -30,22 +30,18 @@ const ArticleDetail = () => {
     const [error, setError] = useState(null);  // 오류 상태
     
     const fetchArticle = async () => {
-        try {
-          setLoading(true);
-          const response = await getRequest('/api/article/select', { id: articleId });
-          console.log(response.data)
-          setArticle(response);  // 받은 데이터로 상태 업데이트
-        } catch (error) {
-          setError('기사 정보를 불러오는 데 실패했습니다.');
-        } finally {
-            setLoading(false);
-        }
+        getRequest('/api/article/select')
+            .then(response => {
+                setArticle(response.data[0]);
+                console.log(response.data[0]);
+            })
+            .catch(error => {
+                console.error('Error fetching subscriptions:', error);
+            });
     };
 
-
     useEffect(() => {
-        if (articleId) {
-            console.log(articleId)
+        if (articleId) { 
             fetchArticle();
         }
     }, [articleId]);
