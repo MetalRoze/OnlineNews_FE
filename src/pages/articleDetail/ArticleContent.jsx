@@ -12,15 +12,27 @@ const ArticleContent = ({ article }) => {
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
 
-    const [articleTitle, setArticleTitle] = useState(article.title);
-    const [articleDate, setArticleDate] = useState(article.date);
-    const [authorName, setAuthorName] = useState(article.authorName);
-    const [authorEmail, setAuthorEmail] = useState(article.authorEmail);
-    const [publisherUrl, setPublisherUrl] = useState(article.publisherUrl);
-    const [authorDescription, setAuthorDescription] = useState(article.authorDescription);
-    const [articleSubtit, setArticleSubtit] = useState(article.subtitles);
+    const [articleTitle, setArticleTitle] = useState('');
+    const [articleDate, setArticleDate] = useState('');
+    const [authorName, setAuthorName] = useState('');
+    const [authorEmail, setAuthorEmail] = useState('');
+    const [publisherUrl, setPublisherUrl] = useState('');
+    const [authorDescription, setAuthorDescription] = useState('');
+    const [articleSubtit, setArticleSubtit] = useState('');
     const [subTitles, setSubTitles] = useState([]);
-    const [articleContent, setArticleContent] = useState(article.content);
+    const [articleContent, setArticleContent] = useState([]);
+    useEffect(() => {
+        if (article) {
+            setArticleTitle(article.title || '');
+            setArticleDate(article.createdAt || '');
+            setAuthorName(article.authorName || '');
+            setAuthorEmail(article.authorEmail || '');
+            setPublisherUrl(article.publisherUrl || '');
+            setAuthorDescription(article.authorDescription || '');
+            setArticleSubtit(article.subtitle || '');
+            setArticleContent(article.content || '');
+        }
+    }, [article]);
 
     useEffect(() => {
         const splitSubtitles = articleSubtit.split(',./').map(sub => sub.trim()).filter(sub => sub !== "");
@@ -82,24 +94,14 @@ const ArticleContent = ({ article }) => {
             </div>
             <hr style={{ margin: '1rem 0' }} />
             <div>
-                {/* 소제목 배열을 출력 */}
                 {subTitles.map((subtitle, index) => (
                     <h2 className='articleSubtitle' key={index}>{subtitle}</h2>
                 ))}
                 <br />
-                {articleContent.map((content, index) => (
-                    <div key={index}>
-                        {typeof content === 'string' && content.startsWith('http') ? (
-                            <img src={content} alt="본문 이미지" />
-                        ) : (
-                            <p>{content}</p>
-                        )}
-                        <br />
-                    </div>
-                ))}
+
+                <div dangerouslySetInnerHTML={{ __html: articleContent }} />
             </div>
 
-            {/* ArticleDetail일 때만 아래 UI 표시 */}
             {isArticleDetail && (
                 <>
 
