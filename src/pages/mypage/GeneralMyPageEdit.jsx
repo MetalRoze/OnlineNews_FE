@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';  // useState 임포트 확인
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {getRequest} from '../../apis/axios'
+import { getRequest } from '../../apis/axios'; 
 import { patchRequest } from '../../apis/noCTAxios';
 
 
@@ -149,8 +149,8 @@ export default function GeneralMyPageEdit() {
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showPhoneModal, setShowPhoneModal] = useState(false);
 
-     // 전달된 userData가 있으면 초기 상태로 설정하고, 없으면 기본 상태값 사용
-     const initialUserData = location.state?.userData || {
+    // 전달된 userData가 있으면 초기 상태로 설정하고, 없으면 기본 상태값 사용
+    const initialUserData = location.state?.userData || {
         nickname: '',
         bio: '',
         name: '',
@@ -263,7 +263,7 @@ export default function GeneralMyPageEdit() {
     const handleEditClick = (label, value,userDataType) => {
         setCurrentLabel(label);
         setCurrentValue(value);
-        setCurrentUserDataType(userDataType);  // 수정할 속성 정보 설정
+        setCurrentUserDataType(userDataType); 
         setShowModal(true);
     };
 
@@ -300,7 +300,7 @@ export default function GeneralMyPageEdit() {
         setShowPhoneModal(false);
     };
 
-     const handleImageUpload = (e) => {
+    const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             setUserData((prevUserData) => ({
