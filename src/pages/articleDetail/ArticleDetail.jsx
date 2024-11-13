@@ -4,15 +4,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ArticleHeader from './ArticleHeader';
 import ArticleContent from './ArticleContent';
 import ArticleComment from './ArticleComment';
+import ArticleLikeShare from './ArticleLikeShare'
 import GoogleAdsense from '../../components/GoogleAdsense';
-import {getRequest}  from '../../apis/axios';
+import { getRequest } from '../../apis/axios';
 import { useLocation } from 'react-router-dom';
 
 const ArticleDetail = () => {
     const { articleId } = useParams();
 
     const [article, setArticle] = useState(null);
-    
+
     const location = useLocation();
     const isArticleDetail = location.pathname.includes('articleDetail');
 
@@ -29,14 +30,15 @@ const ArticleDetail = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubscribed, setIsSubscribed] = useState(false);
-
+    useEffect(() => {
+        console.log(isSubscribed);
+    }, [isSubscribed]);
     const handleSubscriptionToggle = () => {
-        setIsModalOpen(true);
+        setIsModalOpen(true); 
     };
 
     const handleSubscribe = () => {
         setIsSubscribed(true);
-        setIsModalOpen(false);
     };
 
     const handleUnsubscribe = () => {
@@ -58,6 +60,7 @@ const ArticleDetail = () => {
         getRequest('/api/article/select', { id: articleId })
             .then(response => {
                 setArticle(response.data[0]);
+                console.log(response.data[0])
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
@@ -73,33 +76,35 @@ const ArticleDetail = () => {
     }, []);
 
     useEffect(() => {
-        if (articleId) { 
+        if (articleId) {
             fetchArticle();
         }
     }, [articleId]);
-    
+
     if (!article) {
-        return <div>Loading...</div>; // 로딩 화면을 표시하거나, 로딩 상태에서 다른 처리를 할 수 있습니다.
+        return <div>Loading...</div>;
     }
     return (
         <div>
             <ArticleHeader />
             <div className='mobile-container pd20'>
-                <ArticleContent
-                    article={article}
-                    handleArticleLikeToggle={handleArticleLikeToggle}
-                    handleSubscriptionToggle={handleSubscriptionToggle}
-                    isArticleDetail={isArticleDetail}
-                    isSubscribe={isSubscribed}
-                    isArticleLiked={isArticleLiked}
-                    isModalOpen={isModalOpen}
-                    isEmailSubscribed={isEmailSubscribed}
-                    setIsModalOpen={setIsModalOpen}
-                    handleSubscribe={handleSubscribe}
-                    handleUnsubscribe={handleUnsubscribe}
-                    handleEmailSubscribe={handleEmailSubscribe}
-                    handleEmailUnsubscribe={handleEmailUnsubscribe}
-                />
+                <ArticleContent article={article}/>
+                {isArticleDetail && (
+                    <ArticleLikeShare
+                        article={article}
+                        handleArticleLikeToggle={handleArticleLikeToggle}
+                        handleSubscriptionToggle={handleSubscriptionToggle}
+                        isArticleDetail={isArticleDetail}
+                        isSubscribe={isSubscribed}
+                        isArticleLiked={isArticleLiked}
+                        isModalOpen={isModalOpen}
+                        isEmailSubscribed={isEmailSubscribed}
+                        setIsModalOpen={setIsModalOpen}
+                        handleSubscribe={handleSubscribe}
+                        handleUnsubscribe={handleUnsubscribe}
+                        handleEmailSubscribe={handleEmailSubscribe}
+                        handleEmailUnsubscribe={handleEmailUnsubscribe}
+                    ></ArticleLikeShare>)}
                 <ArticleComment />
                 <GoogleAdsense
                     client="ca-pub-1195209293008237"
