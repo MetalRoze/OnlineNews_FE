@@ -166,7 +166,7 @@ export default function GeneralMyPage() {
     }, []);
 
     const handleEditInfo = () => {
-        navigate('/myPageGeneral/edit');
+        navigate('/myPageGeneral/edit', { state: { userData } });
     };
 
     const handleLogout = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';  // useState 임포트 확인
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {getRequest} from '../../apis/axios'
@@ -139,6 +139,7 @@ const NextButton = styled.button`
 
 
 export default function GeneralMyPageEdit() {
+    const location = useLocation(); 
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [currentLabel, setCurrentLabel] = useState('');
@@ -148,19 +149,20 @@ export default function GeneralMyPageEdit() {
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showPhoneModal, setShowPhoneModal] = useState(false);
 
-    // 기존 데이터 저장용 상태
-    const [previousUserData, setPreviousUserData] = useState({});
-
-    const [userData, setUserData] = useState({
+     // 전달된 userData가 있으면 초기 상태로 설정하고, 없으면 기본 상태값 사용
+     const initialUserData = location.state?.userData || {
         nickname: '',
         bio: '',
         name: '',
         email: '',
         phoneNumber: '',
-        password:'',
+        password: '',
         gender: '',
-        profileImg:''
-    });
+        profileImg: ''
+    };
+
+    const [userData, setUserData] = useState(initialUserData);
+    const [previousUserData, setPreviousUserData] = useState(initialUserData);
 
     const [profileImgUrl, setProfileImgUrl] = useState(profileIcon);
 
@@ -206,8 +208,11 @@ export default function GeneralMyPageEdit() {
     };
 
     useEffect(() => {
-        getUserData();
-    }, []);
+        // 전달된 userData가 없는 경우에만 API 호출
+        if (!location.state) {
+            getUserData(); 
+        }
+    }, [location.state]);
 
     const handleSave = async() => {
         const formData = new FormData();
