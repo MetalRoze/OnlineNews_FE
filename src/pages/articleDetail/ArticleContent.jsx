@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import formatDate from '../../utils/formatDate';
 
-const ArticleContent = ({ 
+const ArticleContent = ({
     article
-}) =>{
+}) => {
 
     return (
         <div>
@@ -22,8 +22,10 @@ const ArticleContent = ({
                 </div>
             </div>
             <hr style={{ margin: '1rem 0' }} />
-            <div>
-                <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div className='pd20 ql-snow'>
+                <div className='ql-editor' style={{padding:'0px'}}>
+                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                </div>
             </div>
         </div>
     );

@@ -22,7 +22,7 @@ const ArticlePreview = ({ authorName, articleDate, title, subTitles, content, on
                     </div>
                     <hr style={{ margin: '1rem 0' }} />
                     <div className='pd20 ql-snow'>
-                        <div className='ql-editor'>
+                        <div className='ql-editor' style={{padding:'0px'}}>
                             <div dangerouslySetInnerHTML={{ __html: JSON.parse(content) }} />
                         </div>
                     </div>
