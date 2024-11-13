@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
 
-import { postRequest } from '../../apis/noTokenAxios';
+import { postRequest } from '../../apis/noCTAxios';
 
 const InputContainer = styled.div`
     max-width:400px;
@@ -173,32 +173,34 @@ export default function JournalistForm() {
     };
 
     const handleSignupApi = async () => {
-        try {
-            const formDataToSubmit = new FormData();
-            formDataToSubmit.append("user_name", formData.name);
-            formDataToSubmit.append("user_email", formData.email);
-            formDataToSubmit.append("user_pw", formData.password);
-            formDataToSubmit.append("user_pw2", formData.passwordCheck);
-            formDataToSubmit.append("user_cp", `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
-            formDataToSubmit.append("user_sex", formData.gender);
-            formDataToSubmit.append("publisher", formData.publisher);
-            
-            if (formData.profileImg) {
-                formDataToSubmit.append("user_img", formData.profileImg);
-            }
-    
-            const response = await postRequest('/api/user/signup/journalist', formDataToSubmit);
-            console.log('응답 상태:', response.status);  
+        const formDataToSubmit = new FormData();
+        formDataToSubmit.append("user_name", formData.name);
+        formDataToSubmit.append("user_email", formData.email);
+        formDataToSubmit.append("user_pw", formData.password);
+        formDataToSubmit.append("user_pw2", formData.passwordCheck);
+        formDataToSubmit.append("user_cp", `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
+        formDataToSubmit.append("user_sex", formData.gender);
+        formDataToSubmit.append("publisher", formData.publisher);
+        
+        if (formData.profileImg) {
+            formDataToSubmit.append("user_img", formData.profileImg);
+        }
+
+        postRequest('/api/user/signup/journalist', formDataToSubmit)
+        .then(response => {
+            console.log('응답 상태:', response.status);  // 응답 내용 확인
 
             if (response.status === 200) {
                 navigate('/signup/success');
             } else {
                 alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
             }
-        } catch (error) {
+        })
+
+        .catch(error => {
             console.error("회원가입 오류:", error);
             alert("회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
+        }); 
     };
 
     const validateFormState = () => {
