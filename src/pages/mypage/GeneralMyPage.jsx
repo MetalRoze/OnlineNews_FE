@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
+import { getRequest } from '../../apis/axios';
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -27,6 +27,7 @@ const ProfileImage = styled.img`
     width: 150px; 
     height: 150px; 
     margin: 0px 30px;
+    border-radius: 50%;  
 `; 
 
 const NameWrapper = styled.div`
@@ -134,29 +135,30 @@ export default function GeneralMyPage() {
         email: '',
         phoneNumber: '',
         gender: '',
+        profileImg:''
     });
 
-    // 회원 정보 가져오는 함수
     const getUserData = async () => {
-        try {
-            const response = await axios.get('/api/user/myPage', {
-                headers: {
-                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-                }
-            });
+        getRequest('/api/user/myPage')
+            .then(response => {
+                setUserData({
+                    nickname: response.data.nickname,
+                    bio: response.data.bio,
+                    name: response.data.name,
+                    email: response.data.email,
+                    phoneNumber: response.data.cp, 
+                    gender: response.data.sex, 
+                    profileImg : response.data.img
+                });
 
-              // API 응답 받은 데이터로 상태 업데이트
-              setUserData({
-                nickname: response.data.nickname,
-                bio: response.data.bio,
-                name: response.data.name,
-                email: response.data.email,
-                phoneNumber: response.data.cp, 
-                gender: response.data.sex, 
+                console.log(response.data);
+            })
+
+            
+
+            .catch(error => {
+                console.error("회원 정보 불러오기 실패", error);
             });
-        } catch (error) {
-            console.error("회원 정보 불러오기 실패", error);
-        }
     };
 
     useEffect(() => {
@@ -184,7 +186,7 @@ export default function GeneralMyPage() {
         <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <ProfileWrapper>
                 <ProfileImage 
-                    src={profileIcon}
+                    src={userData.profileImg || profileIcon}
                 >
                 </ProfileImage>
                 <ProfileTextWrapper>
