@@ -6,54 +6,20 @@ import ArticleContent from './ArticleContent';
 import ArticleComment from './ArticleComment';
 import ArticleLikeShare from './ArticleLikeShare'
 import GoogleAdsense from '../../components/GoogleAdsense';
-import { getRequest } from '../../apis/axios';
+import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
 import { useLocation } from 'react-router-dom';
 
 const ArticleDetail = () => {
     const { articleId } = useParams();
-
-    const [article, setArticle] = useState(null);
-
     const location = useLocation();
     const isArticleDetail = location.pathname.includes('articleDetail');
 
+    const [article, setArticle] = useState(null);
+
+
     const [isArticleLiked, setIsArticleLiked] = useState(false);
+    const [likeId, setLikeId] = useState(null);
     const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
-
-    const handleArticleLikeToggle = () => {
-        setIsArticleLiked(prevState => {
-            const newState = !prevState;
-            setLike(prevCount => newState ? prevCount + 1 : prevCount - 1);
-            return newState;
-        });
-    };
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSubscribed, setIsSubscribed] = useState(false);
-    useEffect(() => {
-        console.log(isSubscribed);
-    }, [isSubscribed]);
-    const handleSubscriptionToggle = () => {
-        setIsModalOpen(true); 
-    };
-
-    const handleSubscribe = () => {
-        setIsSubscribed(true);
-    };
-
-    const handleUnsubscribe = () => {
-        setIsSubscribed(false);
-        setIsModalOpen(false);
-    };
-    const handleEmailSubscribe = () => {
-        setIsEmailSubscribed(true);
-        setIsModalOpen(false);
-    };
-
-    const handleEmailUnsubscribe = () => {
-        setIsEmailSubscribed(false);
-        setIsModalOpen(false);
-    };
 
     // 기사 가져오기
     const fetchArticle = async () => {
@@ -66,7 +32,89 @@ const ArticleDetail = () => {
                 console.error('Error fetching subscriptions:', error);
             });
     };
+    // 좋아요
+    useEffect(() => {
+        const checkLikeStatus = async () => {
+            try {
+                const response = await getRequest(`/api/article/${articleId}/like/check`);
+                console.log(response.data);
+                if (response.data) {
+                    setIsArticleLiked(true);
+                    setLikeId(response.data)
+                } else {
+                    console.log('없')
+                }
+            } catch (error) {
+                console.error("Error checking like status", error);
+            }
+        };
+        checkLikeStatus();
+    }, [articleId]);
+    const handleLike = async () => {
+        try {
+            const response = await postRequest(`/api/article/${articleId}/like`);
+            setIsArticleLiked(true);
+            setLikeId(response.data);
 
+            setArticle(prevArticle => ({
+                ...prevArticle,
+                likes: prevArticle.likes + 1
+            }));
+        } catch (error) {
+            console.error("Error adding like", error);
+        }
+    };
+    const handleUnlike = async () => {
+        try {
+            console.log(likeId)
+            if (likeId) {
+                await deleteRequest(`/api/article/like/${likeId}/unlike`);
+                setIsArticleLiked(false);
+                setLikeId(null);
+
+                setArticle(prevArticle => ({
+                    ...prevArticle,
+                    likes: prevArticle.likes - 1
+                }));
+            }
+        } catch (error) {
+            console.error("Error removing like", error);
+        }
+    };
+    const handleArticleLikeToggle = () => {
+        if (isArticleLiked) {
+            handleUnlike();
+        } else {
+            handleLike();
+        }
+    };
+
+    // 구독 팝업
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    useEffect(() => {
+        console.log(isSubscribed);
+    }, [isSubscribed]);
+    const handleSubscriptionToggle = () => {
+        setIsModalOpen(true);
+    };
+    const handleSubscribe = () => {
+        setIsSubscribed(true);
+    };
+    const handleUnsubscribe = () => {
+        setIsSubscribed(false);
+        setIsModalOpen(false);
+    };
+    const handleEmailSubscribe = () => {
+        setIsEmailSubscribed(true);
+        setIsModalOpen(false);
+    };
+    const handleEmailUnsubscribe = () => {
+        setIsEmailSubscribed(false);
+        setIsModalOpen(false);
+    };
+
+    // 카카오톡 공유하기
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -88,7 +136,7 @@ const ArticleDetail = () => {
         <div>
             <ArticleHeader />
             <div className='mobile-container pd20'>
-                <ArticleContent article={article}/>
+                <ArticleContent article={article} />
                 {isArticleDetail && (
                     <ArticleLikeShare
                         article={article}
