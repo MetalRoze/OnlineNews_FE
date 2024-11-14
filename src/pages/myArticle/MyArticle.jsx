@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
 import formatDate from '../../utils/formatDate';
+import Category from '../../components/Category'
 import { getRequest } from '../../apis/axios';
 
 function MyArticle() {
@@ -11,6 +12,8 @@ function MyArticle() {
     const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [allArticles, setAllArticles] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedOption, setSelectedOption] = useState();
 
     // 기사 리스트 조회
     const fetchArticle = async () => {
@@ -50,7 +53,7 @@ function MyArticle() {
 
     // 기사 검색
     const handleSearch = (searchText) => {
-        console.log('검색어:', searchText); 
+        console.log('검색어:', searchText);
     };
 
     // 페이지 이동
@@ -72,12 +75,16 @@ function MyArticle() {
     return (
         <div className='mobile-container'>
             <div className='flex space mb1' style={{ width: '100%' }}>
-                <select className='mr1'>
+                <select className='mr1' onChange={(e) => setSelectedOption(e.target.value)} value={selectedOption}>
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                     <option value="category">카테고리</option>
                 </select>
-                <SearchBar width={'100%'} onSearch={handleSearch} />
+                {selectedOption === 'category' ? (
+                    <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+                ) : (
+                    <SearchBar width={'100%'} onSearch={handleSearch} />
+                )}
             </div>
             <div>전체 {totalItemsCount}</div>
             <ul className='myArticle mb1'>
