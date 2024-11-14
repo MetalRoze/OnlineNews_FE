@@ -79,10 +79,10 @@ function MyArticle() {
                 {currentArticles.map((article) => (
                     <li key={article.id} onClick={() => handleClick(article.id)} className='item'>
                         <div className='flex spaceBetween mb03'>
-                            <h4 className='mr1 mtbAuto'>{article.title}</h4>
-                            <span className='mlAuto gray40 mtbAuto'>{formatDate(new Date(article.createdAt))}</span>
+                            <h4 className='mr1 mtbAuto content'>{article.title}</h4>
+                            <span className='mlAuto gray40 mtbAuto wsNowrap'>{formatDate(new Date(article.createdAt))}</span>
                         </div>
-                        <div className='mb05 gray60'>{article.subtitle.split(',./')[0]}</div>
+                        <div className='mb05 gray60 content'>{article.subtitle.split(',./')[0]}</div>
                         <div className='content' dangerouslySetInnerHTML={{ __html: article.content }} />
                     </li>
                 ))}
