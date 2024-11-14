@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getRequest, postRequest } from '../../apis/axios.jsx';
+import { getRequest, postRequest, patchRequest } from '../../apis/axios.jsx';
 
 const ArticleWrite = () => {
 
@@ -110,6 +110,8 @@ const ArticleWrite = () => {
 
         if (isConfirmed) {
             const mergedSubTitles = subTitles.join(',./');
+
+            // 기사 수정
             if (isEdit) {
                 const newArticleData = {
                     category: selectedCategory,
@@ -118,23 +120,19 @@ const ArticleWrite = () => {
                     content: content,
                 };
 
-                // 기존 데이터와 비교하여 차이점만 추출
+                // 기존 데이터와 비교하여 수정 dto 생성
                 const changes = {};
-
-                console.log('articleData', articleData);
                 if (newArticleData.category !== articleData.category) changes.category = newArticleData.category;
                 if (newArticleData.title !== articleData.title) changes.title = newArticleData.title;
                 if (newArticleData.subtitle !== articleData.subtitle) changes.subtitle = newArticleData.subtitle;
                 if (newArticleData.content !== articleData.content) changes.content = newArticleData.content;
 
-                // 차이가 있으면 수정 API 호출
                 if (Object.keys(changes).length > 0) {
-                    // requestDTO
-                    let requestDTO = {};
-                    const formData = new FormData();
-                    formData.append('requestDTO', new Blob([JSON.stringify(changes)], { type: 'application/json' }));
+                    let requestDTO = {
+                        ...changes
+                    };                
 
-                    // 이미지 처리 (기존 이미지도 수정되는 경우를 고려)
+                    // 이미지 처리 - 원래 이미지
                     const oldParser = new DOMParser();
                     const oldDoc = oldParser.parseFromString(articleData.content, 'text/html');
                     const oldImageElements = oldDoc.querySelectorAll('img');
@@ -143,6 +141,7 @@ const ArticleWrite = () => {
                         oldImageUrls.push(img.src);
                     });
 
+                    // 이미지 처리 - 새로운 이미지
                     const newParser = new DOMParser();
                     const newDoc = newParser.parseFromString(content, 'text/html');
                     const newImageElements = newDoc.querySelectorAll('img');
@@ -150,48 +149,46 @@ const ArticleWrite = () => {
                     newImageElements.forEach((img) => {
                         newImageUrls.push(img.src);
                     });
-                    // 새로운 이미지와 삭제할 이미지 구하기
+
                     const imagesToDelete = oldImageUrls.filter((url) => !newImageUrls.includes(url)); // 기존에 있고 새로 없는 이미지
                     const imagesToAdd = newImageUrls.filter((url) => !oldImageUrls.includes(url)); // 새로 추가된 이미지
-                    // 삭제할 이미지 처리 (requestDTO에 추가)
+                   
+                    // 삭제할 이미지 배열을 requestDTO에 추가
                     if (imagesToDelete.length > 0) {
-                        requestDTO.deleteImages = imagesToDelete; // 삭제할 이미지 배열을 requestDTO에 추가
+                        requestDTO.deleteImages = imagesToDelete;
                     }
 
-                    // FormData에 수정된 데이터와 새로운 이미지 처리
+                    // request 생성 (requestDTO, images)
+                    const formData = new FormData();
                     formData.append('requestDTO', new Blob([JSON.stringify(requestDTO)], { type: 'application/json' }));
-
-                    // 새로운 이미지 처리
                     if (imagesToAdd.length > 0) {
                         for (const imageUrl of imagesToAdd) {
                             const response = await fetch(imageUrl);
                             const blob = await response.blob();
                             const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
-                            formData.append('images', file); // 새로운 이미지 전송
+                            formData.append('images', file);
                         }
                     }
 
-                    // 디버깅용: FormData 확인
-                    for (let [key, value] of formData.entries()) {
-                        console.log(key, value);
-                    }
-                    // try {
-                    //     const response = await patchRequest('/api/article/update', { id: articleId }, formData, {
-                    //         'Content-Type': 'multipart/form-data',
-                    //     });
+                    try {
+                        const response = await patchRequest(`/api/article/update/${articleId}`, formData, {
+                            'Content-Type': 'multipart/form-data',
+                        });
 
-                    //     if (response.status === 200) {
-                    //         alert('기사가 성공적으로 수정되었습니다.');
-                    //         navigate('/main');
-                    //     }
-                    // } catch (error) {
-                    //     console.error("기사 수정 중 오류가 발생했습니다.", error);
-                    //     alert('기사 수정에 실패했습니다.');
-                    // }
+                        if (response.status === 200) {
+                            alert('기사가 성공적으로 수정되었습니다.');
+                            navigate(`/articleDetail/${articleId}`); 
+                        }
+                    } catch (error) {
+                        console.error("기사 수정 중 오류가 발생했습니다.", error);
+                        alert('기사 수정에 실패했습니다.');
+                    }
                 } else {
                     alert('수정된 내용이 없습니다.');
                 }
             }
+
+            // 새로운 기사 작성
             else {
                 const articleData = {
                     category: selectedCategory,
