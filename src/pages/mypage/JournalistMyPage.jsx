@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';  // useState 임포트 확인
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+
+import { getRequest } from '../../apis/axios';
 import profileIcon  from '../../assets/profileDefault.png'; 
 
 
@@ -27,6 +28,7 @@ const ProfileImage = styled.img`
     width: 150px; 
     height: 150px; 
     margin: 0px 30px;
+    border-radius: 50%;  
 `; 
 
 const NameWrapper = styled.div`
@@ -132,29 +134,31 @@ export default function JournalistMyPage() {
         email: '',
         phoneNumber: '',
         gender: '',
+        profileImg:''
     });
 
-    // 회원 정보 가져오는 함수
-    const getUserData = async () => {
-        try {
-            const response = await axios.get('/api/user/myPage', {
-                headers: {
-                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-                }
-            });
 
-              // API 응답 받은 데이터로 상태 업데이트
-              setUserData({
-                name: response.data.name,
-                bio: response.data.bio,
-                publisher: response.data.publisher,
-                email: response.data.email,
-                phoneNumber: response.data.cp, 
-                gender: response.data.sex, 
+    const getUserData = async () => {
+        getRequest('/api/user/myPage')
+            .then(response => {
+                setUserData({
+                    name: response.data.name,
+                    bio: response.data.bio,
+                    publisher: response.data.publisher,
+                    email: response.data.email,
+                    phoneNumber: response.data.cp, 
+                    gender: response.data.sex, 
+                    profileImg:response.data.img
+                });
+
+                console.log(response.data);
+            })
+
+            
+
+            .catch(error => {
+                console.error("회원 정보 불러오기 실패", error);
             });
-        } catch (error) {
-            console.error("회원 정보 불러오기 실패", error);
-        }
     };
 
     useEffect(() => {
@@ -162,7 +166,7 @@ export default function JournalistMyPage() {
     }, []);
 
     const handleEditInfo = () => {
-        navigate('/myPageJournalist/edit');
+        navigate('/myPageJournalist/edit', {state: {userData}});
     };
 
     const handleLogout = () => {
@@ -181,8 +185,8 @@ export default function JournalistMyPage() {
     return (
         <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <ProfileWrapper>
-                <ProfileImage 
-                    src={profileIcon}
+                 <ProfileImage 
+                    src={userData.profileImg || profileIcon}
                 >
                 </ProfileImage>
                 <ProfileTextWrapper>
