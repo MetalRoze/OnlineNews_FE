@@ -19,8 +19,6 @@ const ArticleWrite = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
 
-    const [article, setArticle] = useState();
-
     // 소제목 관리
     const addSubtitleForm = () => {
         if (subTitles.length < 4) {
@@ -43,35 +41,16 @@ const ArticleWrite = () => {
         setSubTitles(updatedSubTitles);
     };
 
-    // 카테고리 관리
-    const convertCategoryToEnum = (koreanCategory) => {
-        switch (koreanCategory) {
-            case "사회":
-                return "SOCIAL";
-            case "경제":
-                return "ECONOMY";
-            case "생활/문화":
-                return "LIFE_CULTURE";
-            case "연예":
-                return "ENTERTAINMENT";
-            case "기계/IT":
-                return "SCIENCE_TECH";
-            case "정치":
-                return "POLITICS";
-            case "오피니언":
-                return "OPINION";
-            default:
-                throw new Error("유효하지 않은 카테고리입니다.");
-        }
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
     };
-
     // 본문 관리
     const handleEditorChange = (originalContent) => {
         setOriginalContent(originalContent);
     };
 
     const handleContent = async () => {
-        if (!title || subTitles.some(subtitle => subtitle === '') || originalContent === '') {
+        if (!title || subTitles.some(subtitle => subtitle === '') || originalContent === '' || !selectedCategory) {
             alert("모든 필드를 작성해 주세요.");
             return;
         }
@@ -105,6 +84,7 @@ const ArticleWrite = () => {
         setContent(updatedHtml)
         setIsModalOpen(true);
     };
+
     useEffect(() => {
         if (content) {
 
@@ -120,7 +100,7 @@ const ArticleWrite = () => {
     // 모달 관리
     const handleCloseModal = () => {
         setIsModalOpen(false);
-    };   
+    };
 
     // 기사 제출
     const handleSubmit = async () => {
@@ -128,20 +108,19 @@ const ArticleWrite = () => {
 
         if (isConfirmed) {
             const mergedSubTitles = subTitles.join(',./');
-            const categoryEnum = convertCategoryToEnum(selectedCategory);
 
-            if(!isEdit){
+            if (!isEdit) {
                 const articleData = {
-                    category: categoryEnum,
+                    category: selectedCategory,
                     title: title,
                     subtitle: mergedSubTitles,
                     content: content,
                 };
-    
+
                 // requestDTO
                 const formData = new FormData();
                 formData.append('requestDTO', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
-    
+
                 // images
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(content, 'text/html');
@@ -150,7 +129,7 @@ const ArticleWrite = () => {
                 imageElements.forEach((img) => {
                     imageUrls.push(img.src);
                 });
-    
+
                 if (imageUrls.length > 0) {
                     for (const imageUrl of imageUrls) {
                         const response = await fetch(imageUrl);
@@ -159,13 +138,13 @@ const ArticleWrite = () => {
                         formData.append('images', file);
                     }
                 }
-    
+
                 // post
                 try {
                     const response = await postRequest('/api/article/write', formData, {
                         'Content-Type': 'multipart/form-data',
                     });
-    
+
                     if (response.status === 200) {
                         alert('기사가 성공적으로 제출되었습니다.');
                         navigate('/main');
@@ -175,20 +154,20 @@ const ArticleWrite = () => {
                     alert('기사 제출에 실패했습니다.');
                 }
             }
-            
+
 
         } else {
             handleCloseModal();
         }
     };
 
-    
+
     useEffect(() => {
         const fetchArticleData = async () => {
             try {
                 const response = await getRequest('/api/article/select', { id: articleId });
                 const articleData = response.data[0];
-                
+
                 if (articleData) {
                     setTitle(articleData.title);
                     setSubTitles(articleData.subtitle.split(',./'));
@@ -200,14 +179,17 @@ const ArticleWrite = () => {
                 console.error('기사를 불러오는 중 오류가 발생했습니다.', error);
             }
         };
-    
+
         if (isEdit && articleId) {
             fetchArticleData();
         }
     }, [isEdit, articleId]);
-    
 
-    
+
+    useEffect(() => {
+        console.log("현재 선택된 카테고리:", selectedCategory);
+    }, [selectedCategory]);
+
     return (
         <div className="mobile-container">
             <ArticleWriteForm
@@ -222,7 +204,7 @@ const ArticleWrite = () => {
                 setOriginalContent={setOriginalContent}
                 handleEditorChange={handleEditorChange}
                 selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
+                setSelectedCategory={handleCategoryChange}
                 content={originalContent}
             ></ArticleWriteForm>
 
