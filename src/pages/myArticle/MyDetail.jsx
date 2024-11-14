@@ -9,8 +9,8 @@ function MyDetail() {
     const { articleId } = useParams();
     const [article, setArticle] = useState();
 
-    const clickEdit = (id) => {
-        navigate(`/articleWrite/${id}`);
+    const clickEdit = () => {
+        navigate(`/articleWrite/${articleId}`);
     };
     const clickPrivate = (id) => {
         const isConfirmed = window.confirm('기사 비공개를 요청하시겠습니까?');

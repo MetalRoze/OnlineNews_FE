@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postRequest } from '../../apis/axios.jsx';
+import { getRequest, postRequest } from '../../apis/axios.jsx';
 
 const ArticleWrite = () => {
 
@@ -18,6 +18,8 @@ const ArticleWrite = () => {
     const [subTitles, setSubTitles] = useState(['']);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
+
+    const [article, setArticle] = useState();
 
     // 소제목 관리
     const addSubtitleForm = () => {
@@ -128,81 +130,82 @@ const ArticleWrite = () => {
             const mergedSubTitles = subTitles.join(',./');
             const categoryEnum = convertCategoryToEnum(selectedCategory);
 
-            const articleData = {
-                category: categoryEnum,
-                title: title,
-                subtitle: mergedSubTitles,
-                content: content,
-            };
-
-            // requestDTO
-            const formData = new FormData();
-            formData.append('requestDTO', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
-
-            // images
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(content, 'text/html');
-            const imageElements = doc.querySelectorAll('img');
-            const imageUrls = [];
-            imageElements.forEach((img) => {
-                imageUrls.push(img.src);
-            });
-
-            if (imageUrls.length > 0) {
-                for (const imageUrl of imageUrls) {
-                    const response = await fetch(imageUrl);
-                    const blob = await response.blob();
-                    const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
-                    formData.append('images', file);
-                }
-            }
-
-            // post
-            try {
-                const response = await postRequest('/api/article/write', formData, {
-                    'Content-Type': 'multipart/form-data',
+            if(!isEdit){
+                const articleData = {
+                    category: categoryEnum,
+                    title: title,
+                    subtitle: mergedSubTitles,
+                    content: content,
+                };
+    
+                // requestDTO
+                const formData = new FormData();
+                formData.append('requestDTO', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
+    
+                // images
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(content, 'text/html');
+                const imageElements = doc.querySelectorAll('img');
+                const imageUrls = [];
+                imageElements.forEach((img) => {
+                    imageUrls.push(img.src);
                 });
-
-                if (response.status === 200) {
-                    alert('기사가 성공적으로 제출되었습니다.');
-                    navigate('/main');
+    
+                if (imageUrls.length > 0) {
+                    for (const imageUrl of imageUrls) {
+                        const response = await fetch(imageUrl);
+                        const blob = await response.blob();
+                        const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
+                        formData.append('images', file);
+                    }
                 }
-            } catch (error) {
-                console.error("기사 제출 중 오류가 발생했습니다.", error);
-                alert('기사 제출에 실패했습니다.');
+    
+                // post
+                try {
+                    const response = await postRequest('/api/article/write', formData, {
+                        'Content-Type': 'multipart/form-data',
+                    });
+    
+                    if (response.status === 200) {
+                        alert('기사가 성공적으로 제출되었습니다.');
+                        navigate('/main');
+                    }
+                } catch (error) {
+                    console.error("기사 제출 중 오류가 발생했습니다.", error);
+                    alert('기사 제출에 실패했습니다.');
+                }
             }
+            
 
         } else {
             handleCloseModal();
         }
     };
 
-    // 수정 모드일 때
+    
     useEffect(() => {
-        console.log('isEdit 상태:', isEdit, 'articleId:', articleId);
-        if (isEdit) {
-            const fetchArticleData = async () => {
-                const article = {
-                    title: "임시 제목",
-                    subtitle: "소제목1,./소제목2,./소제목3",
-                    content: "<p>d<img src=\"https://onlinen-news-bucket.s3.amazonaws.com/articleImg/331234c1-9420-4207-9fff-c7a4c71bde87.jpeg\" height=\"500\" width=\"375\"></p>",
-                    category: "사회",
-                    authorName: "홍길동"
-                };
-        
-                try {
-                    setTitle(article.title);
-                    setSubTitles(article.subtitle.split(',./'));
-                    setOriginalContent(article.content);
-                    setSelectedCategory(article.category);
-                    setAuthorName(article.authorName);
-                } catch (error) {
-                    console.error("기사를 불러오는 중 오류가 발생했습니다.", error);
+        const fetchArticleData = async () => {
+            try {
+                const response = await getRequest('/api/article/select', { id: articleId });
+                const articleData = response.data[0];
+                
+                if (articleData) {
+                    setTitle(articleData.title);
+                    setSubTitles(articleData.subtitle.split(',./'));
+                    setOriginalContent(articleData.content);
+                    setSelectedCategory(articleData.category);
+                    setAuthorName(articleData.userID);
                 }
-            };
+            } catch (error) {
+                console.error('기사를 불러오는 중 오류가 발생했습니다.', error);
+            }
+        };
+    
+        if (isEdit && articleId) {
             fetchArticleData();
         }
     }, [isEdit, articleId]);
+    
 
     
     return (
