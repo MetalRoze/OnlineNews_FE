@@ -66,6 +66,20 @@ export default function FindId(){
     });
 
     const handleSubmit = () => {
+      if(validateMissingField()){
+
+        navigate('/findId/result', {  state: {
+          name: formData.name,
+          cellphone: {
+            part1: formData.cellphone.part1,
+            part2: formData.cellphone.part2,
+            part3: formData.cellphone.part3
+          }
+        }}); 
+      }
+    }
+
+    const validateMissingField = () =>{
       let missingFields = [];
 
       if (!formData.name) missingFields.push("이름");
@@ -73,10 +87,9 @@ export default function FindId(){
 
       if (missingFields.length > 0) {
         alert(`${missingFields[0]} 항목을 입력해주세요`);
-        return;
+        return false;
       }
-
-      navigate('/findId/result'); 
+      return true; 
     }
 
     const handleFindPassword = () => {
