@@ -13,6 +13,8 @@ function MyArticle() {
     const [selectedOption, setSelectedOption] = useState('all');
     const [searchText, setSearchText] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [isPublic, setIsPublic] = useState('');
+    const [status, setStatus] = useState('');
     const [result, setResult] = useState();
 
     const [totalItemsCount, setTotalItemsCount] = useState(0);
@@ -41,6 +43,16 @@ function MyArticle() {
                 filters.category = selectedCategory;
             }
 
+            if (isPublic) { // 공개 여부
+                if (isPublic === "true")
+                    filters.isPublic = true;
+                else
+                    filters.isPublic = false;
+            }
+
+            if (status) { // 상태
+                filters.state = status;
+            }
             const articleResponse = await getRequest('/api/article/select', filters);
 
             // 검색 결과 처리
@@ -89,14 +101,20 @@ function MyArticle() {
     const handleCategoryChange = (category) => { // 카테고리
         setSelectedCategory(category);
     };
+    const handlePublic = (e) => { // 공개여부
+        setIsPublic(e.target.value);
+    };
+    const handleStatus = (e) => { // 상태
+        setStatus(e.target.value);
+    };
     useEffect(() => {
         fetchArticle();
-    }, [selectedOption, searchText, selectedCategory]);
-
+    }, [selectedOption, searchText, selectedCategory, isPublic, status]);
     useEffect(() => {
         setSearchText('');
         setSelectedCategory('');
     }, [selectedOption])
+
     return (
         <div className='mobile-container'>
             <div className='flex space mb1' style={{ width: '100%' }}>
@@ -105,13 +123,26 @@ function MyArticle() {
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                     <option value="category">카테고리</option>
-                    <option value="category">카테고리</option>
                 </select>
                 {selectedOption === 'category' ? (
                     <Category selectedCategory={selectedCategory} setSelectedCategory={handleCategoryChange} />
                 ) : (
                     <SearchBar width={'100%'} onSearch={handleSearch} />
                 )}
+            </div>
+            <div className='flex mb1'>
+                <select className='mr1 pd10' onChange={handlePublic} value={isPublic}>
+                    <option value="">공개 여부</option>
+                    <option value="true">공개</option>
+                    <option value="false">비공개</option>
+                </select>
+                <select className='pd10' onChange={handleStatus} value={status}>
+                    <option value="">승인 여부</option>
+                    <option value="PENDING">승인대기</option>
+                    <option value="APPROVED">승인됨</option>
+                    <option value="HOLDING">보류됨</option>
+                    <option value="REJECTED">거절됨</option>
+                </select>
             </div>
             {result ? (
                 <div>
