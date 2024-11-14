@@ -1,39 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
-
-const articles = [
-    {
-        id: 1,
-        title: '정치 뉴스 1',
-        subtitle: '정치 소식 요약,./few,./few,./',
-        date: '2024-11-08',
-        content: '오늘 정치계에서는 많은 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는...',
-    },
-    {
-        id: 2,
-        title: '경제 뉴스 2',
-        subtitle: '경제 소식 요약',
-        date: '2024-11-07',
-        content: '경제 상황이 변화하며 주식 시장에 많은 영향을 미치고 있습니다... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는...',
-    },
-    {
-        id: 3,
-        title: '문화 뉴스 3',
-        subtitle: '문화 소식 요약',
-        date: '2024-11-06',
-        content: '오늘 문화계에서는 여러 행사가 열렸습니다. 특히 예술 공연이... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는... 사건이 발생했습니다. 국회에서는...',
-    },
-];
+import formatDate from '../../utils/formatDate';
+import { getRequest } from '../../apis/axios';
 
 function MyArticle() {
     const navigate = useNavigate();
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
+    const [itemsCountPerPage, setItemsCountPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [allArticles, setAllArticles] = useState([]);
 
+    // 기사 리스트 조회
+    const fetchArticle = async () => {
+        const authToken = sessionStorage.getItem('authToken');
+        if (!authToken) {
+            alert('로그인 정보가 없습니다.');
+            return;
+        }
+
+        try {
+            const userResponse = await getRequest('/api/user/myPage');
+            const userId = userResponse.data.id;
+            const articleResponse = await getRequest('/api/article/select', {
+                userId,
+                sortBy: "createdAt",
+                sortDirection: "desc",
+            });
+
+            const updatedArticles = articleResponse.data.map(article => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(article.content, 'text/html');
+                const firstParagraph = Array.from(doc.querySelectorAll('p'))
+                    .find(p => !p.querySelector('img'))?.outerHTML || '';
+
+                return {
+                    ...article,
+                    content: firstParagraph,
+                };
+            });
+
+            setAllArticles(updatedArticles);
+            setTotalItemsCount(updatedArticles.length);
+        } catch (error) {
+            console.error('Error fetching articles:', error);
+        }
+    };
+
+    // 페이지 이동
     const handleClick = (id) => {
         navigate(`/myDetail/${id}`);
     };
 
+    // 페이지네이션
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentArticles = allArticles.slice(startIdx, endIdx);
+
+    useEffect(() => {
+        fetchArticle();
+    }, []);
     return (
         <div className='mobile-container'>
             <div className='flex space mb1' style={{ width: '100%' }}>
@@ -42,24 +72,28 @@ function MyArticle() {
                     <option value="content">내용</option>
                     <option value="category">카테고리</option>
                 </select>
-                <SearchBar width={'100%'}/>
+                <SearchBar width={'100%'} />
             </div>
+            <div>전체 {totalItemsCount}</div>
             <ul className='myArticle mb1'>
-                {articles.map((article) => (
+                {currentArticles.map((article) => (
                     <li key={article.id} onClick={() => handleClick(article.id)} className='item'>
                         <div className='flex spaceBetween mb03'>
                             <h4 className='mr1 mtbAuto'>{article.title}</h4>
-                            <span className='mlAuto gray40 mtbAuto'>{article.date}</span>
+                            <span className='mlAuto gray40 mtbAuto'>{formatDate(new Date(article.createdAt))}</span>
                         </div>
                         <div className='mb05 gray60'>{article.subtitle.split(',./')[0]}</div>
-                        <div className='content'>
-                            {article.content}
-                        </div>
+                        <div className='content' dangerouslySetInnerHTML={{ __html: article.content }} />
                     </li>
                 ))}
             </ul>
 
-            <MyPagination itemsCountPerPage={12} totalItemsCount={300} pageRangeDisplayed={5} />
+            <MyPagination
+                itemsCountPerPage={itemsCountPerPage}
+                totalItemsCount={totalItemsCount}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 }
