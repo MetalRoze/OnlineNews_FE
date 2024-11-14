@@ -48,6 +48,11 @@ function MyArticle() {
         }
     };
 
+    // 기사 검색
+    const handleSearch = (searchText) => {
+        console.log('검색어:', searchText); 
+    };
+
     // 페이지 이동
     const handleClick = (id) => {
         navigate(`/myDetail/${id}`);
@@ -72,7 +77,7 @@ function MyArticle() {
                     <option value="content">내용</option>
                     <option value="category">카테고리</option>
                 </select>
-                <SearchBar width={'100%'} />
+                <SearchBar width={'100%'} onSearch={handleSearch} />
             </div>
             <div>전체 {totalItemsCount}</div>
             <ul className='myArticle mb1'>

@@ -1,13 +1,14 @@
 import React, {useRef} from 'react';
 
 
-export default function SearchBar({width}) {
+export default function SearchBar({width, onSearch}) {
     const inputRef = useRef(null);
 
-    const onSearch = () => {
+    const handleSearch = () => {
         const searchText = inputRef.current.value;
         if (searchText) {
-            console.log(searchText);  
+            console.log(searchText);
+            onSearch(searchText)  
         }
         inputRef.current.value = '';  
     };
@@ -19,7 +20,7 @@ export default function SearchBar({width}) {
                 placeholder='검색'
                 ref={inputRef}/>
 
-            <i className="bi bi-search ml05" onClick={onSearch} />
+            <i className="bi bi-search ml05" onClick={handleSearch} />
         </div>
     );
 }
