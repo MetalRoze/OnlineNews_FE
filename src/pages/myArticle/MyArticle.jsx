@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 import Category from '../../components/Category';
-import formatDate from '../../utils/formatDate';
+import formatDate from '../../utils/formDateTime';
 import MyPagination from '../../components/Pagination';
 import { getRequest } from '../../apis/axios';
 
@@ -149,14 +149,14 @@ function MyArticle() {
                     <div>전체 {totalItemsCount}</div>
                     <ul className='myArticle mb1'>
                         {currentArticles.map((article) => (
-                            <li key={article.id} onClick={() => handleClick(article.id)} className='item'>
-                                <div className='flex spaceBetween mb03'>
-                                    <h4 className='mr1 mtbAuto content'>{article.title}</h4>
-                                    <span className='mlAuto gray40 mtbAuto wsNowrap'>{formatDate(new Date(article.createdAt))}</span>
+                            <div className='item flex spaceBetween' onClick={() => handleClick(article.id)}>
+                                <img src={article.images[0]} className='Aimage'></img>
+                                <div style={{width:'77%'}}>
+                                    <h5 className='mb03 content'>{article.title}</h5>
+                                    <div className='mb1 gray60 content'>{article.subtitle.split(',./')[0]}</div>
+                                    <small className='gray40 block taRight'>{formatDate(new Date(article.createdAt))}</small>
                                 </div>
-                                <div className='mb05 gray60 content'>{article.subtitle.split(',./')[0]}</div>
-                                <div className='content' dangerouslySetInnerHTML={{ __html: article.content }} />
-                            </li>
+                            </div>
                         ))}
                     </ul>
 
