@@ -1,5 +1,5 @@
 import React, {useState} from 'react'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components'; 
 import TextButton from '../../components/TextButton'; 
 
@@ -40,6 +40,15 @@ export default function FindPassword(){
     });
 
     const handleSubmit = () => {
+      if(validateMissingField()){
+        navigate('/findPassword/result', { state : {
+          name : formData.name, 
+          email: formData.email
+        }});
+      }
+    }
+
+    const validateMissingField = () =>{
       let missingFields = [];
 
       if (!formData.name) missingFields.push("이름");
@@ -47,10 +56,10 @@ export default function FindPassword(){
 
       if (missingFields.length > 0) {
         alert(`${missingFields[0]} 항목을 입력해주세요`);
-        return;
+        return false;
       }
 
-      navigate('/findPassword/result'); 
+      return true; 
     }
 
     const handleFindId = () => {
