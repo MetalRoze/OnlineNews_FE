@@ -19,7 +19,7 @@ const ArticleWrite = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
 
-    const [article, setArticle] = useState();
+    const [articleData, setArticleData] = useState();
 
     // 소제목 관리
     const addSubtitleForm = () => {
@@ -43,35 +43,16 @@ const ArticleWrite = () => {
         setSubTitles(updatedSubTitles);
     };
 
-    // 카테고리 관리
-    const convertCategoryToEnum = (koreanCategory) => {
-        switch (koreanCategory) {
-            case "사회":
-                return "SOCIAL";
-            case "경제":
-                return "ECONOMY";
-            case "생활/문화":
-                return "LIFE_CULTURE";
-            case "연예":
-                return "ENTERTAINMENT";
-            case "기계/IT":
-                return "SCIENCE_TECH";
-            case "정치":
-                return "POLITICS";
-            case "오피니언":
-                return "OPINION";
-            default:
-                throw new Error("유효하지 않은 카테고리입니다.");
-        }
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
     };
-
     // 본문 관리
     const handleEditorChange = (originalContent) => {
         setOriginalContent(originalContent);
     };
 
     const handleContent = async () => {
-        if (!title || subTitles.some(subtitle => subtitle === '') || originalContent === '') {
+        if (!title || subTitles.some(subtitle => subtitle === '') || originalContent === '' || !selectedCategory) {
             alert("모든 필드를 작성해 주세요.");
             return;
         }
@@ -105,6 +86,7 @@ const ArticleWrite = () => {
         setContent(updatedHtml)
         setIsModalOpen(true);
     };
+
     useEffect(() => {
         if (content) {
 
@@ -120,7 +102,7 @@ const ArticleWrite = () => {
     // 모달 관리
     const handleCloseModal = () => {
         setIsModalOpen(false);
-    };   
+    };
 
     // 기사 제출
     const handleSubmit = async () => {
@@ -128,20 +110,100 @@ const ArticleWrite = () => {
 
         if (isConfirmed) {
             const mergedSubTitles = subTitles.join(',./');
-            const categoryEnum = convertCategoryToEnum(selectedCategory);
-
-            if(!isEdit){
-                const articleData = {
-                    category: categoryEnum,
+            if (isEdit) {
+                const newArticleData = {
+                    category: selectedCategory,
                     title: title,
                     subtitle: mergedSubTitles,
                     content: content,
                 };
-    
+
+                // 기존 데이터와 비교하여 차이점만 추출
+                const changes = {};
+
+                console.log('articleData', articleData);
+                if (newArticleData.category !== articleData.category) changes.category = newArticleData.category;
+                if (newArticleData.title !== articleData.title) changes.title = newArticleData.title;
+                if (newArticleData.subtitle !== articleData.subtitle) changes.subtitle = newArticleData.subtitle;
+                if (newArticleData.content !== articleData.content) changes.content = newArticleData.content;
+
+                // 차이가 있으면 수정 API 호출
+                if (Object.keys(changes).length > 0) {
+                    // requestDTO
+                    let requestDTO = {};
+                    const formData = new FormData();
+                    formData.append('requestDTO', new Blob([JSON.stringify(changes)], { type: 'application/json' }));
+
+                    // 이미지 처리 (기존 이미지도 수정되는 경우를 고려)
+                    const oldParser = new DOMParser();
+                    const oldDoc = oldParser.parseFromString(articleData.content, 'text/html');
+                    const oldImageElements = oldDoc.querySelectorAll('img');
+                    const oldImageUrls = [];
+                    oldImageElements.forEach((img) => {
+                        oldImageUrls.push(img.src);
+                    });
+
+                    const newParser = new DOMParser();
+                    const newDoc = newParser.parseFromString(content, 'text/html');
+                    const newImageElements = newDoc.querySelectorAll('img');
+                    const newImageUrls = [];
+                    newImageElements.forEach((img) => {
+                        newImageUrls.push(img.src);
+                    });
+                    // 새로운 이미지와 삭제할 이미지 구하기
+                    const imagesToDelete = oldImageUrls.filter((url) => !newImageUrls.includes(url)); // 기존에 있고 새로 없는 이미지
+                    const imagesToAdd = newImageUrls.filter((url) => !oldImageUrls.includes(url)); // 새로 추가된 이미지
+                    // 삭제할 이미지 처리 (requestDTO에 추가)
+                    if (imagesToDelete.length > 0) {
+                        requestDTO.deleteImages = imagesToDelete; // 삭제할 이미지 배열을 requestDTO에 추가
+                    }
+
+                    // FormData에 수정된 데이터와 새로운 이미지 처리
+                    formData.append('requestDTO', new Blob([JSON.stringify(requestDTO)], { type: 'application/json' }));
+
+                    // 새로운 이미지 처리
+                    if (imagesToAdd.length > 0) {
+                        for (const imageUrl of imagesToAdd) {
+                            const response = await fetch(imageUrl);
+                            const blob = await response.blob();
+                            const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
+                            formData.append('images', file); // 새로운 이미지 전송
+                        }
+                    }
+
+                    // 디버깅용: FormData 확인
+                    for (let [key, value] of formData.entries()) {
+                        console.log(key, value);
+                    }
+                    // try {
+                    //     const response = await patchRequest('/api/article/update', { id: articleId }, formData, {
+                    //         'Content-Type': 'multipart/form-data',
+                    //     });
+
+                    //     if (response.status === 200) {
+                    //         alert('기사가 성공적으로 수정되었습니다.');
+                    //         navigate('/main');
+                    //     }
+                    // } catch (error) {
+                    //     console.error("기사 수정 중 오류가 발생했습니다.", error);
+                    //     alert('기사 수정에 실패했습니다.');
+                    // }
+                } else {
+                    alert('수정된 내용이 없습니다.');
+                }
+            }
+            else {
+                const articleData = {
+                    category: selectedCategory,
+                    title: title,
+                    subtitle: mergedSubTitles,
+                    content: content,
+                };
+
                 // requestDTO
                 const formData = new FormData();
                 formData.append('requestDTO', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
-    
+
                 // images
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(content, 'text/html');
@@ -150,7 +212,7 @@ const ArticleWrite = () => {
                 imageElements.forEach((img) => {
                     imageUrls.push(img.src);
                 });
-    
+
                 if (imageUrls.length > 0) {
                     for (const imageUrl of imageUrls) {
                         const response = await fetch(imageUrl);
@@ -159,13 +221,13 @@ const ArticleWrite = () => {
                         formData.append('images', file);
                     }
                 }
-    
+
                 // post
                 try {
                     const response = await postRequest('/api/article/write', formData, {
                         'Content-Type': 'multipart/form-data',
                     });
-    
+
                     if (response.status === 200) {
                         alert('기사가 성공적으로 제출되었습니다.');
                         navigate('/main');
@@ -175,20 +237,21 @@ const ArticleWrite = () => {
                     alert('기사 제출에 실패했습니다.');
                 }
             }
-            
+
 
         } else {
             handleCloseModal();
         }
     };
 
-    
+
     useEffect(() => {
         const fetchArticleData = async () => {
             try {
                 const response = await getRequest('/api/article/select', { id: articleId });
-                const articleData = response.data[0];
-                
+                const articleData = response.data[0]
+                setArticleData(articleData)
+
                 if (articleData) {
                     setTitle(articleData.title);
                     setSubTitles(articleData.subtitle.split(',./'));
@@ -200,14 +263,17 @@ const ArticleWrite = () => {
                 console.error('기사를 불러오는 중 오류가 발생했습니다.', error);
             }
         };
-    
+
         if (isEdit && articleId) {
             fetchArticleData();
         }
     }, [isEdit, articleId]);
-    
 
-    
+
+    useEffect(() => {
+        console.log("현재 선택된 카테고리:", selectedCategory);
+    }, [selectedCategory]);
+
     return (
         <div className="mobile-container">
             <ArticleWriteForm
@@ -222,7 +288,7 @@ const ArticleWrite = () => {
                 setOriginalContent={setOriginalContent}
                 handleEditorChange={handleEditorChange}
                 selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
+                setSelectedCategory={handleCategoryChange}
                 content={originalContent}
             ></ArticleWriteForm>
 
