@@ -3,7 +3,7 @@ import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getRequest, postRequest, patchRequest } from '../../apis/axios.jsx';
-
+import formatDateTime from '../../utils/formDateTime.jsx';
 const ArticleWrite = () => {
 
     const navigate = useNavigate();
@@ -58,8 +58,8 @@ const ArticleWrite = () => {
         }
 
         const now = new Date();
-        const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} ${now.getHours() > 12 ? '오후' : '오전'} ${String(now.getHours() % 12 || 12).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        setArticleDate(formattedDate);
+        console.log(now)
+        setArticleDate(formatDateTime(now))
 
         // DB 저장을 위해 base64 to blob
         const imgRegex = /<img[^>]+src="([^">]+)"/g;
@@ -130,7 +130,7 @@ const ArticleWrite = () => {
                 if (Object.keys(changes).length > 0) {
                     let requestDTO = {
                         ...changes
-                    };                
+                    };
 
                     // 이미지 처리 - 원래 이미지
                     const oldParser = new DOMParser();
@@ -152,7 +152,7 @@ const ArticleWrite = () => {
 
                     const imagesToDelete = oldImageUrls.filter((url) => !newImageUrls.includes(url)); // 기존에 있고 새로 없는 이미지
                     const imagesToAdd = newImageUrls.filter((url) => !oldImageUrls.includes(url)); // 새로 추가된 이미지
-                   
+
                     // 삭제할 이미지 배열을 requestDTO에 추가
                     if (imagesToDelete.length > 0) {
                         requestDTO.deleteImages = imagesToDelete;
@@ -177,7 +177,7 @@ const ArticleWrite = () => {
 
                         if (response.status === 200) {
                             alert('기사가 성공적으로 수정되었습니다.');
-                            navigate(`/articleDetail/${articleId}`); 
+                            navigate(`/articleDetail/${articleId}`);
                         }
                     } catch (error) {
                         console.error("기사 수정 중 오류가 발생했습니다.", error);
