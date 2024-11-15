@@ -1,21 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import QuillEditor from './QuillEditor';
-import HorizontalScroll from '../../components/HorizontalScroll';
+import Category from '../../components/Category'
 
-const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
-
-const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory, 
+const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory,
     setSelectedCategory, content }) => {
 
-        useEffect(() => {
-            if (!selectedCategory) {
-                setSelectedCategory('정치');
-            }
-        }, [selectedCategory, setSelectedCategory]);
-    
-        useEffect(() => {
-            console.log("현재 선택된 카테고리:", selectedCategory);
-        }, [selectedCategory]);
 
     return (
         <div>
@@ -55,21 +44,11 @@ const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSub
 
             <div className="flex mtb1">
                 <h4 className="mr1 mtbAuto wsNowrap">카테고리</h4>
-                <HorizontalScroll>
-                    {categories.map((category, index) => (
-                        <button
-                            key={index}
-                            className={` ${selectedCategory === category ? 'unsubsButton' : 'subsButton'}`}
-                            onClick={() => setSelectedCategory(category)}
-                        >
-                            {category}
-                        </button>
-                    ))}
-                </HorizontalScroll>
+                <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
             </div>
             <hr />
 
-            <QuillEditor onChange={handleEditorChange} content={content}/>
+            <QuillEditor onChange={handleEditorChange} content={content} />
             <div className="flex">
                 <button className='mlAuto' onClick={handleContent}>미리보기</button>
             </div>

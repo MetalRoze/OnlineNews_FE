@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 import Category from '../../components/Category';
-import formatDate from '../../utils/formatDate';
+import formatDate from '../../utils/formDateTime';
 import MyPagination from '../../components/Pagination';
 import { getRequest } from '../../apis/axios';
 
@@ -101,12 +101,21 @@ function MyArticle() {
     const handleCategoryChange = (category) => { // 카테고리
         setSelectedCategory(category);
     };
-    const handlePublic = (e) => { // 공개여부
-        setIsPublic(e.target.value);
+    const handlePublic = (value) => { // 공개여부
+        setIsPublic(value);
     };
-    const handleStatus = (e) => { // 상태
-        setStatus(e.target.value);
+    const handleStatus = (value) => { // 상태
+        setStatus(value);
     };
+
+    const handleReset = () => {
+        setSearchText('');
+        setSelectedCategory('')
+        setSelectedOption('')
+        setIsPublic('');
+        setStatus('')
+    };
+
     useEffect(() => {
         fetchArticle();
     }, [selectedOption, searchText, selectedCategory, isPublic, status]);
@@ -130,33 +139,98 @@ function MyArticle() {
                     <SearchBar width={'100%'} onSearch={handleSearch} />
                 )}
             </div>
-            <div className='flex mb1'>
-                <select className='mr1 pd10' onChange={handlePublic} value={isPublic}>
-                    <option value="">공개 여부</option>
-                    <option value="true">공개</option>
-                    <option value="false">비공개</option>
-                </select>
-                <select className='pd10' onChange={handleStatus} value={status}>
-                    <option value="">승인 여부</option>
-                    <option value="PENDING">승인대기</option>
-                    <option value="APPROVED">승인됨</option>
-                    <option value="HOLDING">보류됨</option>
-                    <option value="REJECTED">거절됨</option>
-                </select>
+            <div className="flex mb1">
+                <div className='flex spaceBetween flex1'>
+                    <div className="">
+                        <div>
+                            <input
+                                type="radio"
+                                id="public"
+                                name="visibility"
+                                value="true"
+                                checked={isPublic === "true"}
+                                onChange={() => handlePublic("true")}
+                            />
+                            <label htmlFor="public">공개</label>
+
+                            <input
+                                type="radio"
+                                id="private"
+                                name="visibility"
+                                value="false"
+                                checked={isPublic === "false"}
+                                onChange={() => handlePublic("false")}
+                            />
+                            <label htmlFor="private">비공개</label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <input
+                                type="radio"
+                                id="pending"
+                                name="status"
+                                value="PENDING"
+                                checked={status === "PENDING"}
+                                onChange={() => handleStatus("PENDING")}
+                            />
+                            <label htmlFor="pending">승인대기</label>
+
+                            <input
+                                type="radio"
+                                id="approved"
+                                name="status"
+                                value="APPROVED"
+                                checked={status === "APPROVED"}
+                                onChange={() => handleStatus("APPROVED")}
+                            />
+                            <label htmlFor="approved">승인됨</label>
+
+                            <input
+                                type="radio"
+                                id="holding"
+                                name="status"
+                                value="HOLDING"
+                                checked={status === "HOLDING"}
+                                onChange={() => handleStatus("HOLDING")}
+                            />
+                            <label htmlFor="holding">보류됨</label>
+
+                            <input
+                                type="radio"
+                                id="rejected"
+                                name="status"
+                                value="REJECTED"
+                                checked={status === "REJECTED"}
+                                onChange={() => handleStatus("REJECTED")}
+                            />
+                            <label htmlFor="rejected">거절됨</label>
+                        </div>
+                    </div>
+                </div>
+                <div className='ml1 hoverGray' onClick={handleReset}> 초기화 </div>
+
             </div>
+
             {result ? (
                 <div>
-                    <div>전체 {totalItemsCount}</div>
+                    <div className='mtbAuto'>전체 {totalItemsCount}</div>
                     <ul className='myArticle mb1'>
                         {currentArticles.map((article) => (
-                            <li key={article.id} onClick={() => handleClick(article.id)} className='item'>
-                                <div className='flex spaceBetween mb03'>
-                                    <h4 className='mr1 mtbAuto content'>{article.title}</h4>
-                                    <span className='mlAuto gray40 mtbAuto wsNowrap'>{formatDate(new Date(article.createdAt))}</span>
+                            <div>
+                                <div className='item flex spaceBetween' onClick={() => handleClick(article.id)}>
+                                    {article.images[0] && (
+                                        <img src={article.images[0]} className='Aimage'></img>
+                                    )}
+                                    <div className='flex column' style={{ width: article.images[0] ? '77%' : '100%' }}>
+                                        <h5 className='mb03 content'>{article.title}</h5>
+                                        <div className='mb1 gray60 content'>{article.subtitle.split(',./')[0]}</div>
+                                        <small className='gray40 block taRight mtAuto'>{formatDate(new Date(article.createdAt))}</small>
+                                    </div>
                                 </div>
-                                <div className='mb05 gray60 content'>{article.subtitle.split(',./')[0]}</div>
-                                <div className='content' dangerouslySetInnerHTML={{ __html: article.content }} />
-                            </li>
+                                <hr></hr>
+                            </div>
                         ))}
                     </ul>
 

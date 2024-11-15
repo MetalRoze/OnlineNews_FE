@@ -10,7 +10,6 @@ export default function SearchBar({width, onSearch}) {
             console.log(searchText);
             onSearch(searchText)  
         }
-        inputRef.current.value = '';  
     };
     return (
         <div className='searchbar flex aiCenter pd10 br10' style={{width: width}}>

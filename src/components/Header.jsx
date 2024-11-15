@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MyDropdown from './DropDown';
+import blackLogo from '../assets/myeongbo_blue.svg';
 
 const formatDate = (date) => {
     const options = {
@@ -59,9 +60,9 @@ const Header = () => {
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div className='mobile-header' >
+            <div className='mobile-header'>
                 <div className='flex'>
-                    <img src="https://placehold.co/130x50" alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
+                    <img src={blackLogo} alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
                         style={{ cursor: 'pointer' }} />
                     <div className='date'>{formatDate(today)}</div>
                 </div>

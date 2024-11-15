@@ -2,6 +2,7 @@
  .flex {
     display: flex;
  }
+
  .inline {
     display: inline;
  }
@@ -11,8 +12,9 @@
  }
 
  .fixed {
-   position: fixed;
-}
+    position: fixed;
+ }
+
  .column {
     flex-direction: column;
  }
@@ -81,9 +83,11 @@
  .pd0 {
     padding: 0;
  }
-.pdl05 {
-   padding-left: 0.5rem;
-}
+
+ .pdl05 {
+    padding-left: 0.5rem;
+ }
+
  .pdlr20 {
     padding-inline: 20px;
  }
@@ -95,6 +99,10 @@
 
  .ml05 {
     margin-left: 0.5rem;
+ }
+
+ .ml1 {
+    margin-left: 1rem;
  }
 
  .mr1 {
@@ -114,8 +122,9 @@
  }
 
  .mb03 {
-   margin-bottom: 0.3rem;
-}
+    margin-bottom: 0.3rem;
+ }
+
  .mb1 {
     margin-bottom: 1rem;
  }
@@ -140,6 +149,10 @@
     margin-block: 1rem;
  }
 
+ .flex1 {
+    flex: 1;
+ }
+
  /* border */
  .br10 {
     border-radius: 10px;
@@ -154,13 +167,18 @@
     color: white;
  }
 
+ .gray30 {
+    color: var(--color-gray30);
+ }
+
  .gray40 {
     color: var(--color-gray40);
  }
 
- .gray60{
-   color: var(--color-gray60);
+ .gray60 {
+    color: var(--color-gray60);
  }
+
  .blue {
     color: var(--color-blue);
  }
