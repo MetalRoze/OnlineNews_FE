@@ -12,6 +12,11 @@ function MyDetail() {
     const clickEdit = () => {
         navigate(`/articleWrite/${articleId}`);
     };
+
+    const clickOriginal = () => {
+        navigate(`/articleDetail/${articleId}`);
+    };
+
     const clickPrivate = (id) => {
         const isConfirmed = window.confirm('기사 비공개를 요청하시겠습니까?');
         if (isConfirmed) {
@@ -61,7 +66,8 @@ function MyDetail() {
             <div className='flex spaceBetween mb1'>
                 <div className='flex'>
                     <a onClick={clickEdit} className='mr1 pointer'>수정</a>
-                    <a onClick={clickPrivate} className='pointer'>비공개</a>
+                    <a onClick={clickPrivate} className='mr1 pointer'>비공개</a>
+                    <a onClick={clickOriginal} className='pointer pointer'>원문보기</a>
                 </div>
                 <div className='flex' style={{
                     backgroundColor: "var(--color-blue)",

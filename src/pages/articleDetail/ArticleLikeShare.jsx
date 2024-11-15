@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SubscriptionModal from './SubscriptionModal';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
+import blackLogo from '../../assets/myeongbo_black.svg';
 
 const ArticleLikeShare = ({
     article,
@@ -16,11 +17,13 @@ const ArticleLikeShare = ({
     handleEmailSubscribe,
     handleEmailUnsubscribe
 }) => {
-
+    const handleLogoClick = () => {
+        navigate('/');
+    };
     return (
         <div>
             <div className='mt1 flex'>
-                <img className='br10' src={article.publisherImage} alt="Bootstrap" />
+            <img src={blackLogo} alt="Bootstrap" className='logo block' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
                 <div className='mlAuto'>
                     <p className='m0'>{article.userName} 기자 {article.userEmail}</p>
                     <small className='gray40'>{article.userBio}</small>

@@ -8,7 +8,6 @@ const ArticleContent = ({
     return (
         <div>
             <div>
-                <img className='br10' src={article.publisherImage} alt="Bootstrap" />
                 <h1 className='mt1'>{article.title}</h1>
                 {article.subtitle.split(',./').map((sub, index) => (
                     <h3 className='articleSubtitle' key={index}>{sub.trim()}</h3>  // 공백 제거
