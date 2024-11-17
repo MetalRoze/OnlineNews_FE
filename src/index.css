@@ -69,13 +69,14 @@ body {
   display: flex;
   background-color: var(--color-gray10);
 }
-ul, ol{
+
+ul,
+ol {
   padding: 0;
 }
 
 p {
   font-size: 1rem;
-  font-weight: 500;
   margin-bottom: 1rem;
 }
 
@@ -170,6 +171,14 @@ input[type="text"]:focus {
   outline: none;
 }
 
+input[type="radio"] {
+  margin-right: 0.3rem;
+}
+
+label {
+  margin-right: 0.5rem;
+}
+
 select {
   border-radius: 10px;
   background-color: var(--color-black);
@@ -201,20 +210,20 @@ select {
   margin: auto;
 }
 
-.ql-formats{
+.ql-formats {
   margin: auto;
 }
 
-/* 스크롤바 */ 
+/* 스크롤바 */
 ::-webkit-scrollbar {
-  width: 8px; 
+  width: 8px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);  
-  border-radius: 10px;  
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
 }
- 
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-black)
 }

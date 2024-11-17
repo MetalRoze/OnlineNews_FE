@@ -62,7 +62,7 @@ function App() {
 const Basic = () => {
   const location = useLocation();
 
-  const isDetail = location.pathname.toLowerCase() === '/articledetail';
+  const isDetail = location.pathname.toLowerCase().startsWith('/articledetail');
 
   // 데스크탑 푸터 사용할 페이지 경로
   const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail","/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
