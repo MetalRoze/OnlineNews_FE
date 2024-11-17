@@ -4,26 +4,14 @@ import styled from 'styled-components';
 
 import checkIcon from '../../assets/check-circle.svg';
 
-
-const HeadWrapper = styled.div`
-    width: 600px;
-    min-height: 100vh; 
-    padding: 20px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center;
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
-
 const IconWrapper = styled.div`
-    margin-bottom: 50px; // 아이콘과 텍스트 사이의 간격
+    margin-bottom: 50px; 
 `;
 
 const Message = styled.h1`
-    font-size: 1.75rem; // 텍스트 크기
-    color: var(--color-black); // 텍스트 색상
-    text-align: center; // 텍스트 가운데 정렬
+    font-size: 1.75rem;
+    color: var(--color-black);
+    text-align: center;
 `;
 
 const NextButton = styled.button`
@@ -49,7 +37,7 @@ export default function Signup() {
     };
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <IconWrapper>
                 <img 
                     width='180px' 
@@ -59,7 +47,7 @@ export default function Signup() {
             <Message>회원가입이 완료되었습니다</Message>
 
             <NextButton onClick={handleNext}>확인</NextButton>
-        </HeadWrapper>
-
+        </div>
+    
     );
 }

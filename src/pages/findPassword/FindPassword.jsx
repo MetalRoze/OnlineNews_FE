@@ -1,18 +1,7 @@
 import React, {useState} from 'react'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components'; 
 import TextButton from '../../components/TextButton'; 
-
-const HeadWrapper = styled.div
-` width: 600px;
-  min-height: 100vh; 
-  padding: 20px; 
-  display: flex; 
-  flex-direction:column;
-  justify-content: center; 
-  align-items: center; 
-  background-color: var(--color-white); `
-; 
 
 const MenuWrapper = styled.div
 `  display: flex;
@@ -51,6 +40,15 @@ export default function FindPassword(){
     });
 
     const handleSubmit = () => {
+      if(validateMissingField()){
+        navigate('/findPassword/result', { state : {
+          name : formData.name, 
+          email: formData.email
+        }});
+      }
+    }
+
+    const validateMissingField = () =>{
       let missingFields = [];
 
       if (!formData.name) missingFields.push("이름");
@@ -58,10 +56,10 @@ export default function FindPassword(){
 
       if (missingFields.length > 0) {
         alert(`${missingFields[0]} 항목을 입력해주세요`);
-        return;
+        return false;
       }
 
-      navigate('/findPassword/result'); 
+      return true; 
     }
 
     const handleFindId = () => {
@@ -69,7 +67,7 @@ export default function FindPassword(){
     }
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <MenuWrapper>
                 <TextButton
                     label="이메일 찾기"
@@ -115,7 +113,7 @@ export default function FindPassword(){
             </InputContainer>
 
             <button onClick={handleSubmit} type="submit" className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>비밀번호 찾기</button>
-        </HeadWrapper>
+        </div>
     )
  
 }

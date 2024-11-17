@@ -2,21 +2,66 @@ import React, { useState, useEffect } from "react";
 import SubPub from "./SubPub";
 import styled from "styled-components";
 import PubProfile from "./PubProfile";
+import axios from "axios";
 
 export default function SubManage() {
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
-    const pubProfiles = Array(12).fill(0); // 12개의 PubProfile 컴포넌트를 생성 (예시)
-    const labels = ["전체", "종합지", "경제지", "매거진", "지역지", "전문지"];
+    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "전문지"];
     const [selectedLabel, setSelectedLabel] = useState("전체"); // 초기 값 '전체'
+    const [publishers, setPublishers] = useState([]);
+
+    const labelToTypeMapping = {
+        종합지: "GENERAL",
+        인터넷: "INTERNET",
+        매거진: "MAGAZINE",
+        "방송/엔터": "ENTERTAINMENT",
+        전문지: "SPECIALIZED"
+    };
 
     const handleLabelClick = (label) => {
         setSelectedLabel(label);
         console.log(`${label} 클릭됨`);
+    
+        // "전체"를 선택한 경우, 모든 데이터를 가져오는 요청
+        if (label === "전체") {
+            axios.get("/api/publisher") // "전체"는 /api/publisher로 요청
+                .then(response => {
+                    setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching publishers:', error);
+                });
+        } else {
+            // 선택한 label에 맞는 type에 대해 API 요청
+            const type = labelToTypeMapping[label]; // 클릭한 label에 해당하는 Type 찾기
+    
+            if (type) {
+                axios.get(`/api/publisher/type?pub_type=${type}`)
+                    .then(response => {
+                        setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching publishers:', error);
+                    });
+            }
+        }
     };
+    
 
     useEffect(() => {
         setSelectedLabel("전체"); // 컴포넌트가 처음 렌더링될 때 '전체'를 선택
-    }, []);
+
+        axios.get("/api/publisher")
+            .then(response => {
+                setPublishers(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching subscriptions:', error);
+            });
+    }, []);  // 빈 배열을 의존성으로 두어 한 번만 실행되도록 설정
 
     return (
         <div className='mobile-container column'>
@@ -34,15 +79,20 @@ export default function SubManage() {
                         key={label}
                         isSelected={selectedLabel === label}
                         onClick={() => handleLabelClick(label)}
-                    > 
+                    >
                         {label}
                     </Label>
                 ))}
             </LabelContainer>
 
             <ProfileContainer>
-                {pubProfiles.map((_, index) => (
-                    <PubProfile key={index} />
+                {publishers.map((publisher, index) => (
+                    <PubProfile
+                        key={index}
+                        publisherImg={publisher.publisher_img}
+                        publisherName={publisher.publisher_name}
+                        publisherType={publisher.publisher_type}
+                        publisherUrl={publisher.publisher_url} />
                 ))}
             </ProfileContainer>
         </div>
@@ -63,7 +113,6 @@ const GrayBox = styled.div`
     background-color: #ccc;
     padding: 1rem;
     border-radius: 1rem;
-    max-width: 48rem;
 `;
 
 const Label = styled.div`
@@ -92,8 +141,9 @@ const ProfileContainer = styled.div`
     grid-template-columns: repeat(4, 1fr); /* 4개씩 열 */
     gap: 1rem;
     width: 90%;
-    max-width: 48rem;
-    // background : black;
-    margin: 0 auto; /* 중앙 정렬 */
-    
+    margin: 0 auto;
+
+    @media (max-width: 600px) {
+        gap: 0.3rem;
+    }
 `;

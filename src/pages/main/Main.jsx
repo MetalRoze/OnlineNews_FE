@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
@@ -7,6 +7,11 @@ import styled from "styled-components";
 export default function Main() {
     const articles = Array(6).fill(0);
 
+    useEffect(() => {
+        const apiUrl = import.meta.env.VITE_API_URL;  // Vite에서 환경 변수는 import.meta.env로 접근
+        console.log('API URL:', apiUrl); // 확인
+
+    }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />

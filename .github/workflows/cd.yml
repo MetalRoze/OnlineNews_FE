@@ -27,5 +27,5 @@ jobs:
             cd /home/ubuntu/OnlineNews_FE/
             git pull origin main
             npm install
-            nohup npm start &
+            nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
             sudo systemctl restart nginx  
