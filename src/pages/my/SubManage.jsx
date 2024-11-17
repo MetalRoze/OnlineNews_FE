@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function SubManage() {
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
-    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "지역지", "전문지"];
+    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "경제지", "지역지"];
     const [selectedLabel, setSelectedLabel] = useState("전체"); // 초기 값 '전체'
     const [publishers, setPublishers] = useState([]);
 
@@ -15,8 +15,8 @@ export default function SubManage() {
         인터넷: "INTERNET",
         매거진: "MAGAZINE",
         "방송/엔터": "ENTERTAINMENT",
-        지역지 : "LOCAL",
-        전문지: "SPECIALIZED"
+        경제지 : "ECONOMY",
+        지역지 : "LOCAL"
     };
 
     const handleLabelClick = (label) => {

@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function Society() {
-    const articles = Array(6).fill(0);
+    const [articles, setArticles] = useState([]);
+    // const articles = Array(6).fill(0);
+    useEffect(() => {
+        // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
+        const fetchArticles = async () => {
+            try {
+                const response = await axios.get("/api/main-article/category");
+                setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
+                console.log(articles);
+            } catch (error) {
+                console.error("Failed to fetch articles:", error);
+            }
+        };
+
+        fetchArticles();
+    }, []);
+
 
     return (
         <div className='flex column mobile-container m0 pd0'>
@@ -14,10 +31,10 @@ export default function Society() {
 
             {/* <Divider />  */}
 
-            {articles.map((_, index) => (
-                <div>
-                    <BasicArticle key={index} />
-                    <hr></hr>
+            {articles.map((article) => (
+                <div key={article.id}>
+                    <BasicArticle article={article} />
+                    <hr />
                 </div>
             ))}
         </div>
