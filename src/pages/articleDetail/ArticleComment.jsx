@@ -10,7 +10,7 @@ const ArticleComment = ({
     const [comments, setComments] = useState([]);
 
     const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const [itemsCountPerPage] = useState(3);
+    const [itemsCountPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [resetKey, setResetKey] = useState(0);
 
@@ -32,10 +32,8 @@ const ArticleComment = ({
                     isActive: false
                 }));
 
-
                 setComments(updatedComments)
                 setTotalItemsCount(updatedComments.length);
-
                 setResetKey(prevKey => prevKey + 1);
                 setCurrentPage(1)
             })
@@ -64,7 +62,6 @@ const ArticleComment = ({
             };
 
             try {
-                console.log('cc', newCommentData)
                 await postRequest('/api/comment', newCommentData);
                 fetchComment();
             } catch (error) {
@@ -84,7 +81,6 @@ const ArticleComment = ({
             )
         );
     };
-
 
     const handleLikeToggle = (commentId) => {
         setComments(prevComments =>
@@ -107,26 +103,22 @@ const ArticleComment = ({
         setReplyContent(e.target.value);
     };
 
-    const handleReplySubmit = (commentId) => {
+    const handleReplySubmit = async (commentId) => {
         if (replyContent.trim()) {
             const newReplyData = {
-                commentId: Date.now().toString(),
-                user: 'yourUsername',
-                date: new Date().toLocaleString(),
-                content: replyContent,
-                likeCount: '0',
-                isActive: false,
+                commentID: commentId,
+                content: replyContent
             };
-            setComments(prevComments =>
-                prevComments.map(comment =>
-                    comment.id === commentId
-                        ? { ...comment, replies: [...comment.replies, newReplyData] }
-                        : comment
-                )
-            );
-            setReplyContent('');
+            try {
+                await postRequest('/api/comment/replies', newReplyData);
+                fetchComment();
+                setReplyContent('')
+            } catch (error) {
+                alert("답글 작성에 실패했습니다.")
+            }
         }
     };
+    
     const handleReplyLikeToggle = (commentId, replyId) => {
         setComments(prevComments =>
             prevComments.map(comment =>
