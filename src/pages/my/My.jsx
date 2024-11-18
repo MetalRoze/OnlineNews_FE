@@ -5,13 +5,14 @@ import styled from "styled-components";
 import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';  // axios 임포트
+import { getRequest } from '../../apis/axios';
+
 
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
 
     const articles = Array(7).fill(0); // 배열 선언
-    const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
+    const subPubs = subscriptions.slice(0, 7); // 최대 7개의 구독만 렌더링
     const navigate = useNavigate();
     const [publishers, setPublishers] = useState([]); // API에서 가져온 데이터를 저장할 상태
 
@@ -19,23 +20,18 @@ export default function My() {
         navigate('/subManage');
     }
 
-    useEffect(() => {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        console.log('API URL:', apiUrl); // 확인
-
-
-        // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
-        axios.get(`${apiUrl}/api/subscription`, {
-            headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjI2Njc3LCJpYXQiOjE3MzEyMjMwNzd9.1p71Bgku3jas40NR9TToMgflCmy5bvcPkEFy2ZyJZZU`
-            }
-        })
-        .then(response => {
-            setSubscriptions(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
-        })
-        .catch(error => {
+    const fetchMy = async () => {
+        try {
+            const response = await getRequest('/api/subscription');
+            setSubscriptions(response.data);
+        } catch (error) {
             console.error('Error fetching subscriptions:', error);
-        });
+        }
+    }
+
+    useEffect(() => {
+
+        fetchMy();
     }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
 
     useEffect(() => {
@@ -52,8 +48,8 @@ export default function My() {
                 <div>
                     <CenteredContainer>
                         <GrayBox>
-                            {subPubs.map((_, index) => (
-                                <SubPub key={index} publisher={`신문사 ${index + 1}`} />
+                            {subPubs.map((sub, index) => (
+                                <SubPub key={index} publisher={sub.publisher_name} />
                             ))}
                             <AddIconBox>
                                 <CgAddR size={28} onClick={handleSetPub} /> {/* 8번째 칸에 아이콘만 표시 */}

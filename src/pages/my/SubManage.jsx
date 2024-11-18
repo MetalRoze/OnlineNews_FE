@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import SubPub from "./SubPub";
 import styled from "styled-components";
 import PubProfile from "./PubProfile";
-import axios from "axios";
+import { getRequest } from '../../apis/axios';
 
 export default function SubManage() {
-    const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
-    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "전문지"];
-    const [selectedLabel, setSelectedLabel] = useState("전체"); // 초기 값 '전체'
-    const [publishers, setPublishers] = useState([]);
-
+    const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
+    const [publishers, setPublishers] = useState([]); // 발행자 정보를 저장할 상태
+    const [selectedLabel, setSelectedLabel] = useState("전체"); // 선택된 라벨 상태
+    const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "전문지"]; // 라벨 목록
     const labelToTypeMapping = {
         종합지: "GENERAL",
         인터넷: "INTERNET",
@@ -18,57 +17,63 @@ export default function SubManage() {
         전문지: "SPECIALIZED"
     };
 
+    // 구독 데이터를 가져오는 함수
+    const fetchMy = async () => {
+        try {
+            const response = await getRequest('/api/subscription');
+            setSubscriptions(response.data); // 받아온 구독 정보를 상태에 저장
+        } catch (error) {
+            console.error('Error fetching subscriptions:', error);
+        }
+    }
+
+    // 발행자 데이터를 가져오는 함수
+    const fetchPublishers = async (type = null) => {
+        try {
+            const url = type ? `/api/publisher/type?pub_type=${type}` : '/api/publisher';
+            const response = await getRequest(url);
+            setPublishers(response.data); // 받아온 발행자 정보를 상태에 저장
+        } catch (error) {
+            console.error('Error fetching publishers:', error);
+        }
+    };
+
+    // 라벨 클릭 시 호출되는 함수
     const handleLabelClick = (label) => {
         setSelectedLabel(label);
         console.log(`${label} 클릭됨`);
-    
-        // "전체"를 선택한 경우, 모든 데이터를 가져오는 요청
+        // "전체"일 경우에는 전체 발행자 데이터를 가져오기
         if (label === "전체") {
-            axios.get("/api/publisher") // "전체"는 /api/publisher로 요청
-                .then(response => {
-                    setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching publishers:', error);
-                });
+            fetchPublishers();
         } else {
-            // 선택한 label에 맞는 type에 대해 API 요청
-            const type = labelToTypeMapping[label]; // 클릭한 label에 해당하는 Type 찾기
-    
+            // 해당 라벨에 맞는 발행자 타입으로 API 호출
+            const type = labelToTypeMapping[label];
             if (type) {
-                axios.get(`/api/publisher/type?pub_type=${type}`)
-                    .then(response => {
-                        setPublishers(response.data);  // 받은 데이터로 publishers 상태 업데이트
-                        console.log(response.data);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching publishers:', error);
-                    });
+                fetchPublishers(type);
             }
         }
     };
-    
 
+    // 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 설정
     useEffect(() => {
-        setSelectedLabel("전체"); // 컴포넌트가 처음 렌더링될 때 '전체'를 선택
+        fetchPublishers(); // 전체 발행자 정보 가져오기
+        fetchMy(); // 구독 정보 가져오기
+    }, []);  // 빈 배열을 의존성 배열로 사용
 
-        axios.get("/api/publisher")
-            .then(response => {
-                setPublishers(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching subscriptions:', error);
-            });
-    }, []);  // 빈 배열을 의존성으로 두어 한 번만 실행되도록 설정
+    // subscriptions 상태가 바뀔 때마다 최신 구독 정보를 로그로 출력
+    useEffect(() => {
+        console.log('Updated subscriptions:', subscriptions);
+    }, [subscriptions]);
+
+    // subPubs 배열을 subscriptions 데이터를 기반으로 만들어서 최대 7개만 보여주도록 설정
+    const subPubs = subscriptions.slice(0, 7);
 
     return (
         <div className='mobile-container column'>
             <CenteredContainer>
                 <GrayBox>
-                    {subPubs.map((_, index) => (
-                        <SubPub key={index} publisher={`신문사 ${index + 1}`} />
+                    {subPubs.map((sub, index) => (
+                        <SubPub key={index} publisher={sub.publisher_name} />
                     ))}
                 </GrayBox>
             </CenteredContainer>
