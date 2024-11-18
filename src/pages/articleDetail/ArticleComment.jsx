@@ -29,7 +29,11 @@ const ArticleComment = ({
                 const updatedComments = response.data.map(comment => ({
                     ...comment,
                     isReplyVisible: false,
-                    isActive: false
+                    isActive: false,
+                    replies: comment.replies.map(reply => ({
+                        ...reply,
+                        isActive: false
+                    }))
                 }));
 
                 setComments(updatedComments)
@@ -60,10 +64,10 @@ const ArticleComment = ({
                 articleId: articleId,
                 content: newComment
             };
-
             try {
-                await postRequest('/api/comment', newCommentData);
-                fetchComment();
+                const response = await postRequest('/api/comment', newCommentData);
+                setComments(prevComments => [response.data, ...prevComments]);
+                setNewComment('');
             } catch (error) {
                 alert("댓글 작성에 실패했습니다.")
             }
@@ -82,22 +86,6 @@ const ArticleComment = ({
         );
     };
 
-    const handleLikeToggle = (commentId) => {
-        setComments(prevComments =>
-            prevComments.map(comment =>
-                comment.id === commentId
-                    ? {
-                        ...comment,
-                        isActive: !comment.isActive,
-                        likeCount: comment.isActive
-                            ? (parseInt(comment.likeCount) - 1).toString()
-                            : (parseInt(comment.likeCount) + 1).toString()
-                    }
-                    : comment
-            )
-        );
-    };
-
     // 답글
     const handleReplyChange = (e) => {
         setReplyContent(e.target.value);
@@ -109,37 +97,79 @@ const ArticleComment = ({
                 commentID: commentId,
                 content: replyContent
             };
+
             try {
-                await postRequest('/api/comment/replies', newReplyData);
-                fetchComment();
-                setReplyContent('')
+                const response = await postRequest('/api/comment/replies', newReplyData);
+                const newReply = response.data;
+                setComments(prevComments =>
+                    prevComments.map(comment =>
+                        comment.id === commentId
+                            ? {
+                                ...comment,
+                                replies: [...comment.replies, newReply]
+                            }
+                            : comment
+                    )
+                );
+                setReplyContent('');
             } catch (error) {
                 alert("답글 작성에 실패했습니다.")
             }
         }
     };
     
-    const handleReplyLikeToggle = (commentId, replyId) => {
-        setComments(prevComments =>
-            prevComments.map(comment =>
-                comment.id === commentId
-                    ? {
-                        ...comment,
-                        replies: comment.replies.map(reply =>
-                            reply.id === replyId
-                                ? {
-                                    ...reply,
-                                    isActive: !reply.isActive,
-                                    likeCount: reply.isActive
-                                        ? (parseInt(reply.likeCount) - 1).toString()
-                                        : (parseInt(reply.likeCount) + 1).toString()
-                                }
-                                : reply
+    const handleLikeToggle = async (commentId, likeStatus, type) => {
+        try {
+            if (type === 'comment') {
+                if (likeStatus) {
+                    await postRequest(`/api/comment/${commentId}/unlike`);
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? { ...comment, likeStatus: false, likeCount: comment.likeCount - 1 }
+                                : comment
                         )
-                    }
-                    : comment
-            )
-        );
+                    );
+                } else {
+                    await postRequest(`/api/comment/${commentId}/like`);
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? { ...comment, likeStatus: true, likeCount: comment.likeCount + 1 }
+                                : comment
+                        )
+                    );
+                }
+            } else if (type === 'reply') {
+                if (likeStatus) {
+                    await postRequest(`/api/comment/${commentId}/unlike`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => ({
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, likeStatus: false, likeCount: reply.likeCount - 1 }
+                                    : reply
+                            )
+                        }))
+                    );
+                } else {
+                    await postRequest(`/api/comment/${commentId}/like`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => ({
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, likeStatus: true, likeCount: reply.likeCount + 1 }
+                                    : reply
+                            )
+                        }))
+                    );
+                }
+            }
+        } catch (error) {
+            alert("좋아요를 누를 수 없습니다.");
+        }
     };
 
     useEffect(() => {
@@ -187,8 +217,8 @@ const ArticleComment = ({
                             </small>
 
                             <i
-                                className={`bi block taCenter mlAuto ${comment.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                onClick={() => handleLikeToggle(comment.id)}
+                                className={`bi block taCenter mlAuto ${comment.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                onClick={() => handleLikeToggle(comment.id, comment.likeStatus,'comment' )}
                             ></i>
                             <small className='taCenter ml05'>{comment.likeCount}</small>
                         </div>
@@ -207,8 +237,8 @@ const ArticleComment = ({
                                         <p className='mt05'>{reply.content}</p>
                                         <div className='flex'>
                                             <i
-                                                className={`bi block taCenter mlAuto ${reply.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                                onClick={() => handleReplyLikeToggle(comment.id, reply.id)}
+                                                className={`bi block taCenter mlAuto ${reply.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                                onClick={() => handleLikeToggle(reply.id, reply.likeStatus,'reply')}
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>
