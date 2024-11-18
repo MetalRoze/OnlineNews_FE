@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleDetail from '../articleDetail/ArticleDetail';
+import { useParams } from 'react-router-dom';
 
 export default function RequestDetail() {
     const { id } = useParams();
@@ -14,7 +15,7 @@ export default function RequestDetail() {
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow' style={{width: 'fit-content'}}>
                     <div className='pd20'>
-                        <ArticleDetail />
+                        {/* <ArticleDetail /> */}
                     </div>
                     <div className='flex desktop-request-3buttons br10'>
                         <button>승인</button>
