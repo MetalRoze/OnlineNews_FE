@@ -6,37 +6,16 @@ const ArticleComment = ({
 }) => {
     const [newComment, setNewComment] = useState('');
     const [replyContent, setReplyContent] = useState('');
-    const [comments, setComments] = useState([
-        {
-            id: '01',
-            userName: 'wangwang',
-            createdAt: '2024.09.27 9:23',
-            content: 'Lorem, ipsum dolor sit amet consectetur.',
-            likeCount: '511',
-            replies: [],
-            isReplyVisible: false,
-            isActive: false,
-        },
-        {
-            id: '02',
-            userName: 'malmal',
-            createdAt: '2024.09.27 10:23',
-            content: 'Lorem, ipsum dolor sit amet consectetur.',
-            likeCount: '221',
-            replies: [],
-            isReplyVisible: false,
-            isActive: false,
-        },
-    ]);
+    const [comments, setComments] = useState([]);
 
+    // 댓글/답글 조회
     const fetchComment = async () => {
         getRequest(`/api/comment/article/${articleId}`)
             .then(response => {
-                // setComments(response.data)
                 const updatedComments = response.data.map(comment => ({
-                    ...comment, // 기존 댓글 데이터 유지
-                    isReplyVisible: false, // 새로운 필드 추가
-                    isActive: false       // 새로운 필드 추가
+                    ...comment, 
+                    isReplyVisible: false, 
+                    isActive: false
                 }));
     
                 setComments(updatedComments)
@@ -58,20 +37,21 @@ const ArticleComment = ({
         return `${firstChar}${obscuredPart}${lastChar}`;
     };
 
-    // 댓글
-    const handleCommentSubmit = () => {
+    // 댓글 달기
+    const handleCommentSubmit = async () => {
         if (newComment.trim()) {
             const newCommentData = {
-                commentId: Date.now().toString(),
-                user: 'yourUsername',
-                date: new Date().toLocaleString(),
-                content: newComment,
-                likeCount: '0',
-                replies: [],
-                isReplyVisible: false,
+                articleId: articleId,
+                content: newComment
             };
-            setComments(prevComments => [...prevComments, newCommentData]);
-            setNewComment('');
+
+            try {
+                console.log('cc', newCommentData)
+                await postRequest('/api/comment', newCommentData);
+                fetchComment();
+            } catch (error) {
+                alert("댓글 작성에 실패했습니다.")
+            }
         }
     };
 
