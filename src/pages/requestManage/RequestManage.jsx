@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
-import { convertStatusToKor, convertStatusToEng } from '../../utils/convertStatus';
+import { convertStatusToKor } from '../../utils/convertStatus';
 import { getRequest } from '../../apis/axios';
 import { DesktopList } from '../../components/DesktopList';
 
@@ -20,8 +20,8 @@ export default function RequestManage() {
     //request api
     const fetchRequests = async (status) => {
         try {
-            const endpoint = status === 'allRequests' 
-                ? '/api/request' 
+            const endpoint = status === 'allRequests'
+                ? '/api/request'
                 : '/api/request/status';
             const params = status === 'allRequests' ? {} : { keyword: status };
             const response = await getRequest(endpoint, params);
@@ -39,7 +39,7 @@ export default function RequestManage() {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    
+
     const startIdx = (currentPage - 1) * 12;
     const endIdx = startIdx + 12;
     const currentRequests = requests.slice(startIdx, endIdx);
@@ -63,12 +63,20 @@ export default function RequestManage() {
             <div className="desktop-container">
                 <div className="flex aiCenter spaceBetween mb1">
                     <h2>승인요청내역</h2>
-                    <div><DesktopTab  tabData={tabData}  activeTab={activeTab} setActiveTab={setActiveTab} /></div>
+                    <div><DesktopTab tabData={tabData} activeTab={activeTab} setActiveTab={setActiveTab} /></div>
                 </div>
                 <TotalCount>전체 {requests.length}개</TotalCount>
-
-                <DesktopList pathTo={'requestDetail'} contents={contents} headers={headers} columns={columns}/>
-                <MyPagination itemsCountPerPage={12} totalItemsCount={requests.length} pageRangeDisplayed={5}  onPageChange={handlePageChange}/>
+                <div>
+                    <DesktopList pathTo={'requestDetail'} contents={contents} headers={headers} columns={columns} />
+                    {requests.length === 0 && (
+                        <div className="taCenter mb05" style={{ width: '100%' }}>
+                            요청이 없습니다.
+                        </div>
+                    )}
+                </div>
+                {requests.length !== 0 && (
+                    <MyPagination itemsCountPerPage={12} totalItemsCount={requests.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                )}
             </div>
         </div>
     );
