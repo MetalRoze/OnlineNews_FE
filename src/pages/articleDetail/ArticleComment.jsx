@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
+import MyPagination from '../../components/Pagination';
 import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
+
 const ArticleComment = ({
     articleId
 }) => {
@@ -8,18 +9,35 @@ const ArticleComment = ({
     const [replyContent, setReplyContent] = useState('');
     const [comments, setComments] = useState([]);
 
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
+    const [itemsCountPerPage] = useState(3);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [resetKey, setResetKey] = useState(0);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentComment = comments.slice(startIdx, endIdx);
+
     // 댓글/답글 조회
-    const fetchComment = async () => {
-        getRequest(`/api/comment/article/${articleId}`)
+    const fetchComment = async (sortType='latest') => {
+        getRequest(`/api/comment/article/${articleId}?sortType=${sortType}`)
             .then(response => {
                 const updatedComments = response.data.map(comment => ({
-                    ...comment, 
-                    isReplyVisible: false, 
+                    ...comment,
+                    isReplyVisible: false,
                     isActive: false
                 }));
-    
+
+
                 setComments(updatedComments)
-                console.log(updatedComments)
+                setTotalItemsCount(updatedComments.length);
+
+                setResetKey(prevKey => prevKey + 1);
+                setCurrentPage(1)
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
@@ -155,8 +173,13 @@ const ArticleComment = ({
                         댓글 작성
                     </button></div>
             </div>
+            <div className='flex'>
+                <div className='hoverGray' onClick={() => fetchComment('like')}>좋아요순</div>
+                <div className='ml1 hoverGray' onClick={() => fetchComment('oldest')}>오래된순</div>
+                <div className='ml1 hoverGray' onClick={() => fetchComment('latest')}>최신순</div>
+            </div>
             <div className='pd10'>
-                {comments.map((comment) => (
+                {currentComment.map((comment) => (
                     <div key={comment.id} className='mb1'>
                         <div className='flex'>
                             <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
@@ -221,6 +244,14 @@ const ArticleComment = ({
                     </div>
                 ))}
             </div>
+            <MyPagination
+                key={resetKey}
+                activePage={currentPage}
+                itemsCountPerPage={itemsCountPerPage}
+                totalItemsCount={totalItemsCount}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };
