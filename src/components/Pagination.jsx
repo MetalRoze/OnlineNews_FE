@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 
-export default function MyPagination({itemsCountPerPage, totalItemsCount, pageRangeDisplayed, onPageChange }) {
-    const [page, setPage] = useState(1);
+export default function MyPagination({ itemsCountPerPage, totalItemsCount, pageRangeDisplayed, onPageChange, activePage }) {
 
-    const handlePageChange = (page) => {
-        setPage(page);
-        onPageChange(page);
-    };
-    return (
-        <div>
-            <StyledPagination>
-                <Pagination
-                    activePage={page}
-                    itemsCountPerPage={itemsCountPerPage}
-                    totalItemsCount={totalItemsCount}
-                    pageRangeDisplayed={pageRangeDisplayed}
-                    onChange={handlePageChange}
-                    prevPageText={"←"}
-                    nextPageText={"→"}>
-                </Pagination>
-            </StyledPagination>
-        </div>
-    );
+  const handlePageChange = (page) => {
+    onPageChange(page);
+  };
+  
+  return (
+    <div>
+      <StyledPagination>
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={itemsCountPerPage}
+          totalItemsCount={totalItemsCount}
+          pageRangeDisplayed={pageRangeDisplayed}
+          onChange={handlePageChange}
+          prevPageText={"←"}
+          nextPageText={"→"}>
+        </Pagination>
+      </StyledPagination>
+    </div>
+  );
 }
 const StyledPagination = styled.div`
   .pagination {
