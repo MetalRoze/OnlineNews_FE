@@ -9,6 +9,7 @@ import { DesktopList } from '../../components/DesktopList';
 export default function RequestManage() {
     const [activeTab, setActiveTab] = useState('allRequests');
     const [requests, setRequests] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const tabData = [
         { eventKey: 'allRequests', title: '전체요청' },
@@ -16,7 +17,7 @@ export default function RequestManage() {
         { eventKey: 'rejected', title: '거절' },
         { eventKey: 'holding', title: '보류' },
     ];
-
+    //request api
     const fetchRequests = async (status) => {
         try {
             const endpoint = status === 'allRequests' 
@@ -32,11 +33,21 @@ export default function RequestManage() {
 
     useEffect(() => {
         fetchRequests(activeTab);
+        setCurrentPage(1);
     }, [activeTab]);
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+    
+    const startIdx = (currentPage - 1) * 12;
+    const endIdx = startIdx + 12;
+    const currentRequests = requests.slice(startIdx, endIdx);
+
+    //리스트
     const headers = ["접수일자", "이름", "구분", "제목", "처리구분", "승인일자"];
 
-    const contents = requests.map((request) => ({
+    const contents = currentRequests.map((request) => ({
         접수일자: request.createdAt.split("T")[0],
         이름: request.userName,
         구분: "기자",
@@ -57,12 +68,17 @@ export default function RequestManage() {
                 <TotalCount>전체 {requests.length}개</TotalCount>
 
                 <DesktopList pathTo={'requestDetail'} contents={contents} headers={headers} columns={columns}/>
-                <MyPagination itemsCountPerPage={12} totalItemsCount={requests.length} pageRangeDisplayed={5} />
+                <MyPagination itemsCountPerPage={12} totalItemsCount={requests.length} pageRangeDisplayed={5}  onPageChange={handlePageChange}/>
             </div>
         </div>
     );
 }
-
+export const PaginationContainer = styled.div`
+  grid-column: 1 / -1; 
+  display: flex;
+  justify-content: center; 
+  margin-top: 1rem; 
+`;
 export const TotalCount = styled.p`
     color: ${(props) => props.theme.colors.gray50};
 `;
