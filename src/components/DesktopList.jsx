@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 export const DesktopList = ({ pathTo, contents, headers, columns }) => {
-    const navigate= useNavigate();
+    const navigate = useNavigate();
 
-    const navigateToPath = (pathTo) => {
-        navigate(`${pathTo}`);
+    const navigateToPath = (pathTo, id) => {
+        navigate(`${pathTo}/${id}`);
     };
+
     return (
         <ul>
             <StyledLi>
@@ -19,10 +20,12 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
             </StyledLi>
             {contents.map((item, index) => (
                 <StyledLi key={index}>
-                    <ListItemWrapper columns={columns}>
-                        {Object.values(item).map((item, i) => (
-                            <ListItem className="cursor" key={i} onClick={()=>navigateToPath(pathTo)}>{item}</ListItem>
-                        ))}
+                    <ListItemWrapper columns={columns} onClick={() => navigateToPath(pathTo, item.id)}>
+                        {Object.entries(item)
+                            .filter(([key]) => key !== 'id')
+                            .map(([key, value], i) => (
+                                <ListItem key={i}>{value}</ListItem>
+                            ))}
                     </ListItemWrapper>
                 </StyledLi>
             ))}

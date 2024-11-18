@@ -4,7 +4,7 @@ import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleDetail from '../articleDetail/ArticleDetail';
 
 export default function RequestDetail() {
-
+    const { id } = useParams();
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0}}>
