@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MyPagination from '../../components/Pagination';
-import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
+import { getRequest, postRequest, deleteRequest, putRequest } from '../../apis/axios';
 
 const ArticleComment = ({
     articleId
@@ -35,7 +35,7 @@ const ArticleComment = ({
     };
 
     // 댓글/답글 조회
-    const fetchComment = async (sortType='latest') => {
+    const fetchComment = async (sortType = 'latest') => {
         getRequest(`/api/comment/article/${articleId}?sortType=${sortType}`)
             .then(response => {
                 const updatedComments = response.data.map(comment => ({
@@ -130,7 +130,7 @@ const ArticleComment = ({
             }
         }
     };
-    
+
     const handleLikeToggle = async (commentId, likeStatus, type) => {
         try {
             if (type === 'comment') {
@@ -185,6 +185,66 @@ const ArticleComment = ({
         }
     };
 
+    const handleEditClick = async (commentId, content, isEdit, type) => {
+
+        if (!isEdit) {
+            if (type === 'comment') {
+                setComments(prevComments =>
+                    prevComments.map(comment =>
+                        comment.id === commentId
+                            ? { ...comment, isEdit: true }
+                            : comment
+                    )
+                );
+            } else if (type === 'reply') {
+                setComments(prevComments =>
+                    prevComments.map(comment => ({
+                        ...comment,
+                        replies: comment.replies.map(reply =>
+                            reply.id === commentId
+                                ? { ...reply, isEdit: true }
+                                : reply
+                        )
+                    }))
+                );
+            }
+        }
+        else {
+            const newCommentData = {
+                commentID: commentId,
+                content: content
+            };
+
+            console.log(newCommentData)
+            try {
+                const response = await putRequest('/api/comment/edit', newCommentData);
+
+                if (type === 'comment') {
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? { ...comment, content: content, isEdit: false }
+                                : comment
+                        )
+                    );
+                } else if (type === 'reply') {
+                    setComments(prevComments =>
+                        prevComments.map(comment => ({
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, content: content, isEdit: false }
+                                    : reply
+                            )
+                        }))
+                    );
+                }
+            } catch (error) {
+                alert("수정 실패", error);
+            }
+        }
+    };
+
     useEffect(() => {
         if (articleId) {
             fetchComment();
@@ -227,11 +287,26 @@ const ArticleComment = ({
                             {comment.userId === nowUser && (
 
                                 <div className='flex'>
-                                    <div className='mr05 hoverGray'>수정</div>
+                                    <div className='mr05 hoverGray' onClick={() => handleEditClick(comment.id, comment.content, comment.isEdit, 'comment')}>수정</div>
                                     <div className='hoverGray'>삭제</div>
                                 </div>)}
                         </div>
-                        <p className='mt05'>{comment.content}</p>
+
+                        {comment.isEdit ? (
+                            <textarea
+                                className='mt1'
+                                value={comment.content}
+                                onChange={(e) => {
+                                    setComments(prevComments =>
+                                        prevComments.map(c =>
+                                            c.id === comment.id
+                                                ? { ...c, content: e.target.value }
+                                                : c
+                                        )
+                                    );
+                                }}
+                            />) : (
+                            <p className='mt05'>{comment.content}</p>)}
                         <div className='flex mb1'>
                             <small className={`pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.id)}>
                                 답글 {comment.replies.length} {comment.isReplyVisible ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
@@ -239,7 +314,7 @@ const ArticleComment = ({
 
                             <i
                                 className={`bi block taCenter mlAuto ${comment.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                onClick={() => handleLikeToggle(comment.id, comment.likeStatus,'comment' )}
+                                onClick={() => handleLikeToggle(comment.id, comment.likeStatus, 'comment')}
                             ></i>
                             <small className='taCenter ml05'>{comment.likeCount}</small>
                         </div>
@@ -249,7 +324,7 @@ const ArticleComment = ({
                                 {comment.replies.map((reply) => (
                                     <div key={reply.id}>
                                         <div className='flex'>
-                                            <img className='profile40' src={reply.userImg}/>
+                                            <img className='profile40' src={reply.userImg} />
                                             <div className='mtbAuto ml05'>
                                                 <h6 className='m0'>{obfuscateUsername(reply.userName)}</h6>
                                                 <small className='gray40'>{reply.createdAt}</small>
@@ -258,15 +333,38 @@ const ArticleComment = ({
                                             {reply.userId === nowUser && (
 
                                                 <div className='flex'>
-                                                    <div className='mr05 hoverGray'>수정</div>
+                                                    <div className='mr05 hoverGray' onClick={() => handleEditClick(reply.id, reply.content, reply.isEdit, 'reply')}>수정</div>
                                                     <div className='hoverGray'>삭제</div>
                                                 </div>)}
                                         </div>
-                                        <p className='mt05'>{reply.content}</p>
+
+                                        {reply.isEdit ? (
+                                            <textarea
+
+                                                className='mt1'
+                                                value={reply.content}
+                                                onChange={(e) => {
+                                                    setComments(prevComments =>
+                                                        prevComments.map(c =>
+                                                            c.id === comment.id
+                                                                ? {
+                                                                    ...c,
+                                                                    replies: c.replies.map(r =>
+                                                                        r.id === reply.id
+                                                                            ? { ...r, content: e.target.value }
+                                                                            : r
+                                                                    )
+                                                                }
+                                                                : c
+                                                        )
+                                                    );
+                                                }}
+                                            />) : (
+                                            <p className='mt05'>{reply.content}</p>)}
                                         <div className='flex'>
                                             <i
                                                 className={`bi block taCenter mlAuto ${reply.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                                onClick={() => handleLikeToggle(reply.id, reply.likeStatus,'reply')}
+                                                onClick={() => handleLikeToggle(reply.id, reply.likeStatus, 'reply')}
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>

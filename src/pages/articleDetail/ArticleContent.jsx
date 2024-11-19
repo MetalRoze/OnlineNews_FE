@@ -10,7 +10,7 @@ const ArticleContent = ({
             <div>
                 <h1 className='mt1'>{article.title}</h1>
                 {article.subtitle.split(',./').map((sub, index) => (
-                    <h3 className='articleSubtitle' key={index}>{sub.trim()}</h3>  // 공백 제거
+                    <h3 className='articleSubtitle' key={index}>{sub.trim()}</h3>
                 ))}
                 <small className='mt1 gray30 block'>입력 {formDateTime(new Date(article.createdAt))}</small>
                 {article.modifiedAt && (
