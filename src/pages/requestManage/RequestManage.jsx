@@ -48,13 +48,12 @@ export default function RequestManage() {
     const headers = ["접수일자", "이름", "구분", "제목", "처리구분", "승인일자"];
 
     const contents = currentRequests.map((request) => ({
-    
         접수일자: request.createdAt.split("T")[0],
         이름: request.userName,
-        구분: "기자",
-        제목: request.articleTitle,
+        구분: request.type,
+        제목: request.requestTitle,
         처리구분: convertStatusToKor(request.status),
-        승인일자: "",
+        승인일자: request.confirmedAt !== null ? request.confirmedAt.split("T")[0]: null,
         id: request.id,
     }));
 
