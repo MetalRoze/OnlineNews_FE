@@ -1,17 +1,29 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function Main() {
-    const articles = Array(6).fill(0);
 
+    const [articles, setArticles] = useState([]);
+    // const articles = Array(6).fill(0);
     useEffect(() => {
-        const apiUrl = import.meta.env.VITE_API_URL;  // Vite에서 환경 변수는 import.meta.env로 접근
-        console.log('API URL:', apiUrl); // 확인
+        // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
+        const fetchArticles = async () => {
+            try {
+                const response = await axios.get("/api/main-article");
+                setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
+                console.log(articles);
+            } catch (error) {
+                console.error("Failed to fetch articles:", error);
+            }
+        };
 
-    }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
+        fetchArticles();
+    }, []);
+
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
@@ -19,10 +31,10 @@ export default function Main() {
 
             {/* <Divider />  */}
 
-            {articles.map((_, index) => (
-                <div>
-                    <BasicArticle key={index} />
-                    <hr></hr>
+            {articles.map((article) => (
+                <div key={article.id}>
+                    <BasicArticle article={article} />
+                    <hr />
                 </div>
             ))}
         </div>

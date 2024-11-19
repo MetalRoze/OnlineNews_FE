@@ -6,16 +6,26 @@ import { useNavigate } from 'react-router-dom';
 export default function BasicArticle() {
   const navigate = useNavigate();
 
+  // const handleArticleClick = () => {
+  //   navigate('/articleDetail');
+  // };
+
   const handleArticleClick = () => {
-    navigate('/articleDetail');
+    navigate("/articleDetail", { state: { articleId: article.id } });
   };
 
   return (
-    <div className='basicArticle pd10' style={{ cursor: "pointer", display: "flex" }} onClick={handleArticleClick}>
-      <img className='m0' style={{ marginLeft: "0.5rem", marginRight: "0.5rem", width: "13rem", height: "8rem" }} />
+    <div className='basicArticle pd10' 
+    style={{ cursor: "pointer", display: "flex" }} 
+    onClick={handleArticleClick}
+    >
+      <img className='m0' 
+      style={{ marginLeft: "0.5rem", marginRight: "0.5rem", width: "13rem", height: "8rem" }}
+      src={article.images[0]}
+      alt={article.title} />
       <ArticleInfo>
-        <Title>‘논술로 대학 가볼까’....수시모집 지원자 44% 몰려</Title>
-        <Source>서울신문</Source>
+        <Title>{article.articleTitle}</Title>
+        <Source>{article.publisherName}</Source>
       </ArticleInfo>
     </div>
   );

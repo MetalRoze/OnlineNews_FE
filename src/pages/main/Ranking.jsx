@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import RankingArticle from "./RankingArticle";
+import { getRequest } from "../../apis/axios";
 
 export default function Ranking() {
     const [selectedTab, setSelectedTab] = useState("많이 본 뉴스"); // 기본값 설정
-    const articles = Array(6).fill(0);
+    const [articles, setArticles] = useState([]);
+
+    // const articles = Array(6).fill(0);
+
+    const fetchArticles = (sortBy) => {
+        const url = `/api/article/select?sortBy=${sortBy}`;
+        getRequest(url)
+            .then((response) => {
+                if (response && Array.isArray(response.data)) {
+                    setArticles(response.data); // 받아온 데이터를 articles 상태에 저장
+                } else {
+                    setArticles([]); // 데이터가 없으면 빈 배열
+                }
+            })
+            .catch((error) => {
+                console.error(`Error fetching articles sorted by ${sortBy}:`, error);
+                setArticles([]); // 에러 발생 시 빈 배열
+            });
+    };
+
+    useEffect(() => {
+        // 탭 선택에 따라 API 요청 실행
+        const sortBy = selectedTab === "많이 본 뉴스" ? "views" : "likes";
+        fetchArticles(sortBy);
+    }, [selectedTab]); // selectedTab이 변경될 때마다 실행
+
     const handleTabClick = (tab) => {
         setSelectedTab(tab);
     };
@@ -15,8 +41,8 @@ export default function Ranking() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div className="mAuto flex jfCcenter mt1" style={{width:"100%"}}>
-            <Tab
+            <div className="mAuto flex jfCcenter mt1" style={{ width: "100%" }}>
+                <Tab
                     isSelected={selectedTab === "많이 본 뉴스"}
                     onClick={() => handleTabClick("많이 본 뉴스")}
                 >
@@ -24,25 +50,30 @@ export default function Ranking() {
                 </Tab>
                 <TabDivider>/</TabDivider>
                 <Tab
-                    isSelected={selectedTab === "댓글 많은 뉴스"}
-                    onClick={() => handleTabClick("댓글 많은 뉴스")}
+                    isSelected={selectedTab === "좋아요 많은 뉴스"}
+                    onClick={() => handleTabClick("좋아요 많은 뉴스")}
                 >
-                    댓글 많은 뉴스
+                    좋아요 많은 뉴스
                 </Tab>
             </div>
 
 
             {/* <Divider /> */}
 
-            {articles.map((_, index) => (
-                <div>
-                    <h3></h3>
-                    <RankingArticle
-                     key={index}
-                     rank={index+1} />
-                    <hr></hr>
-                </div>
-            ))}
+            {/* 기사 리스트 */}
+            {articles.length === 0 ? (
+                <p>기사를 불러오는 중입니다...</p>
+            ) : (
+                articles.map((article, index) => (
+                    <div key={article.id}>
+                        <RankingArticle
+                            rank={index + 1}
+                            article={article} // 전달된 기사 데이터를 RankingArticle로 전달
+                        />
+                        <hr />
+                    </div>
+                ))
+            )}
         </div>
     );
 }
