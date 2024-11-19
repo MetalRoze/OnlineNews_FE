@@ -4,8 +4,9 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 const StyledTabs = styled(Tabs)`
-    width: fit-content;
+    width: 35rem;
     border: none;
+
   .nav-link {
     width: auto;
     padding: 1rem 1rem 1rem 0rem;
@@ -23,11 +24,15 @@ const StyledTabs = styled(Tabs)`
 
 `;
 
-export default function DesktopTab({ tabData, activeTab, setActiveTab }) {
+export default function DesktopTab({ tabData, setActiveTab }) {
   return (
-    <StyledTabs activeKey={activeTab} onSelect={(key) => setActiveTab(key)} className="mb-3">
+    <StyledTabs defaultActiveKey={tabData[0]?.eventKey}  onSelect={setActiveTab} className="mb-3">
       {tabData.map((tab) => (
-        <Tab eventKey={tab.eventKey} title={tab.title} key={tab.eventKey} />
+        <Tab
+          eventKey={tab.eventKey}
+          title={tab.title}
+          key={tab.eventKey}
+        />
       ))}
     </StyledTabs>
   );

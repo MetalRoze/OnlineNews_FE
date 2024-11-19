@@ -6,6 +6,18 @@ import termsOfService from './term/TermsOfService'
 import privacyPolicy from './term/TermsOfPrivacy';
 import parseTerms from './term/ParseTerms'; 
 
+const HeadWrapper = styled.div`
+max-width: 600px;
+width:100%;
+    min-height: 100vh; 
+    padding:0px; 
+    display: flex; 
+    flex-direction:column;
+    justify-content: center; 
+    align-items: center; 
+    background-color: var(--color-white); 
+`; 
+
 const TitleWrapper = styled.div`
     width:100%; 
     max-width:400px; 
@@ -148,8 +160,8 @@ export default function JurnalistTerm() {
     }; 
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
-        <TitleWrapper>
+        <HeadWrapper>
+            <TitleWrapper>
                 <TermTitle>이용약관</TermTitle>
                 <TermSubTitle>회원가입을 통해 다양한 혜택을 누리시기 바랍니다.</TermSubTitle>
             </TitleWrapper>
@@ -219,6 +231,6 @@ export default function JurnalistTerm() {
             <NextButton onClick={handleNext}>
                 동의합니다
             </NextButton>
-        </div>
+        </HeadWrapper>
     ); 
 }

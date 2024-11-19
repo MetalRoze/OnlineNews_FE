@@ -1,10 +1,6 @@
-import React, { useState, useEffect} from 'react';  // useState 임포트 확인
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState} from 'react';  // useState 임포트 확인
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { getRequest } from '../../apis/axios'; 
-import { patchRequest } from '../../apis/noCTAxios';
-
 
 import profileIcon  from '../../assets/profileDefault.png'; 
 import editIcon from '../../assets/editIcon.png'; 
@@ -12,6 +8,18 @@ import InputInfoModal from '../../components/InputInfoModal';
 
 import PasswordInputModal from '../../components/PasswordInputModal';
 import PhoneInputModal from '../../components/PhoneInputModal';
+
+const HeadWrapper = styled.div`
+    max-width: 600px;
+    width:100%;
+    min-height: 100vh; 
+    padding:0px; 
+    display: flex; 
+    flex-direction:column;
+    justify-content: center; 
+    align-items: center; 
+    background-color: var(--color-white); 
+`; 
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -35,7 +43,6 @@ const ProfileImage = styled.img`
     width: 150px; 
     height: 150px; 
     margin: 0px 30px;
-    border-radius: 50%;  
 `; 
 
 const NameWrapper = styled.div`
@@ -139,131 +146,21 @@ const NextButton = styled.button`
 
 
 export default function GeneralMyPageEdit() {
-    const location = useLocation(); 
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [currentLabel, setCurrentLabel] = useState('');
     const [currentValue, setCurrentValue] = useState('');
-    const [currentUserDataType, setCurrentUserDataType] = useState(''); // 수정할 데이터 타입 추가
 
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showPhoneModal, setShowPhoneModal] = useState(false);
 
-    // 전달된 userData가 있으면 초기 상태로 설정하고, 없으면 기본 상태값 사용
-    const initialUserData = location.state?.userData || {
-        nickname: '',
-        bio: '',
-        name: '',
-        email: '',
-        phoneNumber: '',
-        password: '',
-        gender: '',
-        profileImg: ''
+    const handleSave = () => {
+        navigate('/myPageGeneral');
     };
 
-    const [userData, setUserData] = useState(initialUserData);
-    const [previousUserData, setPreviousUserData] = useState(initialUserData);
-
-    const [profileImgUrl, setProfileImgUrl] = useState(profileIcon);
-
-    useEffect(() => {
-        if (userData.profileImg instanceof File) {
-            const newImgUrl = URL.createObjectURL(userData.profileImg);
-            setProfileImgUrl(newImgUrl);
-
-            return () => URL.revokeObjectURL(newImgUrl);
-        } else if (typeof userData.profileImg === 'string') {
-            setProfileImgUrl(userData.profileImg);
-        }
-    }, [userData.profileImg]);
-
-    const getUserData = async () => {
-        getRequest('/api/user/myPage')
-            .then(response => {
-                setUserData({
-                    nickname: response.data.nickname,
-                    bio: response.data.bio,
-                    name: response.data.name,
-                    email: response.data.email,
-                    phoneNumber: response.data.cp, 
-                    gender: response.data.sex, 
-                    profileImg : response.data.img
-                });
-
-                setPreviousUserData({
-                    nickname: response.data.nickname,
-                    bio: response.data.bio,
-                    name: response.data.name,
-                    email: response.data.email,
-                    phoneNumber: response.data.cp,
-                    gender: response.data.sex,
-                    profileImg: response.data.img
-                });
-            })
-
-            .catch(error =>{
-                console.error("회원 정보 불러오기 실패", error);
-            });
-        
-    };
-
-    useEffect(() => {
-        // 전달된 userData가 없는 경우에만 API 호출
-        if (!location.state) {
-            getUserData(); 
-        }
-    }, [location.state]);
-
-    const handleSave = async() => {
-        const formData = new FormData();
-
-        // 기존 데이터와 비교하여 변경된 항목만 전송
-        if (userData.profileImg !== previousUserData.profileImg) {
-            formData.append('img', userData.profileImg);  // 프로필 이미지가 변경된 경우
-            console.log("사진변경"); 
-        }
-
-        if (userData.nickname !== previousUserData.nickname) {
-            formData.append('nickname', userData.nickname);  // 닉네임 변경된 경우
-            console.log("닉네임변경"); 
-        }
-
-        if (userData.phoneNumber !== previousUserData.phoneNumber) {
-            formData.append('cp', userData.phoneNumber);  // 전화번호 변경된 경우
-            console.log("전화번호변경"); 
-        }
-
-        if (userData.password && userData.password !== previousUserData.password) {
-            formData.append('pw', userData.password);  // 비밀번호 변경된 경우
-            console.log("번호변경"); 
-        }
-
-        if (userData.bio !== previousUserData.bio) {
-            formData.append('bio', userData.bio);  // 자기소개 변경된 경우
-            console.log("소개변경"); 
-        }
-
-        if (formData.has('img') || formData.has('nickname') || formData.has('cp') || formData.has('pw') || formData.has('bio')) {
-            patchRequest('/api/user/myPage/edit', formData)
-                .then(response => {
-                    if(response.status === 200){
-                        alert("회원정보 수정이 완료되었습니다!"); 
-                    }
-                })
-
-                .catch(error => {
-                    console.error('회원 정보 수정 실패:', error);
-                })
-        } else {
-            console.log("변경된 항목이 없습니다.");
-        }
-
-    };
-
-    const handleEditClick = (label, value,userDataType) => {
+    const handleEditClick = (label, value) => {
         setCurrentLabel(label);
         setCurrentValue(value);
-        setCurrentUserDataType(userDataType); 
         setShowModal(true);
     };
 
@@ -274,73 +171,34 @@ export default function GeneralMyPageEdit() {
 
     const handleModalSave = (newValue) => {
         console.log(`새로운 값: ${newValue}`);
-
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            [currentUserDataType]:newValue
-        })); 
         handleModalClose();
     };
 
     const handleSavePassword = (newPassword) => {
         console.log("새 비밀번호:", newPassword);
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            password:newPassword
-        })); 
         setShowPasswordModal(false);
     };
 
     const handleSavePhone = (newPhone) => {
         console.log("새 전화번호:", newPhone);
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            phoneNumber:newPhone
-        })); 
         setShowPhoneModal(false);
     };
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setUserData((prevUserData) => ({
-                ...prevUserData,
-                profileImg: file
-            }));
-        }
-    };
-
-    const triggerFileInput = () => {
-        document.getElementById('profileImageInput').click();
-    };
-
-
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <HeadWrapper>
             <ProfileWrapper>
-            <ProfileImage 
-                src={profileImgUrl || profileIcon} 
-                onClick={triggerFileInput} 
-                alt="Profile"
-            />
-            <input 
-                type="file" 
-                id="profileImageInput" 
-                style={{ display: 'none' }} 
-                accept="image/*" 
-                onChange={handleImageUpload}
-            />                
+                <ProfileImage src={profileIcon} />
                 <ProfileTextWrapper>
                     <NameWrapper>
-                    <NameText>{userData.nickname || '익명'}</NameText>
-                        <EditSpace onClick={() => handleEditClick('닉네임', userData.nickname, 'nickname')}>
+                        <NameText>닉네임</NameText>
+                        <EditSpace onClick={() => handleEditClick('닉네임', '현재 닉네임')}>
                             <EditIcon src={editIcon} />
                         </EditSpace>
                     </NameWrapper>
                     <BioWrapper>
                         <VerticalLine />
-                        <BioText>{userData.bio || '자기소개는 아직 없어요. 추가해보세요!'}</BioText>
-                        <EditSpace onClick={() => handleEditClick('자기소개', userData.bio ,'bio' )}>
+                        <BioText>자기소개가 오는 자리입니다. 최대 25자입니다.</BioText>
+                        <EditSpace onClick={() => handleEditClick('자기소개', '현재 자기소개')}>
                             <EditIcon src={editIcon} />
                         </EditSpace>
                     </BioWrapper>
@@ -350,17 +208,17 @@ export default function GeneralMyPageEdit() {
             <InfoWrapper>
                 <InfoColumn>
                     <InfoLabel>이름</InfoLabel>
-                    <InfoText>{userData.name }</InfoText>
+                    <InfoText>홍길동</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>이메일</InfoLabel>
-                    <InfoText>{userData.email }</InfoText>
+                    <InfoText>hong12@gmail.com</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>휴대폰 번호</InfoLabel>
-                    <InfoText style={{color:'var(--color-black)'}}>{userData.phoneNumber}</InfoText>
+                    <InfoText style={{color:'var(--color-black)'}}>000-1111-2222</InfoText>
                     <EditSpace onClick={() => setShowPhoneModal(true)}>
                         <EditIcon src={editIcon} />
                     </EditSpace>
@@ -374,7 +232,7 @@ export default function GeneralMyPageEdit() {
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>성별</InfoLabel>
-                    <InfoText>{userData.gender}</InfoText>
+                    <InfoText>남성</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
             </InfoWrapper>
@@ -399,6 +257,6 @@ export default function GeneralMyPageEdit() {
                 handleClose={() => setShowPhoneModal(false)}
                 handleSave={handleSavePhone}
             />
-        </div>
+        </HeadWrapper>
     );
 }

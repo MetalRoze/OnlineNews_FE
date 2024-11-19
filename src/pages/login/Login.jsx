@@ -1,11 +1,23 @@
 import React,{useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import {postRequest} from '../../apis/axios'
+
+const HeadWrapper = styled.div`
+max-width: 600px;
+width:100%;
+min-height: 100vh; 
+padding: 20px; 
+display: flex; 
+flex-direction:column;
+justify-content: center; 
+align-items: center; 
+background-color: var(--color-white); 
+`; 
 
 const LoginTitle = styled.h1`
 margin-bottom: 10px; 
 text-align: center; 
+
 `;
 
 const LoginSubTitle = styled.p`
@@ -33,28 +45,12 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-
-        const data={
-            email: email,
-            password: password
-        }
-        postRequest('/api/user/login', data)
-            .then(response => {
-                console.log(response.data);
-                sessionStorage.setItem('authToken', response.data.accessToken);
-                console.log('저장된 authToken:', sessionStorage.getItem('authToken'));
-            
-                navigate('/main')
-            })
-            .catch(error => {
-                console.error('Error fetching subscriptions:', error);
-            });
-
+        // 로그인 처리 로직
         console.log('Logging in with:', { email, password });
     };
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <HeadWrapper>
             <LoginTitle>로그인</LoginTitle>
             <LoginSubTitle>서비스 이용을 위하여 로그인 해주세요.</LoginSubTitle>
             <form onSubmit={handleLogin} style={{ width: '100%', maxWidth: '400px' }}>
@@ -91,6 +87,6 @@ export default function Login() {
                 <span>|</span>
                 <LoginOptionsLink onClick={() => navigate('/signup')}>회원가입</LoginOptionsLink>
             </LoginOptionsWrapper>
-        </div>
+        </HeadWrapper>
     );
 }

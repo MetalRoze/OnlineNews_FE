@@ -11,10 +11,6 @@
     display: block;
  }
 
- .fixed {
-    position: fixed;
- }
-
  .column {
     flex-direction: column;
  }
@@ -47,10 +43,6 @@
     justify-content: space-between;
  }
 
- .jfCcenter {
-    justify-content: center;
- }
-
  .aiCenter {
     align-items: center;
  }
@@ -67,10 +59,6 @@
     justify-items: center;
  }
 
- .wsNowrap {
-    white-space: nowrap;
- }
-
  /* padding */
  .pd10 {
     padding: 10px;
@@ -84,10 +72,6 @@
     padding: 0;
  }
 
- .pdl05 {
-    padding-left: 0.5rem;
- }
-
  .pdlr20 {
     padding-inline: 20px;
  }
@@ -99,10 +83,6 @@
 
  .ml05 {
     margin-left: 0.5rem;
- }
-
- .ml1 {
-    margin-left: 1rem;
  }
 
  .mr1 {
@@ -119,10 +99,6 @@
 
  .mb05 {
     margin-bottom: 0.5rem;
- }
-
- .mb03 {
-    margin-bottom: 0.3rem;
  }
 
  .mb1 {
@@ -149,10 +125,6 @@
     margin-block: 1rem;
  }
 
- .flex1 {
-    flex: 1;
- }
-
  /* border */
  .br10 {
     border-radius: 10px;
@@ -167,16 +139,8 @@
     color: white;
  }
 
- .gray30 {
-    color: var(--color-gray30);
- }
-
  .gray40 {
     color: var(--color-gray40);
- }
-
- .gray60 {
-    color: var(--color-gray60);
  }
 
  .blue {
@@ -193,12 +157,4 @@
 
  .taLeft {
     text-align: left;
- }
-
- .pointer {
-    cursor: pointer;
- }
-
- .boxShadow {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
  }

@@ -3,7 +3,6 @@ import { CgClose } from "react-icons/cg";
 import styled from "styled-components";
 
 export default function SearchRecords() {
-
     return (
         <StyledHeader className="mobile-header">
             <p style={{marginLeft:"0.5rem"}}>한국은행</p>

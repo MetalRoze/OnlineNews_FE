@@ -1,72 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import Sidebar from '../../components/Sidebar';
+import SearchBar from '../../components/SearchBar';
 import DesktopTab from '../../components/DesktopTab';
+import AdminArticle from '../../components/AdminArticle';
 import MyPagination from '../../components/Pagination';
-import {convertToKor} from '../../utils/convertCategories';
-import { DesktopList } from '../../components/DesktopList';
-import { getRequest } from '../../apis/axios';
 
 export default function ArticleManage() {
-    const [activeTab, setActiveTab] = useState('createdAt');
-    const [articles, setArticles] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [activeTab, setActiveTab] = useState('sortByCreate');
 
     const tabData = [
-        { eventKey: 'createdAt', title: '등록순', content: '등록 순서 정렬' },
-        { eventKey: 'views', title: '조회순', content: '조회순 높은 순으로 정렬' },
+        { eventKey: 'sortByCreate', title: '등록순', content: '등록 순서 정렬' },
+        { eventKey: 'sortByView', title: '조회순', content: '조회순 높은 순으로 정렬' },
+        { eventKey: 'sortByLike', title: '좋아요순', content: '좋아요 높은 순으로 정렬' },
     ];
-    
-    const fetchArticles = async (status) => {
-        try {
-            const response = await getRequest('api/article/select', {sortBy: status, sortDirection:"desc"});
-            setArticles(response.data);
-        } catch (error) {
-            console.error('요청실패', error);
-        }
+
+    const requests = {
+        sortByCreate: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+        sortByView: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+        sortByLike:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
     };
-    const headers = ["입력일자", "이름", "구분", "제목", "수정일자"];
-    const columns = "1fr 0.8fr 0.8fr 2fr 1fr";
-    
-    const startIdx = (currentPage - 1) * 12;
-    const endIdx = startIdx + 12;
-    const currentArticles = articles.slice(startIdx, endIdx);
-
-    const contents = currentArticles.map((article) => ({
-        입력일자: article.createdAt.split("T")[0],
-        이름: article.userName,
-        구분: convertToKor(article.category),
-        제목: article.title,
-        수정일자: article.modifiedAt !==null ? article.modifiedAt.split("T")[0] : null,
-        id: article.id,
-    }));
-
-    useEffect(() => {
-        fetchArticles(activeTab);
-        setCurrentPage(1);
-    }, [activeTab]);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
     return (
         <div className="flex" style={{ width: "100vw" }}>
+            <Sidebar />
             <div className="desktop-container">
-                <div className='flex aiCenter spaceBetween mb1'>
-                    <h2>기사</h2>
-                    <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
-                </div>
-                <TotalCount>전체 {articles.length}개</TotalCount>
-
-                <DesktopList pathTo={'../articleDetail'} contents={contents} headers={headers} columns={columns} />
-            
-                {articles.length !== 0 && (
-                    <MyPagination itemsCountPerPage={12} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
-                )}
+                <SearchBar />
+                <div style={{ height: '3rem' }}></div>
+                <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
+                <TotalCount>전체 {requests[activeTab].length}개</TotalCount>
+                <StyledArticleListWrapper>
+                    {requests[activeTab].map((request) => (
+                        <AdminArticle activeTab={activeTab} />
+                    ))}
+                    <PaginationContainer>
+                        <MyPagination itemsCountPerPage={21} totalItemsCount={requests[activeTab].length} pageRangeDisplayed={5} />
+                    </PaginationContainer>
+                </StyledArticleListWrapper>
             </div>
         </div>
     );
 }
+const StyledArticleListWrapper = styled.div`
+  width: 52rem;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+`;
+
+const PaginationContainer = styled.div`
+  grid-column: 1 / -1; 
+  display: flex;
+  justify-content: center; 
+  margin-top: 1rem; 
+`;
 
 const TotalCount = styled.p`
     color : ${(props) => props.theme.colors.gray50};
