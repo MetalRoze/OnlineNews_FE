@@ -1,21 +1,10 @@
-import React, { useState } from 'react';  // useState 임포트 확인
+import React, { useState, useEffect } from 'react';  // useState 임포트 확인
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { getRequest } from '../../apis/axios';
 import profileIcon  from '../../assets/profileDefault.png'; 
-import profileResetIcon from '../../assets/x-square.svg'; 
 
-const HeadWrapper = styled.div`
-max-width: 600px;
-width:100%;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -39,6 +28,7 @@ const ProfileImage = styled.img`
     width: 150px; 
     height: 150px; 
     margin: 0px 30px;
+    border-radius: 50%;  
 `; 
 
 const NameWrapper = styled.div`
@@ -137,14 +127,52 @@ const NextButton = styled.button`
 
 export default function JournalistMyPage() {
     const navigate = useNavigate(); 
+    const [userData, setUserData] = useState({
+        name: '',
+        bio: '',
+        publisher:'',
+        email: '',
+        phoneNumber: '',
+        gender: '',
+        profileImg:''
+    });
+
+
+    const getUserData = async () => {
+        getRequest('/api/user/myPage')
+            .then(response => {
+                setUserData({
+                    name: response.data.name,
+                    bio: response.data.bio,
+                    publisher: response.data.publisher,
+                    email: response.data.email,
+                    phoneNumber: response.data.cp, 
+                    gender: response.data.sex, 
+                    profileImg:response.data.img
+                });
+
+                console.log(response.data);
+            })
+
+            
+
+            .catch(error => {
+                console.error("회원 정보 불러오기 실패", error);
+            });
+    };
+
+    useEffect(() => {
+        getUserData();
+    }, []);
 
     const handleEditInfo = () => {
-        navigate('/myPageJournalist/edit');
+        navigate('/myPageJournalist/edit', {state: {userData}});
     };
 
     const handleLogout = () => {
+        sessionStorage.removeItem('authToken');
         alert('로그아웃되었습니다.');
-        navigate('/login');
+        navigate('/main');
     };
 
     const handleDeleteAccount = () => {
@@ -155,20 +183,20 @@ export default function JournalistMyPage() {
     };
 
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <ProfileWrapper>
-                <ProfileImage 
-                    src={profileIcon}
+                 <ProfileImage 
+                    src={userData.profileImg || profileIcon}
                 >
                 </ProfileImage>
                 <ProfileTextWrapper>
                     <NameWrapper>
-                        <NameText>홍기자</NameText>
+                    <NameText>{userData.name}</NameText>
                         <EditSpace></EditSpace>
                     </NameWrapper>
                     <BioWrapper>
                         <VerticalLine></VerticalLine>
-                        <BioText>자기소개가 오는 자리입니다. 최대 25자입니다.</BioText>
+                        <BioText>{userData.bio || '자기소개는 아직 없어요. 추가해보세요!'}</BioText>
                         <EditSpace></EditSpace>
                     </BioWrapper>
                 </ProfileTextWrapper>
@@ -177,17 +205,17 @@ export default function JournalistMyPage() {
             <InfoWrapper>
                 <InfoColumn>
                     <InfoLabel>소속</InfoLabel>
-                    <InfoText>00일보</InfoText>
+                    <InfoText>{userData.publisher }</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>이메일</InfoLabel>
-                    <InfoText>hong12@gmail.com</InfoText>
+                    <InfoText>{userData.email }</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
                     <InfoLabel>휴대폰 번호</InfoLabel>
-                    <InfoText>000-1111-2222</InfoText>
+                    <InfoText>{userData.phoneNumber}</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
                 <InfoColumn>
@@ -198,7 +226,7 @@ export default function JournalistMyPage() {
                 
                 <InfoColumn>
                     <InfoLabel>성별</InfoLabel>
-                    <InfoText>남성</InfoText>
+                    <InfoText>{userData.gender}</InfoText>
                     <EditSpace></EditSpace>
                 </InfoColumn>
             </InfoWrapper>
@@ -206,7 +234,7 @@ export default function JournalistMyPage() {
             <NextButton onClick={handleEditInfo}>정보수정</NextButton>
             <NextButton onClick={handleLogout}>로그아웃</NextButton>
             <NextButton onClick={handleDeleteAccount}>회원 탈퇴</NextButton>
-        </HeadWrapper>
+        </div>
     
     ); 
 

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 
-export default function MyPagination({itemsCountPerPage, totalItemsCount, pageRangeDisplayed }) {
+export default function MyPagination({itemsCountPerPage, totalItemsCount, pageRangeDisplayed, onPageChange }) {
     const [page, setPage] = useState(1);
 
     const handlePageChange = (page) => {
         setPage(page);
+        onPageChange(page);
     };
     return (
         <div>
