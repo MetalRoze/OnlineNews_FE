@@ -10,7 +10,7 @@ const ArticleComment = ({
     const [comments, setComments] = useState([]);
 
     const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const [itemsCountPerPage] = useState(3);
+    const [itemsCountPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [resetKey, setResetKey] = useState(0);
 
@@ -231,6 +231,37 @@ const ArticleComment = ({
         }
     };
 
+    const handleDelete = async (commentId, type) => {
+        const isConfirmed = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
+
+        if (!isConfirmed) {
+            return;
+        }
+
+        try {
+            await deleteRequest(`/api/comment/${commentId}`);
+
+            setComments(prevComments =>
+                prevComments.map(comment => {
+                    if (type === 'comment' && comment.id === commentId) {
+                        return null;
+                    }
+
+                    // 답글 처리
+                    const updatedReplies = comment.replies.filter(reply => reply.id !== commentId);
+                    return {
+                        ...comment,
+                        replies: updatedReplies
+                    };
+                }).filter(comment => comment !== null)
+            );
+
+            setTotalItemsCount(comments.length);
+        } catch (error) {
+            alert("삭제 실패", error);
+        }
+    };
+
     useEffect(() => {
         if (articleId) {
             fetchComment();
@@ -274,7 +305,7 @@ const ArticleComment = ({
 
                                 <div className='flex'>
                                     <div className='mr05 hoverGray' onClick={() => handleEditClick(comment.id, comment.content, comment.isEdit, 'comment')}>수정</div>
-                                    <div className='hoverGray'>삭제</div>
+                                    <div className='hoverGray' onClick={() => handleDelete(comment.id, 'comment')}>삭제</div>
                                 </div>)}
                         </div>
 
@@ -320,7 +351,7 @@ const ArticleComment = ({
 
                                                 <div className='flex'>
                                                     <div className='mr05 hoverGray' onClick={() => handleEditClick(reply.id, reply.content, reply.isEdit, 'reply')}>수정</div>
-                                                    <div className='hoverGray'>삭제</div>
+                                                    <div className='hoverGray' onClick={() => handleDelete(reply.id, 'reply')}>삭제</div>
                                                 </div>)}
                                         </div>
 
