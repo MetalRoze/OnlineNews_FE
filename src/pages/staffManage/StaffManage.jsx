@@ -47,9 +47,9 @@ export default function StaffManage() {
 
     const headers = ["구분", "이름", "전화번호", "이메일"];
     const contents = currentStaffs.map((staff) => ({
-        전화번호: staff.cp,
-        이름: staff.name,
         구분: convertUserGradeToKor(staff.grade),
+        이름: staff.name,
+        전화번호: staff.cp,
         이메일: staff.email,
         id: staff.id,
     }));
