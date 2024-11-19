@@ -13,6 +13,7 @@ export default function StaffDetail() {
     const { id } = useParams();
     const [articles, setArticles] = useState([]);
     const [userInfo, setUserInfo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchUserInfo = async (userId) => {
         try {
@@ -39,6 +40,14 @@ export default function StaffDetail() {
         fetchArticles(id);
     }, [id]);
 
+    const startIdx = (currentPage - 1) * 8;
+    const endIdx = startIdx + 8;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
@@ -57,8 +66,8 @@ export default function StaffDetail() {
                         <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
-                        {articles && articles.length > 0 ? (
-                            articles.map((article, index) => (
+                        {currentArticles && currentArticles.length > 0 ? (
+                            currentArticles.map((article, index) => (
                                 <AdminArticle key={index} article={article} />
                             ))
                         ) : (
@@ -68,7 +77,10 @@ export default function StaffDetail() {
                         )}
                     </StyledArticleListWrapper>
                     <div style={{ height: '3rem' }} />
-                    <MyPagination itemsCountPerPage={5} totalItemsCount={20} pageRangeDisplayed={5} />
+
+                    {articles.length !== 0 && (
+                        <MyPagination itemsCountPerPage={8} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                    )}
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>
