@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BasicArticle from "../../components/BasicArticle";
 import MenuList from "../../components/MenuList";
 import styled from "styled-components";
 import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';  // axios 임포트
 
 export default function My() {
+    const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
+
     const articles = Array(7).fill(0); // 배열 선언
     const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
     const navigate = useNavigate();
@@ -15,6 +18,26 @@ export default function My() {
         navigate('/subManage');
     }
 
+    useEffect(() => {
+        // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
+        axios.get('/api/subscription', {
+            headers: {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjUwOTY5LCJpYXQiOjE3MzEyNDczNjl9.wRfgQnCFATY9mJISzszrQhiEEPWg_OtgpDLpe-hg0UU`
+            }
+        })
+        .then(response => {
+            setSubscriptions(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
+        })
+        .catch(error => {
+            console.error('Error fetching subscriptions:', error);
+        });
+    }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
+
+    useEffect(() => {
+        // subscriptions 값이 변경될 때마다 로그 출력
+        console.log(subscriptions);
+    }, [subscriptions]);  // subscriptions 상태가 바뀔 때마다 실행됨
+
     return (
         <div>
             <MenuList />
@@ -22,25 +45,24 @@ export default function My() {
                 <h4 style={{ textAlign: 'left', width: '95%', marginLeft: "0.5rem", marginTop: "1rem" }}>My</h4>
 
                 <div>
-                <CenteredContainer>
-                    <GrayBox>
-                        {subPubs.map((_, index) => (
-                            <SubPub key={index} publisher={`신문사 ${index + 1}`} />
-                        ))}
-                        <AddIconBox>
-                            <CgAddR size={28}
-                                onClick={handleSetPub} /> {/* 8번째 칸에 아이콘만 표시 */}
-                        </AddIconBox>
-                    </GrayBox>
-                </CenteredContainer>
+                    <CenteredContainer>
+                        <GrayBox>
+                            {subPubs.map((_, index) => (
+                                <SubPub key={index} publisher={`신문사 ${index + 1}`} />
+                            ))}
+                            <AddIconBox>
+                                <CgAddR size={28} onClick={handleSetPub} /> {/* 8번째 칸에 아이콘만 표시 */}
+                            </AddIconBox>
+                        </GrayBox>
+                    </CenteredContainer>
                 </div>
 
                 <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
 
                 {articles.map((_, index) => (
-                    <div>
-                        <BasicArticle key={index} />
-                        <hr></hr>
+                    <div key={index}>
+                        <BasicArticle />
+                        <hr />
                     </div>
                 ))}
             </div>

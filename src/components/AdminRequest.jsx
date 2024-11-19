@@ -1,38 +1,17 @@
 import React from 'react';
+import Label from '../components/Label';
 
-export default function AdminRequest({ activeTab }) {
+export default function AdminRequest({ type }) {
     return (
-        <div className='desktop-request pd10 aiFlexend'>
-            <div className='flex spaceBetween' style={{ width: '100%' }}>
-                <p>홍길동 기자</p>
-                <p>23:59</p>
-            </div>
-            <h4 className='mb1 ellipsis' style={{ height: '5rem' }}>인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박"</h4>
-            {(activeTab === 'unread' || activeTab === 'allRequests') &&(
-                <div className='flex desktop-request-3buttons br10' style={{ width: '70%' }}>
-                    <button>승인</button>
-                    <button>보류</button>
-                    <button>거절</button>
+        <div className='desktop-request pd10 aiCenter'>
+            <div className='flex spaceBetween mb1' style={{ width: '100%' }}>
+                <div className='flex' style={{gap:'0.5rem'}}>
+                    <p className='m0'>홍길동 기자</p>
+                    {type === '시민기자' && <Label text="시민" />}
                 </div>
-            )}
-
-            {(activeTab === 'pending' || activeTab === 'rejected') && (
-                <div className='flex desktop-request-3buttons-check br10' style={{ width: '70%' }}>
-                    <button>승인</button>
-                    <button className={activeTab === 'pending' ? 'pending' : ''}>보류</button>
-                    <button className={activeTab === 'rejected' ? 'rejected' : ''}>거절</button>
-                </div>
-            )}
-            {activeTab === 'approved' && (
-                <button className='desktop-request-privatebutton'>비공개</button>
-            )}
-            {(!activeTab) && (
-                <div className='flex desktop-request-3buttons br10' style={{ width: '70%' }}>
-                <button>승인</button>
-                <button>보류</button>
-                <button>거절</button>
+                <p className='m0'>23:59</p>
             </div>
-            )}
+            <h4 className='ellipsis'>인텔 "최신 AI 칩 가우디3 탑재 서버, 국내 상륙 임박" 승인요청입니다.</h4>
         </div>
     );
 }

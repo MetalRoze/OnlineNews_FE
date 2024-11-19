@@ -1,20 +1,11 @@
-import React, { useState } from 'react';  // useState 임포트 확인
+import React, { useState } from 'react';  
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
 import profileResetIcon from '../../assets/x-square.svg'; 
-const HeadWrapper = styled.div`
-max-width: 600px;
-width:100%;
-    min-height: 100vh; 
-    padding:0px; 
-    display: flex; 
-    flex-direction:column;
-    justify-content: center; 
-    align-items: center; 
-    background-color: var(--color-white); 
-`; 
+
+import { postRequest } from '../../apis/noCTAxios';
 
 const InputContainer = styled.div`
     max-width:400px;
@@ -161,21 +152,61 @@ const CancelButton = styled.button`
 `;
 
 
-
 export default function GeneralForm() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         passwordCheck: '',
-        nickname: '',  // 닉네임 추가
+        nickname: '',  
         cellphone: { part1: '', part2: '', part3: '' },
         gender:'', 
+        profileImg: ''
+        , 
     });
 
     const [profileImg, setProfileImg] = useState(profileIcon);
 
     const handleSubmit = () => {
+        checkNickNameEmpty(); 
+        if(validateFormState()){
+            handleSignupApi(); 
+        }
+    };
+
+    const handleSignupApi = async () => {
+        const formDataToSubmit = new FormData();
+        formDataToSubmit.append("user_name", formData.name);
+        formDataToSubmit.append("user_email", formData.email);
+        formDataToSubmit.append("user_pw", formData.password);
+        formDataToSubmit.append("user_pw2", formData.passwordCheck);
+        formDataToSubmit.append("user_cp", `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
+        formDataToSubmit.append("user_sex", formData.gender);
+        formDataToSubmit.append("user_nickname", formData.nickname);
+        
+        if (formData.profileImg) {
+            formDataToSubmit.append("user_img", formData.profileImg);
+        }
+
+        postRequest('/api/user/signup/general', formDataToSubmit)
+            .then(response => {
+                console.log('응답 상태:', response.status);  // 응답 내용 확인
+
+                if (response.status === 200) {
+                    navigate('/signup/success');
+                } else {
+                    alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
+                }
+            })
+
+            .catch(error => {
+                console.error("회원가입 오류:", error);
+                alert("회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.");
+            }); 
+
+    };
+
+    const validateFormState = () => {
         let missingFields = [];
 
         if (!formData.name) missingFields.push("이름");
@@ -187,27 +218,40 @@ export default function GeneralForm() {
 
         if (missingFields.length > 0) {
             alert(`${missingFields[0]} 항목을 입력해주세요`);
-            return;
+            return false;
         }
     
         if (formData.password !== formData.passwordCheck) {
             alert("비밀번호가 일치하지 않습니다.");
-            return;
+            return false;
         }
     
         if (formData.cellphone.part1.length !== 3 || formData.cellphone.part2.length !== 4 || formData.cellphone.part3.length !== 4) {
             alert("휴대폰 번호 형식이 올바르지 않습니다.");
-            return;
+            return false;
         }
-        navigate('/signup/success');
-    };
+
+        return true; 
+    }; 
+
+    const checkNickNameEmpty = () =>{
+        if(!formData.nickname){
+            setFormData((prevData) => ({
+                ...prevData,
+                nickname: "익명",
+            }));        
+        }
+    }; 
     
 
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setProfileImg(URL.createObjectURL(file));
-        }
+            setFormData((prevData) => ({
+                ...prevData,
+                profileImg: file 
+            }));
+         }
     };
 
 
@@ -218,8 +262,18 @@ export default function GeneralForm() {
 
     const navigate = useNavigate(); 
 
+    const handleCellphoneChange = (part, value) => {
+        setFormData(prevData => ({
+            ...prevData,
+            cellphone: {
+                ...prevData.cellphone,
+                [part]: value 
+            }
+        }));
+    };
+
     return (
-        <HeadWrapper>
+        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
             <TitleWrapper>
                 <Title>회원정보</Title>
                 <SubTitle>입력항목중<SmallText>(</SmallText><SmallRedText>*</SmallRedText><SmallText>)</SmallText>는 필수입력 표시입니다.</SubTitle>
@@ -299,7 +353,7 @@ export default function GeneralForm() {
                             type="cellphone-part1"
                             id="cellphone-part1"
                             value={formData.cellphone.part1}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part1: e.target.value } })}
+                            onChange={(e) => handleCellphoneChange('part1', e.target.value)}
                             required
                             placeholder="010"
                             maxLength="3"
@@ -310,7 +364,7 @@ export default function GeneralForm() {
                             type="cellphone-part2"
                             id="cellphone-part2"
                             value={formData.cellphone.part2}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part2: e.target.value } })}
+                            onChange={(e) => handleCellphoneChange('part2', e.target.value)}
                             required
                             placeholder="1234"
                             maxLength="4"
@@ -321,7 +375,7 @@ export default function GeneralForm() {
                             type="cellphone-part3"
                             id="cellphone-part3"
                             value={formData.cellphone.part3}
-                            onChange={(e) => setFormData({ ...formData, cellphone: { ...formData.cellphone, part3: e.target.value } })} 
+                            onChange={(e) => handleCellphoneChange('part3', e.target.value)}
                             required
                             placeholder="5678"
                             maxLength="4"
@@ -335,16 +389,16 @@ export default function GeneralForm() {
                         <RadioLabel>
                             <input 
                                 type="radio" 
-                                value="male" 
-                                checked={formData.gender === "male"} 
+                                value="M" 
+                                checked={formData.gender === "M"} 
                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                             />  남성
                         </RadioLabel>
                         <RadioLabel>
                             <input 
                                 type="radio" 
-                                value="female" 
-                                checked={formData.gender === "female"} 
+                                value="F" 
+                                checked={formData.gender === "F"} 
                                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                             />  여성
                         </RadioLabel>
@@ -375,7 +429,7 @@ export default function GeneralForm() {
             </InputContainer>
     
             <NextButton onClick={handleSubmit}>등록하기</NextButton>
-        </HeadWrapper>
+        </div>
     
     ); 
 
