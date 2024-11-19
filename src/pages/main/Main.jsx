@@ -4,6 +4,7 @@ import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import axios from "axios";
+import { getRequest } from '../../apis/axios';
 
 export default function Main() {
 
@@ -13,9 +14,9 @@ export default function Main() {
         // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
         const fetchArticles = async () => {
             try {
-                const response = await axios.get("/api/main-article");
+                const response = await getRequest("/api/main-article");
                 setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
-                console.log(articles);
+                console.log(response.data);
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
             }

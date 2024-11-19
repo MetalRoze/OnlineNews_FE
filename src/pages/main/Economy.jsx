@@ -3,46 +3,42 @@ import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
-import axios from "axios";
+import { getRequest } from "../../apis/axios";
 
 export default function Economy() {
     const [articles, setArticles] = useState([]);
-    // const articles = Array(6).fill(0);
+
     useEffect(() => {
-        // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
         const fetchArticles = async () => {
             try {
-                const response = await axios.get("/api/article/select?category=ECONOMY");
-                setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
-                console.log(articles);
+                const response = await getRequest("/api/article/select?category=ECONOMY");
+                setArticles(response.data); // 데이터 저장
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
             }
         };
-
+    
         fetchArticles();
     }, []);
-
+    
+    useEffect(() => {
+        // console.log(articles); // articles 상태가 업데이트 된 후에 출력
+    }, [articles]);
+    
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
             <HeadlineArticle></HeadlineArticle>
 
+            {/* Divider */}
             {/* <Divider />  */}
 
-            {articles.map((article) => (
-                <div key={article.id}>
-                    <BasicArticle article={article} />
+            {articles.map((article) => (  // map에서 'article'로 이름 변경
+                <div key={article.id}>    {/* article.id로 고유값을 설정 */}
+                    <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
                     <hr />
                 </div>
             ))}
-
-            {/* {articles.map((_, index) => (
-                <div>
-                    <BasicArticle key={index} />
-                    <hr></hr>
-                </div>
-            ))} */}
         </div>
     );
 }
