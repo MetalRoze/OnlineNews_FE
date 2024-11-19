@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import AdminArticle from '../../components/AdminArticle';
+import AdminArticle from '../adminMain/AdminArticle';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
 import ProfileInfo from './ProfileInfo';
