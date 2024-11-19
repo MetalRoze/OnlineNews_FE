@@ -24,17 +24,14 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
           script: |
-            script: |
-              cd /home/ubuntu/OnlineNews_FE/
-              git reset --hard HEAD
-              git clean -fd
-              
-              git pull origin main
-              npm install
-          
-              # Vite 프로젝트 빌드
-              npm run build
-          
-              # Nginx 재시작 (빌드 결과물 서빙)
-              sudo systemctl restart nginx
+            cd /home/ubuntu/OnlineNews_FE/
+            pwd 
+            git statu
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin main
+            npm run install
+            npm run build
+            nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
+            sudo systemctl restart nginx  
 
