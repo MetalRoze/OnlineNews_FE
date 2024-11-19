@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleContent from '../articleDetail/ArticleContent';
-import ArticleHeader from '../articleDetail/ArticleHeader';
+import ProfileInfo from '../staffManage/ProfileInfo';
 import { getRequest } from '../../apis/axios';
 import { useParams } from 'react-router-dom';
-
 export default function RequestDetail() {
+
     const { id } = useParams();
     const [request, setRequest] = useState();
     const [article, setArticle] = useState();
+    const [userInfo, setUserInfo] = useState();
 
     //request api
     const fetchRequestById = async (id) => {
@@ -21,10 +22,12 @@ export default function RequestDetail() {
             if (response.data.articleId) {
                 fetchArticleById(response.data.articleId);
             }
+            else {
+                fetchUserInfo(response.data.userId);
+            }
 
         } catch (error) {
             console.error('요청실패', error);
-            setLoading(false);
         }
     };
     //article api -> 추후 dto수정
@@ -35,7 +38,15 @@ export default function RequestDetail() {
             console.log(response.data[0]);
         } catch (error) {
             console.error('기사 요청실패', error);
-            setLoading(false);
+        }
+    };
+    const fetchUserInfo = async (userId) => {
+        try {
+            const response = await getRequest(`/api/user/${userId}`)
+            setUserInfo(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
         }
     };
 
@@ -50,13 +61,17 @@ export default function RequestDetail() {
                     {request && (
                         <>
                             <h1>{request.userName}</h1>
-                            <p className='mb2'>example@example.com</p>
+                            <p className='mb2'>{request.userEmail}</p>
                         </>
                     )}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow' style={{ width: 'fit-content' }}>
                     <div className='pd20 mobile-container'>
-                        {article && <ArticleContent article={article} />}
+                        {article ? (
+                            <ArticleContent article={article} />
+                        ) : (
+                            userInfo && <ProfileInfo />
+                        )}
                     </div>
                     <div className='flex desktop-request-3buttons br10'>
                         <button>승인</button>
