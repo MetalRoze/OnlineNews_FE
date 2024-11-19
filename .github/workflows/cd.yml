@@ -25,7 +25,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           script: |
             cd /home/ubuntu/OnlineNews_FE/
-            git pull origin main
+            git pull origin main || echo "Git pull failed"
             npm install
             pkill -f "npm run dev"
             nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
