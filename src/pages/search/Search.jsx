@@ -59,16 +59,18 @@ export default function Search() {
     };
 
     return (
-        <div className='mobile-header column'>
-            <SearchBar onSearch={handleSearch} />
-            <Divider></Divider>
-            <div className='mobile-header column m0 pd0'>
+        <div className="mobile-container">  {/* 기존 구조 유지 */}
+            <StyledSearchWrapper>  {/* SearchBar를 중앙에 배치할 부모 컨테이너 */}
+                <SearchBar onSearch={handleSearch} />
+            </StyledSearchWrapper>
+            <Divider />
+            <div className="m0 pd0 column">
                 <StyledFlexContainer>
                     <LeftAlignedText>최근검색어</LeftAlignedText>
                     <RightAlignedText onClick={handleRightClick}>기록 삭제</RightAlignedText>
                 </StyledFlexContainer>
 
-                <div>
+                <div className="m0 pd0 " >
                     {loading ? (  // 로딩 중일 때 표시
                         <h5>로딩 중...</h5>
                     ) : history.length === 0 ? (  // 데이터가 없을 때 표시
@@ -81,6 +83,14 @@ export default function Search() {
         </div>
     );
 }
+
+// SearchBar만 중앙 정렬을 위한 스타일
+const StyledSearchWrapper = styled.div`
+    display: flex;
+    justify-content: center;  // 수평 중앙 정렬
+    width: 100%;               // 가로 전체 너비 사용
+    margin-bottom: 20px;       // 아래 여백 추가
+`;
 
 const StyledFlexContainer = styled.div`
     display: flex;
