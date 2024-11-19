@@ -58,7 +58,7 @@ export default function ArticleManage() {
                 </div>
                 <TotalCount>전체 {articles.length}개</TotalCount>
 
-                <DesktopList contents={contents} headers={headers} columns={columns} />
+                <DesktopList pathTo={'../articleDetail'} contents={contents} headers={headers} columns={columns} />
             
                 {articles.length !== 0 && (
                     <MyPagination itemsCountPerPage={12} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
