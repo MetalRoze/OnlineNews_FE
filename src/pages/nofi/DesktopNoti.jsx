@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import Notification from './Notification';
-import Sidebar from '../../components/Sidebar';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
-import { StyledRequestListWrapper, PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
+import { DesktopList } from '../../components/DesktopList';
+import styled from 'styled-components';
 
 export default function DesktopNoti() {
     const [activeTab, setActiveTab] = useState('allNoties');
@@ -39,29 +38,39 @@ export default function DesktopNoti() {
         ]
     };
 
+    const headers = ["생성일자", "구분", "이름", "내용"];
+    const contents = [
+        {
+            생성일자: "2023-10-01",
+            구분: "승인요청",
+            이름: "홍길동",
+            내용: "어쩌고 승인요청입니다."
+        },
+        {
+            생성일자: "2023-10-01",
+            구분: "기자등록",
+            이름: "홍길동",
+            내용: "홍길동 시민기자 등록 요청입니다."
+        },
+    ];
+    const columns = "1fr 0.8fr 0.8fr 2fr";
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <Sidebar />
             <div className="desktop-container">
-                <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
+                <div className='flex aiCenter spaceBetween mb1'>
+                    <h2>알림</h2>
+                    <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
+                </div>
                 <TotalCount>전체 {noties[activeTab].length}개</TotalCount>
-                <StyledNotiListWrapper>
-                    {noties[activeTab].map((noti) => (
-                        <Notification
-                            notiType={noti.notiType}
-                            type={noti.type}
-                            userName={noti.name}
-                            title={noti.title}
-                            comment={noti.comment}
-                            reply={noti.reply}
-                        />
-                    ))}
-                </StyledNotiListWrapper>
-                <PaginationContainer>
-                    <MyPagination itemsCountPerPage={21} totalItemsCount={noties[activeTab].length} pageRangeDisplayed={5} />
-                </PaginationContainer>
+
+                <DesktopList contents={contents} headers={headers} columns={columns} />
+            
+                 <MyPagination itemsCountPerPage={12} totalItemsCount={noties[activeTab].length} pageRangeDisplayed={5} />
             </div>
         </div>
     );
 }
-const StyledNotiListWrapper = StyledRequestListWrapper;
+const TotalCount = styled.p`
+    color : ${(props) => props.theme.colors.gray50};
+`;
