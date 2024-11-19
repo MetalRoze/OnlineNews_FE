@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from '../../components/SearchBar';
-import styled from "styled-components";
 import SearchRecords from "./SearchRecords";
-import { getRequest, deleteRequest } from "../../apis/axios";
+import { postRequest, getRequest, deleteRequest } from "../../apis/axios";
+import styled from "styled-components";
 
 export default function Search() {
-    const [history, setHistory] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [history, setHistory] = useState([]);  // 초기값을 빈 배열로 설정
+    const [loading, setLoading] = useState(true);  // 로딩 상태
 
     useEffect(() => {
-        // /api/history 요청
+        setLoading(true);  // 데이터 요청 전 로딩 상태 활성화
         getRequest('/api/history')
             .then((response) => {
                 if (response && Array.isArray(response.data)) {
                     setHistory(response.data); // 응답 데이터를 history 상태에 저장
+                    console.log("Fetched history:", response.data);  // history 상태 확인
                 } else {
                     setHistory([]); // 데이터가 없으면 빈 배열
                 }
@@ -23,10 +24,9 @@ export default function Search() {
                 setHistory([]); // 에러 발생 시 빈 배열로 설정
             })
             .finally(() => {
-                setLoading(false); // 데이터 로딩 완료
+                setLoading(false); // 데이터 로딩 완료 후 로딩 상태 비활성화
             });
-    }, []); // 빈 배열은 처음 한 번만 실행되도록 함
-
+    }, []); // 컴포넌트 마운트 시 한번만 실행
 
     const handleRightClick = () => {
         deleteRequest('/api/history/alldelete')
@@ -39,26 +39,45 @@ export default function Search() {
             });
     };
 
+    const handleSearch = (query) => {
+        setLoading(true);
+        postRequest('/api/history/search', { searchTerm: query }) // 수정된 부분
+            .then((response) => {
+                if (response && Array.isArray(response.data)) {
+                    setHistory(response.data); // 응답 데이터를 history 상태에 저장
+                } else {
+                    setHistory([]); // 데이터가 없으면 빈 배열
+                }
+            })
+            .catch((error) => {
+                console.error("Error searching history:", error);
+                setHistory([]); // 에러 발생 시 빈 배열로 설정
+            })
+            .finally(() => {
+                setLoading(false); // 데이터 로딩 완료
+            });
+    };
+
     return (
         <div className='mobile-header column'>
-            <SearchBar />
+            <SearchBar onSearch={handleSearch} />
             <Divider></Divider>
             <div className='mobile-header column m0 pd0'>
                 <StyledFlexContainer>
-                    <LeftAlignedText >최근검색어</LeftAlignedText>
+                    <LeftAlignedText>최근검색어</LeftAlignedText>
                     <RightAlignedText onClick={handleRightClick}>기록 삭제</RightAlignedText>
                 </StyledFlexContainer>
 
                 <div>
-                    {history.length === 0 ? (
+                    {loading ? (  // 로딩 중일 때 표시
+                        <h5>로딩 중...</h5>
+                    ) : history.length === 0 ? (  // 데이터가 없을 때 표시
                         <h5>저장된 검색어가 없습니다.</h5>
                     ) : (
-                        <SearchRecords records={history} />
+                        <SearchRecords history={history} />
                     )}
                 </div>
             </div>
-
-
         </div>
     );
 }
