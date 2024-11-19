@@ -1,22 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AdminArticle from '../../components/AdminArticle';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
-import ProfileInfo from './ProfileInfo'; 
+import ProfileInfo from './ProfileInfo';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
+import { getRequest } from '../../apis/axios';
+import { useParams } from 'react-router-dom';
 
 export default function StaffDetail() {
+
+    const { id } = useParams();
+    const [article, setArticle] = useState([]);
+    const [userInfo, setUserInfo] = useState();
+
+    const fetchUserInfo = async (userId) => {
+        try {
+            const response = await getRequest(`/api/user/${userId}`)
+            setUserInfo(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserInfo(id);
+    }, [id]);
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
                 <StyledBackground>
-                    <h1>홍길동 기자</h1>
-                    <p className='mb2'>example@example.com</p>
+                    {userInfo && (
+                        <>
+                            <h1>{userInfo.name}</h1>
+                            <p className='mb2'>{userInfo.email}</p>
+                        </>
+                    )}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <ProfileInfo /> 
-                    <div className='flex aiCenter spaceBetween pd10' style={{ width: '100%' }}>
+                    {userInfo && <ProfileInfo user={userInfo} />}
+                    <div className='flex aiCenter spaceBetween pd10 mt2' style={{ width: '100%' }}>
                         <h2 className='m0'>최신기사</h2>
                         <SearchBar />
                     </div>
@@ -32,7 +57,7 @@ export default function StaffDetail() {
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
