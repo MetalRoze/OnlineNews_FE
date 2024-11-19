@@ -26,8 +26,9 @@ export default function StaffDetail() {
     const fetchArticles = async (id) => {
         try {
             const response = await getRequest('/api/article/select', { userId: id, sortBy: "createdAt", sortDirection: "desc" });
-            setArticles(response.data);
-            console.log(response.data);
+            if (response.data !== "검색 결과가 없습니다.") {
+                setArticles(response.data);
+            }
         } catch (error) {
             console.error('요청실패', error);
         }
@@ -56,9 +57,15 @@ export default function StaffDetail() {
                         <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
-                        {articles && articles.map((article, index) => (
-                            <AdminArticle key={index} article={article} />
-                        ))}
+                        {articles && articles.length > 0 ? (
+                            articles.map((article, index) => (
+                                <AdminArticle key={index} article={article} />
+                            ))
+                        ) : (
+                            <div className="taCenter mb05" style={{ width: '100%' }}>
+                                요청이 없습니다.
+                            </div>
+                        )}
                     </StyledArticleListWrapper>
                     <div style={{ height: '3rem' }} />
                     <MyPagination itemsCountPerPage={5} totalItemsCount={20} pageRangeDisplayed={5} />
