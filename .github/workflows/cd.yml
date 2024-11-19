@@ -26,7 +26,7 @@ jobs:
           script: |
             cd /home/ubuntu/OnlineNews_FE/
             pwd 
-            git statu
+            git status
             git reset --hard HEAD
             git clean -fd
             git pull origin main
