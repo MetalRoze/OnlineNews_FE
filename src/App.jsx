@@ -7,8 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 
 import Header from './components/Header';
-import DesktopHeader from './components/DesktopHeader';
 import Footer from './components/Footer';
+import TestPage from './pages/testPage';
 import AdminMain from './pages/adminMain/AdminMain';
 import GoBackHeader from './components/GoBackHeader';
 import LoginPage from './pages/login/Login';
@@ -38,18 +38,6 @@ import JournalistMyPage from './pages/mypage/JournalistMyPage';
 import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';
 import JournalistMyPageEdit from './pages/mypage/JournalistMyPageEdit';
 import ArticleWrite from './pages/articleWrite/ArticleWrite';
-import Economy from './pages/main/Economy';
-import Politics from './pages/main/Politics';
-import Entertainment from './pages/main/Entertainment';
-import Lifestyle from './pages/main/Lifestyle';
-import Society from './pages/main/Society';
-import Opinion from './pages/main/Opinion';
-import Tech from './pages/main/Tech';
-import Ranking from './pages/main/Ranking';
-import RequestDetail from './pages/requestManage/RequestDetail';
-import StaffDetail from './pages/staffManage/StaffDetail';
-import MyArticle from './pages/myArticle/MyArticle';
-import MyDetail from './pages/myArticle/MyDetail';
 
 function App() {
   return (
@@ -62,11 +50,11 @@ function App() {
 const Basic = () => {
   const location = useLocation();
 
-  const isDetail = location.pathname.toLowerCase().startsWith('/articledetail');
+  const isDetail = location.pathname.toLowerCase() === '/articledetail';
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
-  const isDesktop = excludedPaths.some(path => location.pathname.toLowerCase().startsWith(path));
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
 
 
   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
@@ -90,21 +78,14 @@ const Basic = () => {
     { path: '/myPageJournalist', title: '계정' },
     { path: '/myPageJournalist/edit', title: '계정' },
     { path: '/articleWrite', title: '기사 작성' },
-    { path: '/articleWrite/:articleId', title: '기사 수정' },
-    { path: '/myArticle', title: '작성한 기사' },
-    { path: '/myDetail/:articleId', title: '작성한 기사' },
   ];
 
-  const currentPath = goBackHeaderPaths.find(item => {
-    const pathRegex = new RegExp(`^${item.path.replace(':articleId', '[^/]+')}$`, 'i');
-    return pathRegex.test(location.pathname);
-  });
+  const currentPath = goBackHeaderPaths.find(item => item.path === location.pathname);
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
   return (
     <div style={{ width: '100%', height: "100%" }}>
       {!isDetail && !isBackHeader && !isDesktop && <Header />}
-      {isDesktop && <DesktopHeader />}
       {isBackHeader && <GoBackHeader title={backHeaderTitle} />}
 
       <Routes>
@@ -114,15 +95,12 @@ const Basic = () => {
         <Route path="/requestManage" element={<RequestManage />} />
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
-        <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
-        <Route path="/requestManage/requestDetail/:id" element={<RequestDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/articleDetail" element={<ArticleDtPage />} />
-        <Route path="/articleDetail/:articleId" element={<ArticleDtPage />} />
         <Route path="/signup/generalTerm" element={<GeneralTermPage />} />
         <Route path="/signup/journalistTerm" element={<JurnalistTermPage />} />
         <Route path="/signup/generalForm" element={<GeneralFormPage />} />
@@ -139,18 +117,7 @@ const Basic = () => {
         <Route path='/myPageGeneral/edit' element={<GeneralMyPageEdit />} />
         <Route path="/myPageJournalist" element={<JournalistMyPage />} />
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
-        <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
-        <Route path='/economy' element={<Economy />} />
-        <Route path='/politics' element={<Politics />} />
-        <Route path='/entertainment' element={<Entertainment />} />
-        <Route path='/lifestyle' element={<Lifestyle />} />
-        <Route path='/society' element={<Society />} />
-        <Route path='/opinion' element={<Opinion />} />
-        <Route path='/tech' element={<Tech />} />
-        <Route path='/ranking' element={<Ranking />} />
-        <Route path='/myArticle' element={<MyArticle />} />
-        <Route path='/myDetail/:articleId' element={<MyDetail />} />
       </Routes>
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>

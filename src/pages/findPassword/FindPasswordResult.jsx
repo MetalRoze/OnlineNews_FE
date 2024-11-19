@@ -1,9 +1,19 @@
-import React, {useEffect, useState} from 'react'; 
-import { useNavigate, useLocation} from 'react-router-dom';
+import React, {useState} from 'react'; 
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'; 
 import TextButton from '../../components/TextButton'; 
-import { patchRequest } from '../../apis/axios';
 
+const HeadWrapper = styled.div
+` max-width: 600px;
+  width:100%;
+  min-height: 100vh; 
+  padding: 20px; 
+  display: flex; 
+  flex-direction:column;
+  justify-content: center; 
+  align-items: center; 
+  background-color: var(--color-white); `
+; 
 
 const MenuWrapper = styled.div
 `  display: flex;
@@ -53,56 +63,11 @@ export default function FindPasswordResult(){
     const navigate = useNavigate(); 
 
     const [activeMenu, setActiveMenu] = useState("password"); 
-    const [temporaryPw, setTemporaryPw] = useState(''); 
-
-    const [error, setError] = useState(null); 
-    const [loading, setLoading] = useState(true); 
-
-    const initialFormData = useLocation(); 
-
-    const [formData, setFormData] = useState({
-        name : initialFormData.state.name, 
-        email : initialFormData.state.email 
-    })
-
-    useEffect(() => {
-        getTemporaryPassword(); 
-        console.log(temporaryPw); 
-    }, [])
-
-    const getTemporaryPassword = () =>{
-        const data = {
-            name : formData.name, 
-            email : formData.email
-        }
-
-        patchRequest('/api/user/findPassword', data)
-            .then(response => {
-                setTemporaryPw(response.data.temporaryPw); 
-                setError(null)
-            })
-
-            .catch(error => {
-                console.error("회원정보 불러오기 실패!"); 
-                if(error.response.status == 404){
-                    setError("회원정보와 일치하는 정보가 없습니다.")
-                }else{
-                    alert("오류가 발생했습니다. 다시 시도해주세요")
-                    navigate('/findPassword')
-                }
-            })
-
-            .finally(() => {
-                setLoading(false)
-            })
-    }
     
+
+
     const handleFindId = () => {
         navigate('/findId')
-    }
-
-    const handleFindPassword = () =>{
-        navigate('/findPassword') 
     }
 
     const handleSubmit = () => {
@@ -110,7 +75,7 @@ export default function FindPasswordResult(){
     }
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <HeadWrapper>
             <MenuWrapper>
                 <TextButton
                     label="이메일 찾기"
@@ -127,33 +92,15 @@ export default function FindPasswordResult(){
             </MenuWrapper>
 
             <ResultWrapper>
-            {loading ? (
-                <ResultSubtitle>로딩중 ... </ResultSubtitle>
-            ) : (
-                <>
-                {error ? (
-                    <ResultSubtitle>{error}</ResultSubtitle>
-                ) : (
-                    <>
-                    <ResultSubtitle>임시 비밀번호가 발급되었습니다.</ResultSubtitle>
-                    <ResultBox>
-                        <ResultText>{temporaryPw}</ResultText>
-                    </ResultBox>
-                    </>
-                )}
-                </>
-            )}
+                <ResultSubtitle>임시 비밀번호가 발급되었습니다.</ResultSubtitle>
+                <ResultBox>
+                    <ResultText>@aBjL4kq!O8y</ResultText>
+
+                </ResultBox>
             </ResultWrapper>
-            {loading ? (<p></p>) : (
-                <>
-                {error ? (
-                    <button onClick={handleFindPassword} className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>다시 찾기</button>
-                ) : (
-                    <button onClick={handleSubmit} className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>로그인 하러 가기</button>
-                )}
-                </>
-            )}
-        </div>
+            <button onClick={handleSubmit} className="long-black-button" style={{fontWeight:"300", fontSize:"1.25rem", width:'400px'}}>로그인 하러 가기</button>
+
+        </HeadWrapper>
     )
  
 }

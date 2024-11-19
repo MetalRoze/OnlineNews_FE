@@ -3,7 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import GeneralOptionIcon from '../../assets/generaluserIcon.png'
 import JournalistOptionIcon from '../../assets/journalistIcon.png'
-import { BiBorderAll } from 'react-icons/bi';
+
+const HeadWrapper = styled.div`
+max-width: 600px;
+width:100%;
+    min-height: 100vh; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction:column;
+    justify-content: center; 
+    align-items: center; 
+    background-color: var(--color-white); 
+`; 
 
 const SignupSelectTitle = styled.h1`
     margin-bottom: 10px; 
@@ -61,19 +72,19 @@ export default function Signup() {
     }; 
 
     return ( 
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
-                <SignupSelectTitle>가입 유형 선택</SignupSelectTitle>
-                <SignupSelectSubTitle>해당하는 회원의 종류를 선택해주세요</SignupSelectSubTitle>
-                <OptionWrapper>
-                    <OptionIcon src={GeneralOptionIcon}></OptionIcon>
-                    <OptionButton onClick={handleGeneralSignup}>일반회원 가입</OptionButton>
-                </OptionWrapper>
+        <HeadWrapper>
+            <SignupSelectTitle>가입 유형 선택</SignupSelectTitle>
+            <SignupSelectSubTitle>해당하는 회원의 종류를 선택해주세요</SignupSelectSubTitle>
+            <OptionWrapper>
+                <OptionIcon src={GeneralOptionIcon}></OptionIcon>
+                <OptionButton onClick={handleGeneralSignup}>일반회원 가입</OptionButton>
+            </OptionWrapper>
 
-                <OptionWrapper>
-                    <OptionIcon src={JournalistOptionIcon}></OptionIcon>
-                    <OptionButton onClick={handleJournalistSignup}>시민기자 가입</OptionButton>
-                </OptionWrapper>
-        </div>
+            <OptionWrapper>
+                <OptionIcon src={JournalistOptionIcon}></OptionIcon>
+                <OptionButton onClick={handleJournalistSignup}>시민기자 가입</OptionButton>
+            </OptionWrapper>
+        </HeadWrapper>
        
     );
 }

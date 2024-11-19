@@ -2,30 +2,28 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import styled from "styled-components";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import 'swiper/css/navigation';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function MenuList({ backgroundColor = 'var(--color-white)', textColor = 'var(--color-black)' }) {
     const categories = ['MY', '랭킹', '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
-    const paths = ['my', 'ranking', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
+    const paths = ['my', 'main', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
+    // const [activeIndex, setActiveIndex] = useState(null); active 확인해 보려고 넣었음. 나중에 이걸로 변경
     const [activeIndex, setActiveIndex] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
-    const swiperRef = useRef(null);  // Swiper 인스턴스 참조
 
     useEffect(() => {
         const currentPath = location.pathname.split('/')[1];
         const currentIndex = paths.indexOf(currentPath);
         if (currentIndex !== -1) {
             setActiveIndex(currentIndex);
-            swiperRef.current?.slideTo(currentIndex);  // 초기화 시에 현재 인덱스로 슬라이드 이동
         }
     }, [location.pathname]);
 
     const handleSlideClick = (index) => {
         setActiveIndex(index);
-        swiperRef.current?.slideTo(index);  // 클릭한 인덱스로 슬라이드 이동
         navigate(`/${paths[index]}`);
     };
 
@@ -37,7 +35,6 @@ export default function MenuList({ backgroundColor = 'var(--color-white)', textC
                 modules={[Navigation]}
                 spaceBetween={10}
                 slidesPerView="auto"
-                onSwiper={(swiper) => (swiperRef.current = swiper)}  // Swiper 인스턴스 저장
                 navigation={categories.length > 5 ? {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
@@ -70,9 +67,10 @@ const StyledSwiperButton = styled.div`
     &.swiper-button-prev,
     &.swiper-button-next {
         background-color: ${({ backgroundColor }) => backgroundColor || '#fff'};
+        // opacity: 0.5;
         padding: 10px; 
         border-radius: 20px;
-        color: ${({ textColor }) => textColor || 'black'};
+        color: ${({ textColor }) => textColor || 'black'}; // textColor로 변경
         z-index: 10;
     }
 

@@ -7,18 +7,14 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
 
-const QuillEditor = ({ onChange, content }) => {
+const QuillEditor = ({ onChange }) => {
     const [editorContent, setEditorContent] = useState('');
 
     const handleEditorChange = (content) => {
         setEditorContent(content);
-        onChange(content);
+        onChange(content); // 부모에게 내용 전달
     };
 
-    React.useEffect(() => {
-        setEditorContent(content);
-      }, [content]);
-      
     const formats = [
         'float',
         'width',
@@ -55,8 +51,8 @@ const QuillEditor = ({ onChange, content }) => {
     return (
         <div style={{ height: '70vh' }}>
             <ReactQuill
-                value={editorContent}
-                onChange={handleEditorChange}
+                value={editorContent} // editorContent 상태 값을 value에 연결
+                onChange={handleEditorChange} // onChange 이벤트 연결
                 style={{ width: '100%', height: '80%' }}
                 theme="snow"
                 modules={modules}

@@ -1,306 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import ArticlePreview from './ArticlePreview.jsx';
-import ArticleWriteForm from './ArticleWriteForm.jsx';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getRequest, postRequest, patchRequest } from '../../apis/axios.jsx';
-import formatDateTime from '../../utils/formDateTime.jsx';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import QuillEditor from './QuillEditor.jsx';
+
+const categories = ['정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
+
 const ArticleWrite = () => {
+    const [editorContent, setEditorContent] = useState('');
+    const [previewContent, setPreviewContent] = useState(''); // 미리보기 내용을 위한 상태 추가
 
-    const navigate = useNavigate();
-    const { articleId } = useParams();
-
-    const [isEdit, setIsEdit] = useState(!!articleId);
-    const [originalContent, setOriginalContent] = useState('');
-    const [content, setContent] = useState('');
-    const [authorName, setAuthorName] = useState('홍길동');
-    const [articleDate, setArticleDate] = useState("");
-    const [title, setTitle] = useState('');
-    const [subTitles, setSubTitles] = useState(['']);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState('');
-
-    const [articleData, setArticleData] = useState();
-
-    // 소제목 관리
-    const addSubtitleForm = () => {
-        if (subTitles.length < 4) {
-            setSubTitles([...subTitles, '']);
-        }
-    };
-    const minusSubtitleForm = (index) => {
-        if (subTitles.length > 1) {
-            const updatedSubTitles = subTitles.filter((_, i) => i !== index);
-            setSubTitles(updatedSubTitles);
-        }
-
-        if (subTitles.length == 1) {
-            alert('소제목은 필수 항목입니다.');
-        }
-    };
-    const handleSubtitleChange = (index, value) => {
-        const updatedSubTitles = [...subTitles];
-        updatedSubTitles[index] = value;
-        setSubTitles(updatedSubTitles);
+    const handleEditorChange = (content) => {
+        setEditorContent(content); // QuillEditor에서 받은 내용을 상태로 저장
     };
 
-    const handleCategoryChange = (category) => {
-        setSelectedCategory(category);
-    };
-    // 본문 관리
-    const handleEditorChange = (originalContent) => {
-        setOriginalContent(originalContent);
-    };
-
-    const handleContent = async () => {
-        if (!title || subTitles.some(subtitle => subtitle === '') || originalContent === '' || !selectedCategory) {
-            alert("모든 필드를 작성해 주세요.");
-            return;
-        }
-
-        const now = new Date();
-        console.log(now)
-        setArticleDate(formatDateTime(now))
-
-        // DB 저장을 위해 base64 to blob
+    const handleSubmit = async () => {
+        console.log('작성된 내용:', editorContent);
+        
+        // 이미지 URL 변환 로직 추가
         const imgRegex = /<img[^>]+src="([^">]+)"/g;
         const imagePromises = [];
+
         let match;
-        while ((match = imgRegex.exec(originalContent)) !== null) {
+        while ((match = imgRegex.exec(editorContent)) !== null) {
             const imgSrc = match[1];
             if (imgSrc.startsWith('data:image/')) {
+                // Base64 이미지 URL을 사용해 Blob 생성
                 const response = await fetch(imgSrc);
                 const blob = await response.blob();
-                const newImgUrl = URL.createObjectURL(blob);
-                imagePromises.push(Promise.resolve(newImgUrl));
-            } else {
-                imagePromises.push(Promise.resolve(imgSrc));
+                const newImgUrl = URL.createObjectURL(blob); // 변환된 Blob URL 생성
+                imagePromises.push(Promise.resolve(newImgUrl)); // Blob URL을 더미 URL로 대체
             }
         }
-        const imageUrl = await Promise.all(imagePromises);
-        console.log('변환된 이미지 URL들:', imageUrl);
 
-        const updatedHtml = originalContent.replace(imgRegex, () => {
-            return `<img src="${imageUrl.shift()}"`;
+        const imageUrls = await Promise.all(imagePromises);
+
+        // 변환된 URL 출력
+        console.log('변환된 이미지 URL들:', imageUrls);
+
+        // 업데이트된 HTML 생성
+        const updatedHtml = editorContent.replace(imgRegex, (match, p1) => {
+            const newUrl = imageUrls.shift(); // 변환된 URL로 교체
+            return match.replace(p1, newUrl);
         });
 
-        setContent(updatedHtml)
-        setIsModalOpen(true);
+        // 업데이트된 HTML을 콘솔에 출력
+        console.log('변환된 HTML:', updatedHtml);
+
+        // 미리보기 내용 설정
+        setPreviewContent(updatedHtml);
+
+        // DB 저장 로직은 주석 처리
+        // await saveArticleToDatabase(updatedHtml);
     };
 
-    useEffect(() => {
-        if (content) {
+    // saveArticleToDatabase 함수도 주석 처리
+    // const saveArticleToDatabase = async (html) => {
+    //     console.log('DB에 저장할 HTML:', html);
+    // };
 
-            console.log('이스케이프 처리한 html:', content);
-            try {
-                console.log('이스케이프 처리 전으로 되돌린 html:', JSON.parse(content));
-            } catch (error) {
-                console.log('파싱 필요없음');
-            }
-        }
-    }, [content]);
-
-    // 모달 관리
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    // 기사 제출
-    const handleSubmit = async () => {
+    const navigate = useNavigate(); 
+    const handleSubmit2 = () => {
         const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
-
+    
         if (isConfirmed) {
-            const mergedSubTitles = subTitles.join(',./');
-
-            // 기사 수정
-            if (isEdit) {
-                const newArticleData = {
-                    category: selectedCategory,
-                    title: title,
-                    subtitle: mergedSubTitles,
-                    content: content,
-                };
-
-                // 기존 데이터와 비교하여 수정 dto 생성
-                const changes = {};
-                if (newArticleData.category !== articleData.category) changes.category = newArticleData.category;
-                if (newArticleData.title !== articleData.title) changes.title = newArticleData.title;
-                if (newArticleData.subtitle !== articleData.subtitle) changes.subtitle = newArticleData.subtitle;
-                if (newArticleData.content !== articleData.content) changes.content = newArticleData.content;
-
-                if (Object.keys(changes).length > 0) {
-                    let requestDTO = {
-                        ...changes
-                    };
-
-                    // 이미지 처리 - 원래 이미지
-                    const oldParser = new DOMParser();
-                    const oldDoc = oldParser.parseFromString(articleData.content, 'text/html');
-                    const oldImageElements = oldDoc.querySelectorAll('img');
-                    const oldImageUrls = [];
-                    oldImageElements.forEach((img) => {
-                        oldImageUrls.push(img.src);
-                    });
-
-                    // 이미지 처리 - 새로운 이미지
-                    const newParser = new DOMParser();
-                    const newDoc = newParser.parseFromString(content, 'text/html');
-                    const newImageElements = newDoc.querySelectorAll('img');
-                    const newImageUrls = [];
-                    newImageElements.forEach((img) => {
-                        newImageUrls.push(img.src);
-                    });
-
-                    const imagesToDelete = oldImageUrls.filter((url) => !newImageUrls.includes(url)); // 기존에 있고 새로 없는 이미지
-                    const imagesToAdd = newImageUrls.filter((url) => !oldImageUrls.includes(url)); // 새로 추가된 이미지
-
-                    // 삭제할 이미지 배열을 requestDTO에 추가
-                    if (imagesToDelete.length > 0) {
-                        requestDTO.deleteImages = imagesToDelete;
-                    }
-
-                    // request 생성 (requestDTO, images)
-                    const formData = new FormData();
-                    formData.append('requestDTO', new Blob([JSON.stringify(requestDTO)], { type: 'application/json' }));
-                    if (imagesToAdd.length > 0) {
-                        for (const imageUrl of imagesToAdd) {
-                            const response = await fetch(imageUrl);
-                            const blob = await response.blob();
-                            const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
-                            formData.append('images', file);
-                        }
-                    }
-
-                    try {
-                        const response = await patchRequest(`/api/article/update/${articleId}`, formData, {
-                            'Content-Type': 'multipart/form-data',
-                        });
-
-                        if (response.status === 200) {
-                            alert('기사가 성공적으로 수정되었습니다.');
-                            navigate(`/articleDetail/${articleId}`);
-                        }
-                    } catch (error) {
-                        console.error("기사 수정 중 오류가 발생했습니다.", error);
-                        alert('기사 수정에 실패했습니다.');
-                    }
-                } else {
-                    alert('수정된 내용이 없습니다.');
-                }
-            }
-
-            // 새로운 기사 작성
-            else {
-                const articleData = {
-                    category: selectedCategory,
-                    title: title,
-                    subtitle: mergedSubTitles,
-                    content: content,
-                };
-
-                // requestDTO
-                const formData = new FormData();
-                formData.append('requestDTO', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
-
-                // images
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(content, 'text/html');
-                const imageElements = doc.querySelectorAll('img');
-                const imageUrls = [];
-                imageElements.forEach((img) => {
-                    imageUrls.push(img.src);
-                });
-
-                if (imageUrls.length > 0) {
-                    for (const imageUrl of imageUrls) {
-                        const response = await fetch(imageUrl);
-                        const blob = await response.blob();
-                        const file = new File([blob], `image_${Date.now()}.png`, { type: blob.type });
-                        formData.append('images', file);
-                    }
-                }
-
-                // post
-                try {
-                    const response = await postRequest('/api/article/write', formData, {
-                        'Content-Type': 'multipart/form-data',
-                    });
-
-                    if (response.status === 200) {
-                        alert('기사가 성공적으로 제출되었습니다.');
-                        navigate('/main');
-                    }
-                } catch (error) {
-                    console.error("기사 제출 중 오류가 발생했습니다.", error);
-                    alert('기사 제출에 실패했습니다.');
-                }
-            }
-
-
-        } else {
-            handleCloseModal();
-        }
+            navigate('/main');
+        } 
     };
-
-
-    useEffect(() => {
-        const fetchArticleData = async () => {
-            try {
-                const response = await getRequest('/api/article/select', { id: articleId });
-                const articleData = response.data[0]
-                setArticleData(articleData)
-
-                if (articleData) {
-                    setTitle(articleData.title);
-                    setSubTitles(articleData.subtitle.split(',./'));
-                    setOriginalContent(articleData.content);
-                    setSelectedCategory(articleData.category);
-                    setAuthorName(articleData.userID);
-                }
-            } catch (error) {
-                console.error('기사를 불러오는 중 오류가 발생했습니다.', error);
-            }
-        };
-
-        if (isEdit && articleId) {
-            fetchArticleData();
-        }
-    }, [isEdit, articleId]);
-
-
-    useEffect(() => {
-        console.log("현재 선택된 카테고리:", selectedCategory);
-    }, [selectedCategory]);
-
     return (
-        <div className="mobile-container">
-            <ArticleWriteForm
-                title={title}
-                setTitle={setTitle}
-                subTitles={subTitles}
-                setSubTitles={setSubTitles}
-                handleSubtitleChange={handleSubtitleChange}
-                addSubtitleForm={addSubtitleForm}
-                minusSubtitleForm={minusSubtitleForm}
-                handleContent={handleContent}
-                setOriginalContent={setOriginalContent}
-                handleEditorChange={handleEditorChange}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={handleCategoryChange}
-                content={originalContent}
-            ></ArticleWriteForm>
+        <div className='mobile-container'>
+            <input type='text' className='mtb1' placeholder='제목을 입력해 주세요' />
+            <hr />
+            <input className='mtb1' type='text' placeholder='소제목을 입력해 주세요' />
+            <hr />
+            <div className='flex mtb1'>
+                <div className='mr1 mtbAuto'>카테고리</div>
+                <select>
+                    {categories.map((category, index) => (
+                        <option key={index} value={category}>
+                            {category}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <hr />
+            <QuillEditor onChange={handleEditorChange} />
+            <div className='mlAuto'>
+                <button onClick={handleSubmit2}>승인 요청</button>
+            </div>
 
-            {isModalOpen && (
-                <ArticlePreview
-                    authorName={authorName}
-                    title={title}
-                    category={selectedCategory}
-                    articleDate={articleDate}
-                    subTitles={subTitles}
-                    content={JSON.stringify(content)}
-                    onClose={handleCloseModal}
-                    handleSubmit={handleSubmit}
-                />
-            )}
+            {/* <hr />
+            <div className='preview-section'>
+                <h3>미리보기</h3>
+                <div dangerouslySetInnerHTML={{ __html: previewContent }} />
+            </div>  */}
         </div>
     );
 };
