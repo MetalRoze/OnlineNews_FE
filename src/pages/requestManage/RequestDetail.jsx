@@ -44,7 +44,6 @@ export default function RequestDetail() {
         try {
             const response = await getRequest(`/api/user/${userId}`)
             setUserInfo(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('사용자 요청실패', error);
         }
@@ -70,7 +69,7 @@ export default function RequestDetail() {
                         {article ? (
                             <ArticleContent article={article} />
                         ) : (
-                            userInfo && <ProfileInfo />
+                            userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
                     <div className='flex desktop-request-3buttons br10'>

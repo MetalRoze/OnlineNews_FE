@@ -1,31 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
+import {convertUserGradeToKor} from '../../utils/convertUserGrade';
 
-export default function ProfileInfo() {
+export default function ProfileInfo(user) {
     return (
         <StyledProfileWrapper>
-            <img src="https://placehold.co/150x200" alt="Bootstrap" />
+            <img src={user.user.img || "https://placehold.co/150x200"} alt="Bootstrap" />
             <ProfileInfoTable>
                 <tbody>
                     <tr>
                         <td>이름</td>
-                        <td>홍길동</td>
+                        <td>{user.user.name}</td>
                     </tr>
                     <tr>
                         <td>소개</td>
-                        <td>홍길동입니다!</td>
+                        <td>{user.bio}</td>
                     </tr>
                     <tr>
                         <td>구분</td>
-                        <td>일반기자</td>
+                        <td>{convertUserGradeToKor(user.user.grade)}</td>
                     </tr>
                     <tr>
                         <td>전화번호</td>
-                        <td>010-1234-5678</td>
+                        <td>{user.user.cp}</td>
                     </tr>
                     <tr>
                         <td>이메일</td>
-                        <td>example@example.com</td>
+                        <td>{user.user.email}</td>
                     </tr>
                 </tbody>
             </ProfileInfoTable>
