@@ -29,7 +29,7 @@ export default function Main() {
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
             <HeadlineArticle></HeadlineArticle>
-
+            <p>nginx 테스트입니다.</p>
             {/* <Divider />  */}
 
             {articles.map((article) => (
