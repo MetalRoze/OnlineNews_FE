@@ -65,9 +65,8 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase().startsWith('/articledetail');
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail","/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
-  const isDesktop = excludedPaths.includes(location.pathname.toLowerCase());
-
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const isDesktop = excludedPaths.some(path => location.pathname.toLowerCase().startsWith(path));
 
 
   // GoBackHeader를 사용할 페이지 경로 설정 및 제목 정의
@@ -99,7 +98,7 @@ const Basic = () => {
   const currentPath = goBackHeaderPaths.find(item => {
     const pathRegex = new RegExp(`^${item.path.replace(':articleId', '[^/]+')}$`, 'i');
     return pathRegex.test(location.pathname);
-});
+  });
   const isBackHeader = Boolean(currentPath); // 현재 경로가 GoBackHeader 경로인지 확인
   const backHeaderTitle = isBackHeader ? currentPath.title : '';
   return (
@@ -116,7 +115,7 @@ const Basic = () => {
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
         <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
-        <Route path="/requestManage/requestDetail" element={<RequestDetail />} />
+        <Route path="/requestManage/requestDetail/:id" element={<RequestDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />
@@ -142,14 +141,14 @@ const Basic = () => {
         <Route path='/myPageJournalist/edit' element={<JournalistMyPageEdit />} />
         <Route path='/articleWrite/:articleId' element={<ArticleWrite />} />
         <Route path='/articleWrite' element={<ArticleWrite />} />
-        <Route path='/economy' element={<Economy/>} />
-        <Route path='/politics' element={<Politics/>}/>
-        <Route path='/entertainment' element={<Entertainment/>}/>
-        <Route path='/lifestyle' element={<Lifestyle/>}/>
-        <Route path='/society' element={<Society/>}/>
-        <Route path='/opinion' element={<Opinion/>}/>
-        <Route path='/tech' element={<Tech/>}/>
-        <Route path='/ranking' element={<Ranking/>}/>
+        <Route path='/economy' element={<Economy />} />
+        <Route path='/politics' element={<Politics />} />
+        <Route path='/entertainment' element={<Entertainment />} />
+        <Route path='/lifestyle' element={<Lifestyle />} />
+        <Route path='/society' element={<Society />} />
+        <Route path='/opinion' element={<Opinion />} />
+        <Route path='/tech' element={<Tech />} />
+        <Route path='/ranking' element={<Ranking />} />
         <Route path='/myArticle' element={<MyArticle />} />
         <Route path='/myDetail/:articleId' element={<MyDetail />} />
       </Routes>
