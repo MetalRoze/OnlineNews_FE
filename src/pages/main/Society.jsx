@@ -3,47 +3,60 @@ import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
-import axios from "axios";
+import { getRequest } from "../../apis/axios";
 
-export default function Society() {
+export default function Economy() {
     const [articles, setArticles] = useState([]);
-    // const articles = Array(6).fill(0);
+
     useEffect(() => {
-        // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
         const fetchArticles = async () => {
             try {
-                const response = await axios.get("/api/main-article/category");
-                setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
-                console.log(articles);
+                const response = await getRequest("/api/article/select?category=SOCIAL");
+                
+                // 응답이 올바른 배열인지 확인
+                if (Array.isArray(response.data)) {
+                    setArticles(response.data); // 데이터 저장
+                } else {
+                    console.error("응답 데이터가 배열이 아닙니다:", response.data);
+                }
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
             }
         };
-
+    
         fetchArticles();
     }, []);
+    
+    useEffect(() => {
+        console.log(articles); // articles 상태가 업데이트 된 후에 출력
+    }, [articles]);
 
-
+    // articles가 배열일 경우에만 map 호출
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
             <HeadlineArticle></HeadlineArticle>
 
-            {/* <Divider />  */}
+            {/* Divider */}
+            {/* <Divider /> */}
 
-            {articles.map((article) => (
-                <div key={article.id}>
-                    <BasicArticle article={article} />
-                    <hr />
-                </div>
-            ))}
+            {Array.isArray(articles) && articles.length > 0 ? (
+                articles.map((article) => (  // map에서 'article'로 이름 변경
+                    <div key={article.id}>    {/* article.id로 고유값을 설정 */}
+                        <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
+                        <hr />
+                    </div>
+                ))
+            ) : (
+                <p>아직 불러올 기사들이 없습니다.</p>
+            )}
         </div>
     );
 }
 
 const Divider = styled.div`
-    width: 100%;                 /* 전체 너비 사용 */
-    height: 2px;                 /* 직선의 높이 (두께) */
-    background-color: #ccc;      /* 직선의 색상 */
-    margin: 10px 0;              /* 직선 위아래 여백 */
+    width: 100%;
+    height: 2px;
+    background-color: #ccc;
+    margin: 10px 0;
 `;
