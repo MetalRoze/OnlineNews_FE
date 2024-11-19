@@ -1,53 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import styled from 'styled-components';
 import { DesktopList } from '../../components/DesktopList';
+import { getRequest } from '../../apis/axios';
+import { convertUserGradeToKor } from '../../utils/convertUserGrade';
 
 
 export default function StaffManage() {
     const [activeTab, setActiveTab] = useState('allStaffs');
-
+    const [staffs, setStaffs] = useState([]);
     const tabData = [
-        { eventKey: 'allStaffs', title: '전체직원', content: '전체 직원' },
-        { eventKey: 'staff', title: '기자', content: '기자' },
-        { eventKey: 'jeneralStaff', title: '시민기자', content: '시민기자' },
+        { eventKey: 'allStaffs', title: '전체기자', content: '전체기자' },
+        { eventKey: 'REPORTER', title: '기자', content: '기자' },
+        { eventKey: 'INTERN_REPORTER', title: '인턴기자', content: '인턴기자' },
+        { eventKey: 'CITIZEN_REPORTER', title: '시민기자', content: '시민기자' },
     ];
+    //staff api
+    const fetchStaffs = async (grade) => {
+       try {
+           const endpoint = grade === 'allStaffs'
+               ? '/api/user/publisher'
+               : '/api/user/publisher/grade';
+           const params = grade === 'allStaffs' ? {} : { keyword: grade};
+           const response = await getRequest(endpoint, params);
+           setStaffs(response.data);
+       } catch (error) {
+           console.error('요청실패', error);
+       }
+   };
 
-    const staffs = {
-        allStaffs: [
-            { id: 1, name: '김철수', email: 'kim@example.com', phone: '010-1234-5678', type: '일반' },
-            { id: 2, name: '박영희', email: 'park@example.com', phone: '010-9876-5432', type: '기자' },
-            { id: 3, name: '이민수', email: 'lee@example.com', phone: '010-1111-2222', type: '시민기자' },
-            { id: 4, name: '최지우', email: 'choi@example.com', phone: '010-3333-4444', type: '일반' },
-            { id: 5, name: '한지민', email: 'han@example.com', phone: '010-5555-6666', type: '기자' },
-            { id: 6, name: '정유진', email: 'jung@example.com', phone: '010-7777-8888', type: '시민기자' }
-        ],
-        staff: [
-            { id: 2, name: '박영희', email: 'park@example.com', phone: '010-9876-5432', type: '기자' },
-            { id: 5, name: '한지민', email: 'han@example.com', phone: '010-5555-6666', type: '기자' }
-        ],
-        jeneralStaff: [
-            { id: 3, name: '이민수', email: 'lee@example.com', phone: '010-1111-2222', type: '시민기자' },
-            { id: 6, name: '정유진', email: 'jung@example.com', phone: '010-7777-8888', type: '시민기자' }
-        ]
-    };
+    useEffect(() => {
+        fetchStaffs(activeTab);
+    }, [activeTab]);
 
     const headers = ["구분", "이름", "전화번호", "이메일"];
-    const contents = [
-        {
-            구분: "시민",
-            이름: "홍길동",
-            전화번호: "010-2843-9317",
-            수정일자: "wlstj9317@naver.com"
-        },
-        {
-            구분: "시민",
-            이름: "홍길동",
-            전화번호: "010-2843-9317",
-            수정일자: "wlstj9317@naver.com"
-        },
-    ];
+    const contents = staffs.map((staff) => ({
+        전화번호: staff.cp,
+        이름: staff.name,
+        구분: convertUserGradeToKor(staff.grade),
+        이메일: staff.email,
+        id: staff.id,
+    }));
+
     const columns = "1fr 1fr 2fr 2fr";
 
     return (
@@ -57,10 +52,10 @@ export default function StaffManage() {
                     <h2> 직원 </h2>
                     <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
                 </div>
-                <TotalCount>전체 {staffs[activeTab].length}개</TotalCount>
+                <TotalCount>전체 {staffs.length}개</TotalCount>
 
                 <DesktopList pathTo={'staffDetail'} contents={contents} headers={headers} columns={columns} />
-                <MyPagination itemsCountPerPage={12} totalItemsCount={staffs[activeTab].length} pageRangeDisplayed={5} />
+                <MyPagination itemsCountPerPage={12} totalItemsCount={staffs.length} pageRangeDisplayed={5} />
             </div>
         </div>
     );

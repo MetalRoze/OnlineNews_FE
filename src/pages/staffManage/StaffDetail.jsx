@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import AdminArticle from '../../components/AdminArticle';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
-import ProfileInfo from './ProfileInfo'; // 새로 만든 컴포넌트 import
+import ProfileInfo from './ProfileInfo'; 
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 
 export default function StaffDetail() {
@@ -15,7 +15,7 @@ export default function StaffDetail() {
                     <p className='mb2'>example@example.com</p>
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <ProfileInfo /> {/* ProfileInfo 사용 */}
+                    <ProfileInfo /> 
                     <div className='flex aiCenter spaceBetween pd10' style={{ width: '100%' }}>
                         <h2 className='m0'>최신기사</h2>
                         <SearchBar />
