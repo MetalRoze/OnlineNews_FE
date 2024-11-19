@@ -11,21 +11,31 @@ import { useParams } from 'react-router-dom';
 export default function StaffDetail() {
 
     const { id } = useParams();
-    const [article, setArticle] = useState([]);
+    const [articles, setArticles] = useState([]);
     const [userInfo, setUserInfo] = useState();
 
     const fetchUserInfo = async (userId) => {
         try {
             const response = await getRequest(`/api/user/${userId}`)
             setUserInfo(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('사용자 요청실패', error);
+        }
+    };
+    //최신기사 api
+    const fetchArticles = async (id) => {
+        try {
+            const response = await getRequest('/api/article/select', { userId: id, sortBy: "createdAt", sortDirection: "desc" });
+            setArticles(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
         }
     };
 
     useEffect(() => {
         fetchUserInfo(id);
+        fetchArticles(id);
     }, [id]);
 
     return (
@@ -46,11 +56,9 @@ export default function StaffDetail() {
                         <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
+                        {articles && articles.map((article, index) => (
+                            <AdminArticle key={index} article={article} />
+                        ))}
                     </StyledArticleListWrapper>
                     <div style={{ height: '3rem' }} />
                     <MyPagination itemsCountPerPage={5} totalItemsCount={20} pageRangeDisplayed={5} />
