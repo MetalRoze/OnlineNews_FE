@@ -10,7 +10,7 @@ const ArticleComment = ({
     const [comments, setComments] = useState([]);
 
     const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const [itemsCountPerPage] = useState(10);
+    const [itemsCountPerPage] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
     const [resetKey, setResetKey] = useState(0);
 
@@ -21,6 +21,18 @@ const ArticleComment = ({
     const startIdx = (currentPage - 1) * itemsCountPerPage;
     const endIdx = startIdx + itemsCountPerPage;
     const currentComment = comments.slice(startIdx, endIdx);
+
+    const [nowUser, setNowUser] = useState('')
+    const fetchUser = async () => {
+        const authToken = sessionStorage.getItem('authToken');
+        if (!authToken) {
+            alert('로그인 정보가 없습니다.');
+            return;
+        }
+        const userResponse = await getRequest('/api/user/myPage');
+        setNowUser(userResponse.data.id);
+
+    };
 
     // 댓글/답글 조회
     const fetchComment = async (sortType='latest') => {
@@ -37,6 +49,7 @@ const ArticleComment = ({
                 }));
 
                 setComments(updatedComments)
+                console.log(updatedComments)
                 setTotalItemsCount(updatedComments.length);
                 setResetKey(prevKey => prevKey + 1);
                 setCurrentPage(1)
@@ -175,6 +188,7 @@ const ArticleComment = ({
     useEffect(() => {
         if (articleId) {
             fetchComment();
+            fetchUser();
         }
     }, [articleId]);
 
@@ -204,15 +218,22 @@ const ArticleComment = ({
                 {currentComment.map((comment) => (
                     <div key={comment.id} className='mb1'>
                         <div className='flex'>
-                            <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
+                            <img className='profile40' src={comment.userImg} />
                             <div className='mtbAuto ml05'>
                                 <h6 className='m0'>{obfuscateUsername(comment.userName)}</h6>
                                 <small className='gray40'>{comment.createdAt}</small>
                             </div>
+                            <div className='flex1'></div>
+                            {comment.userId === nowUser && (
+
+                                <div className='flex'>
+                                    <div className='mr05 hoverGray'>수정</div>
+                                    <div className='hoverGray'>삭제</div>
+                                </div>)}
                         </div>
                         <p className='mt05'>{comment.content}</p>
                         <div className='flex mb1'>
-                            <small className={`cursor-pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.id)}>
+                            <small className={`pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.id)}>
                                 답글 {comment.replies.length} {comment.isReplyVisible ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
                             </small>
 
@@ -228,11 +249,18 @@ const ArticleComment = ({
                                 {comment.replies.map((reply) => (
                                     <div key={reply.id}>
                                         <div className='flex'>
-                                            <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
+                                            <img className='profile40' src={reply.userImg}/>
                                             <div className='mtbAuto ml05'>
                                                 <h6 className='m0'>{obfuscateUsername(reply.userName)}</h6>
                                                 <small className='gray40'>{reply.createdAt}</small>
                                             </div>
+                                            <div className='flex1'></div>
+                                            {reply.userId === nowUser && (
+
+                                                <div className='flex'>
+                                                    <div className='mr05 hoverGray'>수정</div>
+                                                    <div className='hoverGray'>삭제</div>
+                                                </div>)}
                                         </div>
                                         <p className='mt05'>{reply.content}</p>
                                         <div className='flex'>
