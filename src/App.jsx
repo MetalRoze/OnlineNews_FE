@@ -114,7 +114,7 @@ const Basic = () => {
         <Route path="/requestManage" element={<RequestManage />} />
         <Route path="/articleManage" element={<ArticleManage />} />
         <Route path="/staffManage" element={<StaffManage />} />
-        <Route path="/staffManage/staffDetail" element={<StaffDetail />} />
+        <Route path="/staffManage/staffDetail/:id" element={<StaffDetail />} />
         <Route path="/requestManage/requestDetail/:id" element={<RequestDetail />} />
         <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
