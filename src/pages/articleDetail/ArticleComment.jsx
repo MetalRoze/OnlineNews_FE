@@ -187,58 +187,44 @@ const ArticleComment = ({
 
     const handleEditClick = async (commentId, content, isEdit, type) => {
 
+        const updateComment = (comment) => {
+            return comment.id === commentId ? { ...comment, isEdit: !isEdit } : comment;
+        };
+
+        const updateReply = (reply) => {
+            return reply.id === commentId ? { ...reply, isEdit: !isEdit } : reply;
+        };
+
         if (!isEdit) {
-            if (type === 'comment') {
-                setComments(prevComments =>
-                    prevComments.map(comment =>
-                        comment.id === commentId
-                            ? { ...comment, isEdit: true }
-                            : comment
-                    )
-                );
-            } else if (type === 'reply') {
-                setComments(prevComments =>
-                    prevComments.map(comment => ({
+            setComments(prevComments =>
+                prevComments.map(comment =>
+                    type === 'comment' ? updateComment(comment) : {
                         ...comment,
-                        replies: comment.replies.map(reply =>
-                            reply.id === commentId
-                                ? { ...reply, isEdit: true }
-                                : reply
-                        )
-                    }))
-                );
-            }
-        }
-        else {
-            const newCommentData = {
-                commentID: commentId,
-                content: content
-            };
+                        replies: comment.replies.map(reply => updateReply(reply))
+                    }
+                )
+            );
+        } else {
+            const newCommentData = { commentID: commentId, content };
 
-            console.log(newCommentData)
             try {
-                const response = await putRequest('/api/comment/edit', newCommentData);
+                await putRequest('/api/comment/edit', newCommentData);
+                setComments(prevComments =>
+                    prevComments.map(comment => {
+                        if (comment.id === commentId && type === 'comment') {
+                            return { ...comment, content, isEdit: false };
+                        }
 
-                if (type === 'comment') {
-                    setComments(prevComments =>
-                        prevComments.map(comment =>
-                            comment.id === commentId
-                                ? { ...comment, content: content, isEdit: false }
-                                : comment
-                        )
-                    );
-                } else if (type === 'reply') {
-                    setComments(prevComments =>
-                        prevComments.map(comment => ({
+                        return {
                             ...comment,
                             replies: comment.replies.map(reply =>
-                                reply.id === commentId
-                                    ? { ...reply, content: content, isEdit: false }
+                                reply.id === commentId && type === 'reply'
+                                    ? { ...reply, content, isEdit: false }
                                     : reply
                             )
-                        }))
-                    );
-                }
+                        };
+                    })
+                );
             } catch (error) {
                 alert("수정 실패", error);
             }
