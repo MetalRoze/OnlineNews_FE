@@ -1,42 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
+import {convertToKor} from '../../utils/convertCategories';
 import { DesktopList } from '../../components/DesktopList';
+import { getRequest } from '../../apis/axios';
 
 export default function ArticleManage() {
-    const [activeTab, setActiveTab] = useState('sortByCreate');
+    const [activeTab, setActiveTab] = useState('createdAt');
+    const [articles, setArticles] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const tabData = [
-        { eventKey: 'sortByCreate', title: '등록순', content: '등록 순서 정렬' },
-        { eventKey: 'sortByView', title: '조회순', content: '조회순 높은 순으로 정렬' },
-        { eventKey: 'sortByLike', title: '좋아요순', content: '좋아요 높은 순으로 정렬' },
+        { eventKey: 'createdAt', title: '등록순', content: '등록 순서 정렬' },
+        { eventKey: 'views', title: '조회순', content: '조회순 높은 순으로 정렬' },
     ];
-
-    const articles = {
-        sortByCreate: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-        sortByView: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-        sortByLike:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    };
     
-    const headers = ["입력일자", "이름", "구분", "제목", "수정일자"];
-    const contents = [
-        {
-            입력일자: "2023-10-01",
-            이름: "홍길동",
-            구분: "시민",
-            제목: "제목제목제목",
-            수정일자: "2023-10-03"
-        },
-        {
-            입력일자: "2023-10-01",
-            이름: "김철수",
-            구분: "일반",
-            제목: "제목제목제목",
-            수정일자: "2023-10-03"
+    const fetchArticles = async (status) => {
+        try {
+            const response = await getRequest('api/article/select', {sortBy: status, sortDirection:"desc"});
+            setArticles(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
         }
-    ];
+    };
+    const headers = ["입력일자", "이름", "구분", "제목", "수정일자"];
     const columns = "1fr 0.8fr 0.8fr 2fr 1fr";
+    
+    const startIdx = (currentPage - 1) * 12;
+    const endIdx = startIdx + 12;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
+    const contents = currentArticles.map((article) => ({
+        입력일자: article.createdAt.split("T")[0],
+        이름: article.userName,
+        구분: convertToKor(article.category),
+        제목: article.title,
+        수정일자: article.modifiedAt !==null ? article.modifiedAt.split("T")[0] : null,
+        id: article.id,
+    }));
+
+    useEffect(() => {
+        fetchArticles(activeTab);
+        setCurrentPage(1);
+    }, [activeTab]);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return (
         <div className="flex" style={{ width: "100vw" }}>
@@ -45,11 +56,13 @@ export default function ArticleManage() {
                     <h2>기사</h2>
                     <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
                 </div>
-                <TotalCount>전체 {articles[activeTab].length}개</TotalCount>
+                <TotalCount>전체 {articles.length}개</TotalCount>
 
-                <DesktopList contents={contents} headers={headers} columns={columns} />
+                <DesktopList pathTo={'../articleDetail'} contents={contents} headers={headers} columns={columns} />
             
-                 <MyPagination itemsCountPerPage={12} totalItemsCount={articles[activeTab].length} pageRangeDisplayed={5} />
+                {articles.length !== 0 && (
+                    <MyPagination itemsCountPerPage={12} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                )}
             </div>
         </div>
     );
