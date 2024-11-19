@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import styled from 'styled-components';
@@ -10,6 +10,8 @@ import { convertUserGradeToKor } from '../../utils/convertUserGrade';
 export default function StaffManage() {
     const [activeTab, setActiveTab] = useState('allStaffs');
     const [staffs, setStaffs] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+
     const tabData = [
         { eventKey: 'allStaffs', title: '전체기자', content: '전체기자' },
         { eventKey: 'REPORTER', title: '기자', content: '기자' },
@@ -18,24 +20,33 @@ export default function StaffManage() {
     ];
     //staff api
     const fetchStaffs = async (grade) => {
-       try {
-           const endpoint = grade === 'allStaffs'
-               ? '/api/user/publisher'
-               : '/api/user/publisher/grade';
-           const params = grade === 'allStaffs' ? {} : { keyword: grade};
-           const response = await getRequest(endpoint, params);
-           setStaffs(response.data);
-       } catch (error) {
-           console.error('요청실패', error);
-       }
-   };
+        try {
+            const endpoint = grade === 'allStaffs'
+                ? '/api/user/publisher'
+                : '/api/user/publisher/grade';
+            const params = grade === 'allStaffs' ? {} : { keyword: grade };
+            const response = await getRequest(endpoint, params);
+            setStaffs(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
 
     useEffect(() => {
         fetchStaffs(activeTab);
+        setCurrentPage(1);
     }, [activeTab]);
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const startIdx = (currentPage - 1) * 12;
+    const endIdx = startIdx + 12;
+    const currentStaffs = staffs.slice(startIdx, endIdx);
+
     const headers = ["구분", "이름", "전화번호", "이메일"];
-    const contents = staffs.map((staff) => ({
+    const contents = currentStaffs.map((staff) => ({
         전화번호: staff.cp,
         이름: staff.name,
         구분: convertUserGradeToKor(staff.grade),
@@ -52,10 +63,18 @@ export default function StaffManage() {
                     <h2> 직원 </h2>
                     <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
                 </div>
+
                 <TotalCount>전체 {staffs.length}개</TotalCount>
 
                 <DesktopList pathTo={'staffDetail'} contents={contents} headers={headers} columns={columns} />
-                <MyPagination itemsCountPerPage={12} totalItemsCount={staffs.length} pageRangeDisplayed={5} />
+                {staffs.length === 0 && (
+                    <div className="taCenter mb05" style={{ width: '100%' }}>
+                        직원이 없습니다.
+                    </div>
+                )}
+                {staffs.length !== 0 && (
+                    <MyPagination itemsCountPerPage={12} totalItemsCount={staffs.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                )}
             </div>
         </div>
     );
