@@ -34,3 +34,4 @@ jobs:
             npm run build
             nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
             sudo systemctl restart nginx  
+
