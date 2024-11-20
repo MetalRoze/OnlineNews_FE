@@ -14,6 +14,7 @@ export default function Search() {
         setLoading(true);  // 데이터 요청 전 로딩 상태 활성화
         getRequest('/api/history')
             .then((response) => {
+                console.log(response);
                 if (response && Array.isArray(response.data)) {
                     setHistory(response.data); // 응답 데이터를 history 상태에 저장
                     console.log("Fetched history:", response.data);  // history 상태 확인
@@ -28,7 +29,7 @@ export default function Search() {
             .finally(() => {
                 setLoading(false); // 데이터 로딩 완료 후 로딩 상태 비활성화
             });
-    }, []); // 컴포넌트 마운트 시 한번만 실행
+    }, []); // 컴포넌트 마운트 시 한 번만 실행
 
     const handleRightClick = () => {
         deleteRequest('/api/history/alldelete')
@@ -67,11 +68,10 @@ export default function Search() {
                 setLoading(false); 
             });
     };
-    
 
     return (
-        <div className="mobile-container">  {/* 기존 구조 유지 */}
-            <StyledSearchWrapper>  {/* SearchBar를 중앙에 배치할 부모 컨테이너 */}
+        <div className="mobile-container">
+            <StyledSearchWrapper>
                 <SearchBar onSearch={handleSearch} />
             </StyledSearchWrapper>
             <Divider />
@@ -81,13 +81,13 @@ export default function Search() {
                     <RightAlignedText onClick={handleRightClick}>기록 삭제</RightAlignedText>
                 </StyledFlexContainer>
 
-                <div className="m0 pd0 " >
-                    {loading ? (  // 로딩 중일 때 표시
+                <div className="m0 pd0">
+                    {loading ? (
                         <h5>로딩 중...</h5>
-                    ) : history.length === 0 ? (  // 데이터가 없을 때 표시
+                    ) : history.length === 0 ? (
                         <CenteredText>저장된 검색어가 없습니다.</CenteredText>
                     ) : (
-                        <SearchRecords history={history} />
+                        <SearchRecords history={history} setHistory={setHistory} /> 
                     )}
                 </div>
             </div>
@@ -95,18 +95,19 @@ export default function Search() {
     );
 }
 
-// SearchBar만 중앙 정렬을 위한 스타일
+// Styled components
+
 const StyledSearchWrapper = styled.div`
     display: flex;
-    justify-content: center;  // 수평 중앙 정렬
-    width: 100%;               // 가로 전체 너비 사용
-    margin-bottom: 20px;       // 아래 여백 추가
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
 `;
 
 const StyledFlexContainer = styled.div`
     display: flex;
     width: 100%;
-    justify-content: space-between; /* 두 요소를 양 끝으로 배치 */
+    justify-content: space-between;
     padding: 10px;
 `;
 
@@ -121,22 +122,21 @@ const RightAlignedText = styled.h6`
     color: GrayText;
     text-align: right;
     margin-right : 0.5rem;
-    cursor: pointer; /* 클릭 가능한 커서 표시 */
+    cursor: pointer;
 `;
 
 const CenteredText = styled.h5`
     display: flex;
-    justify-content: center;  // 수평 중앙 정렬
-    align-items: center;      // 수직 중앙 정렬
-    height: 200px;            // 텍스트가 중앙에 위치하도록 높이를 설정
-    text-align: center;       // 텍스트 자체를 중앙 정렬
-    color: #000;              // 텍스트 색상 (선택 사항)
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    text-align: center;
+    color: #000;
 `;
 
-
 const Divider = styled.div`
-    width: 100%;                 /* 전체 너비 사용 */
-    height: 2px;                 /* 직선의 높이 (두께) */
-    background-color:  #F2F2F7;      /* 직선의 색상 */
-    margin: 10px 0;              /* 직선 위아래 여백 */
+    width: 100%;
+    height: 2px;
+    background-color:  #F2F2F7;
+    margin: 10px 0;
 `;
