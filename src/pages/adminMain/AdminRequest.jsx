@@ -8,11 +8,12 @@ export default function AdminRequest({ request, pathTo}) {
     const navigate = useNavigate();
 
     const navigateToPath = (pathTo) => {
+        console.log(pathTo);
         navigate(pathTo);
     };
 
     return (
-        <div className='desktop-item pd10 aiCenter' onClick={() =>navigateToPath(pathTo)}>
+        <div className='desktop-item pd10 aiCenter pointer'  onClick={() =>navigateToPath(pathTo)} >
             <StyledArticleContentWrapper>
                 <div className='flex spaceBetween' style={{ width: '100%' }}>
                     <div className='flex ' style={{ gap: '0.5rem' }} >

@@ -60,11 +60,11 @@ export default function AdminMain() {
                 <div className='flex column aiFlexstart' style={{ width: '78rem' }}>
                     <div className='flex aiCenter mb1'>
                         <h2 className='m0 mr05' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
-                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToArticle} />
+                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer'}} onClick={goToArticle} />
                     </div>
                     <StyledArticleListWrapper>
                         {articles && articles.length >= 8 && articles.slice(0, 8).map((article, index) => (
-                            <AdminArticle key={index} article={article} />
+                            <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
                         ))}
                     </StyledArticleListWrapper>
                 </div>

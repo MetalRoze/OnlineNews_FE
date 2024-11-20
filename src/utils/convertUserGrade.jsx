@@ -19,8 +19,6 @@ const convertUserGradeToKor = (status) => {
 const convertUserGradeNumToKor = (number) => {
   switch (number) {
     case 9:
-      return "시스템 관리자";
-    case 9:
       return "편집장";
     case 7:
       return "기자";
