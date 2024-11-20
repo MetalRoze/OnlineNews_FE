@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CommentModal = ({ showModal, handleClose }) => {
+const CommentModal = ({ showModal, handleClose, type, reqId }) => {
     const [comment, setComment] = useState('');
     const [error, setError] = useState('');
-
+    
     const handleSave = () => {
         if (!comment.trim()) {
             setError('코멘트를 입력해주세요.');

@@ -23,6 +23,7 @@ const RequestButtons = ({ request }) => {
         setShowModal(true);
     };
     const handleCloseModal = () => {
+        setActiveButton(null);
         setShowModal(false);
     };
 
@@ -46,7 +47,7 @@ const RequestButtons = ({ request }) => {
             >
                 거절
             </button>
-            <CommentModal showModal={showModal} handleClose={handleCloseModal} />
+            {request && <CommentModal showModal={showModal} handleClose={handleCloseModal} type={activeButton} reqId={request.id}/>}
         </div>
     );
 };
