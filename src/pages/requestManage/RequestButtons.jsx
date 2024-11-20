@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import CommentModal from '../../components/CommentModal';
 import { postRequest, patchRequest } from '../../apis/axios';
 
-const RequestButtons = ({ request , article, status}) => {
+const RequestButtons = ({ request, article, status }) => {
     const [activeButton, setActiveButton] = useState(status);
     const [showModal, setShowModal] = useState(false);
-    
+
     const handleClickAccpet = async (reqId) => {
         try {
             setActiveButton('accept');
@@ -34,19 +34,21 @@ const RequestButtons = ({ request , article, status}) => {
             >
                 승인
             </button>
-            <button
-                onClick={() => handleOpenModal('hold')}
-                className={activeButton === 'HOLDING' ? 'active' : ''}
-            >
-                보류
-            </button>
+            {article &&
+                <button
+                    onClick={() => handleOpenModal('hold')}
+                    className={activeButton === 'HOLDING' ? 'active' : ''}
+                >
+                    보류
+                </button>
+            }
             <button
                 onClick={() => handleOpenModal('reject')}
                 className={activeButton === 'REJECTED' ? 'active' : ''}
             >
                 거절
             </button>
-            {request && <CommentModal showModal={showModal} handleClose={handleCloseModal} type={activeButton} reqId={request.id}/>}
+            {request && <CommentModal showModal={showModal} handleClose={handleCloseModal} type={activeButton} reqId={request.id} />}
         </div>
     );
 };
