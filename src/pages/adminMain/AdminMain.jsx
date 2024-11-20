@@ -51,7 +51,7 @@ export default function AdminMain() {
                     </div>
                     <StyledRequestListWrapper>
                         {requests && requests.length >= 8 && requests.slice(0, 8).map((request, index) => (
-                            <AdminRequest key={index} request={request} />
+                            <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`}/>
                         ))}
                     </StyledRequestListWrapper>
                 </div>

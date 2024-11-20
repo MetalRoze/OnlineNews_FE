@@ -2,11 +2,17 @@ import React from 'react';
 import Label from '../../components/Label';
 import styled from 'styled-components';
 import { convertUserGradeNumToKor } from '../../utils/convertUserGrade';
+import { useNavigate } from 'react-router-dom';
 
-export default function AdminRequest({ request }) {
-    console.log(request);
+export default function AdminRequest({ request, pathTo}) {
+    const navigate = useNavigate();
+
+    const navigateToPath = (pathTo) => {
+        navigate(pathTo);
+    };
+
     return (
-        <div className='desktop-item pd10 aiCenter' >
+        <div className='desktop-item pd10 aiCenter' onClick={() =>navigateToPath(pathTo)}>
             <StyledArticleContentWrapper>
                 <div className='flex spaceBetween' style={{ width: '100%' }}>
                     <div className='flex ' style={{ gap: '0.5rem' }} >
