@@ -15,7 +15,7 @@ export default function AdminMain() {
     };
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <div className="desktop-container aiCenter">
+            {/* <div className="desktop-container aiCenter">
                 <div style={{ height: '3rem' }}></div>
                 <div className='flex column aiFlexstart' style={{ width: '78rem' }}>
                     <div className='flex aiCenter mb1'>
@@ -51,7 +51,7 @@ export default function AdminMain() {
                     </StyledArticleListWrapper>
                 </div>
                 <div style={{ height: '3rem' }}></div>
-            </div>
+            </div> */}
         </div>
     );
 }

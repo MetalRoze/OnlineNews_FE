@@ -1,67 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import AdminArticle from '../../components/AdminArticle';
 import SearchBar from '../../components/SearchBar';
-import styled from 'styled-components';
-import BackgroundImage from '../../assets/staffDetailBackground.png';
 import MyPagination from '../../components/Pagination';
+import ProfileInfo from './ProfileInfo';
+import BackgroundImage from '../../assets/staffDetailBackground.png';
+import { getRequest } from '../../apis/axios';
+import { useParams } from 'react-router-dom';
 
 export default function StaffDetail() {
 
+    const { id } = useParams();
+    const [articles, setArticles] = useState([]);
+    const [userInfo, setUserInfo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const fetchUserInfo = async (userId) => {
+        try {
+            const response = await getRequest(`/api/user/${userId}`)
+            setUserInfo(response.data);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
+        }
+    };
+    //최신기사 api
+    const fetchArticles = async (id) => {
+        try {
+            const response = await getRequest('/api/article/select', { userId: id, sortBy: "createdAt", sortDirection: "desc" });
+            if (response.data !== "검색 결과가 없습니다.") {
+                setArticles(response.data);
+            }
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserInfo(id);
+        fetchArticles(id);
+    }, [id]);
+
+    const startIdx = (currentPage - 1) * 8;
+    const endIdx = startIdx + 8;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <div className="desktop-container aiCenter" style={{padding: 0}}>
+            <div className="desktop-container aiCenter" style={{ padding: 0 }}>
                 <StyledBackground>
-                    <h1>홍길동 기자</h1>
-                    <p className='mb2'>example@example.com</p>
+                    {userInfo && (
+                        <>
+                            <h1>{userInfo.name}</h1>
+                            <p className='mb2'>{userInfo.email}</p>
+                        </>
+                    )}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <StyledProfileWrapper>
-                        <img src="https://placehold.co/150x200" alt="Bootstrap" />
-                        <ProfileInfoTable>
-                            <tbody>
-                                <tr>
-                                    <td>이름</td>
-                                    <td>홍길동</td>
-                                </tr>
-                                <tr>
-                                    <td>부서</td>
-                                    <td>경제</td>
-                                </tr>
-                                <tr>
-                                    <td>구분</td>
-                                    <td>일반기자</td>
-                                </tr>
-                                <tr>
-                                    <td>전화번호</td>
-                                    <td>010-1234-5678</td>
-                                </tr>
-                                <tr>
-                                    <td>이메일</td>
-                                    <td>example@example.com</td>
-                                </tr>
-                            </tbody>
-                        </ProfileInfoTable>
-                    </StyledProfileWrapper>
-
-                    <div className='flex aiCenter spaceBetween pd10' style={{ width: '100%' }}>
+                    {userInfo && <ProfileInfo user={userInfo} />}
+                    <div className='flex aiCenter spaceBetween pd10 mt2' style={{ width: '100%' }}>
                         <h2 className='m0'>최신기사</h2>
                         <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
+                        {currentArticles && currentArticles.length > 0 ? (
+                            currentArticles.map((article, index) => (
+                                <AdminArticle key={index} article={article} />
+                            ))
+                        ) : (
+                            <div className="taCenter mb05" style={{ width: '100%' }}>
+                                요청이 없습니다.
+                            </div>
+                        )}
                     </StyledArticleListWrapper>
-                    <div style={{height: '3rem'}}/>
-                    <MyPagination itemsCountPerPage={5} totalItemsCount={20} pageRangeDisplayed={5} />
-                    <div style={{height: '2rem'}}/>
+                    <div style={{ height: '3rem' }} />
+
+                    {articles.length !== 0 && (
+                        <MyPagination itemsCountPerPage={8} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                    )}
+                    <div style={{ height: '2rem' }} />
                 </div>
             </div>
-        </div>
+        </div >
     );
-};
+}
+
 const StyledBackground = styled.div`
     width: 100%;
     height: 35vh;
@@ -75,30 +101,6 @@ const StyledBackground = styled.div`
     justify-content: center;
     color: white;
     font-size: 2rem;
-    
-`;
-const StyledProfileWrapper = styled.div`
-    display:flex;
-    width: 100%;
-    align-items:center;
-    padding: 1rem;
-    gap:1rem;
-    background-color: ${(props) => props.theme.colors.white};
-`;
-
-const ProfileInfoTable = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-
-    td {
-        padding: 0.5rem;
-        border-bottom: 1px solid ${(props) => props.theme.colors.gray20};
-    }
-
-    td:first-child {
-        width: 5rem; 
-        color: ${(props) => props.theme.colors.gray60};
-    }
 `;
 
 const StyledArticleListWrapper = styled.div`
