@@ -14,14 +14,22 @@ const CommentModal = ({ showModal, handleClose, type, reqId }) => {
         }
         if (type === 'hold') {
             handleClickHold(reqId);
-        } else {
-            console.log("거절");
+        } else if(type ==='reject'){
+            handleClickReject(reqId);
         }
-        handleClick();
+        handleClose();
     };
     const handleClickHold = async(reqId) => {
         try {
             const response = await putRequest(`/api/request/${reqId}/hold`, { comment: comment})
+            console.log(response.status);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
+        }
+    };
+    const handleClickReject = async(reqId) => {
+        try {
+            const response = await putRequest(`/api/request/${reqId}/reject`, { comment: comment})
             console.log(response.status);
         } catch (error) {
             console.error('사용자 요청실패', error);

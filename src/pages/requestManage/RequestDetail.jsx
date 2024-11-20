@@ -76,7 +76,7 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <RequestButtons request={request}/>
+                    <RequestButtons request={request} article={article}/>
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>

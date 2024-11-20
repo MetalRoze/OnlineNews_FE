@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CommentModal from '../../components/CommentModal';
 import { postRequest, patchRequest } from '../../apis/axios';
 
-const RequestButtons = ({ request }) => {
+const RequestButtons = ({ request , article}) => {
     const [activeButton, setActiveButton] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
