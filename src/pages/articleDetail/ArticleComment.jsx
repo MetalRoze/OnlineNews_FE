@@ -1,30 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import MyPagination from '../../components/Pagination';
+import { getRequest, postRequest, deleteRequest, putRequest } from '../../apis/axios';
+import {dateOnly} from '../../utils/formDateTime';
 
-const ArticleComment = () => {
+const ArticleComment = ({
+    articleId
+}) => {
     const [newComment, setNewComment] = useState('');
     const [replyContent, setReplyContent] = useState('');
-    const [comments, setComments] = useState([
-        {
-            commentId: '01',
-            user: 'wangwang',
-            date: '2024.09.27 9:23',
-            content: 'Lorem, ipsum dolor sit amet consectetur.',
-            likeCount: '511',
-            isActive: false,
-            replies: [],
-            isReplyVisible: false,
-        },
-        {
-            commentId: '02',
-            user: 'malmal',
-            date: '2024.09.27 10:23',
-            content: 'Lorem, ipsum dolor sit amet consectetur.',
-            likeCount: '221',
-            isActive: false,
-            replies: [],
-            isReplyVisible: false,
-        },
-    ]);
+    const [comments, setComments] = useState([]);
+
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
+    const [itemsCountPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [resetKey, setResetKey] = useState(0);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentComment = comments.slice(startIdx, endIdx);
+
+    const [nowUser, setNowUser] = useState('')
+    const fetchUser = async () => {
+        const authToken = sessionStorage.getItem('authToken');
+        if (!authToken) {
+            alert('로그인 정보가 없습니다.');
+            return;
+        }
+        const userResponse = await getRequest('/api/user/myPage');
+        setNowUser(userResponse.data.id);
+
+    };
+
+    const [activeSort, setActiveSort]=useState('')
+    // 댓글/답글 조회
+    const fetchComment = async (sortType = 'latest') => {
+        getRequest(`/api/comment/article/${articleId}?sortType=${sortType}`)
+            .then(response => {
+                const updatedComments = response.data.map(comment => ({
+                    ...comment,
+                    isReplyVisible: false,
+                    isActive: false,
+                    replies: comment.replies.map(reply => ({
+                        ...reply,
+                        isActive: false
+                    }))
+                }));
+
+                setActiveSort(sortType)
+                setComments(updatedComments)
+                console.log(updatedComments)
+                setTotalItemsCount(updatedComments.length);
+                setResetKey(prevKey => prevKey + 1);
+                setCurrentPage(1)
+            })
+            .catch(error => {
+                console.error('Error fetching subscriptions:', error);
+            });
+    };
 
     // 이름 변환
     const obfuscateUsername = (username) => {
@@ -37,20 +73,22 @@ const ArticleComment = () => {
         return `${firstChar}${obscuredPart}${lastChar}`;
     };
 
-    // 댓글
-    const handleCommentSubmit = () => {
+    // 댓글 달기
+    const handleCommentSubmit = async () => {
         if (newComment.trim()) {
             const newCommentData = {
-                commentId: Date.now().toString(),
-                user: 'yourUsername',
-                date: new Date().toLocaleString(),
-                content: newComment,
-                likeCount: '0',
-                replies: [],
-                isReplyVisible: false,
+                articleId: articleId,
+                content: newComment
             };
-            setComments(prevComments => [...prevComments, newCommentData]);
-            setNewComment('');
+            try {
+                const response = await postRequest('/api/comment', newCommentData);
+                setComments(prevComments => [response.data, ...prevComments]);
+
+                setTotalItemsCount(comments.length+1);
+                setNewComment('');
+            } catch (error) {
+                alert("댓글 작성에 실패했습니다.")
+            }
         }
     };
 
@@ -61,24 +99,7 @@ const ArticleComment = () => {
     const toggleReplies = (commentId) => {
         setComments(prevComments =>
             prevComments.map(comment =>
-                comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible } : comment
-            )
-        );
-    };
-
-
-    const handleLikeToggle = (commentId) => {
-        setComments(prevComments =>
-            prevComments.map(comment =>
-                comment.commentId === commentId
-                    ? {
-                        ...comment,
-                        isActive: !comment.isActive,
-                        likeCount: comment.isActive
-                            ? (parseInt(comment.likeCount) - 1).toString()
-                            : (parseInt(comment.likeCount) + 1).toString()
-                    }
-                    : comment
+                comment.id === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible } : comment
             )
         );
     };
@@ -88,48 +109,170 @@ const ArticleComment = () => {
         setReplyContent(e.target.value);
     };
 
-    const handleReplySubmit = (commentId) => {
+    const handleReplySubmit = async (commentId) => {
         if (replyContent.trim()) {
             const newReplyData = {
-                commentId: Date.now().toString(),
-                user: 'yourUsername',
-                date: new Date().toLocaleString(),
-                content: replyContent,
-                likeCount: '0',
-                isActive: false,
+                commentID: commentId,
+                content: replyContent
             };
-            setComments(prevComments =>
-                prevComments.map(comment =>
-                    comment.commentId === commentId
-                        ? { ...comment, replies: [...comment.replies, newReplyData] }
-                        : comment
-                )
-            );
-            setReplyContent('');
+
+            try {
+                const response = await postRequest('/api/comment/replies', newReplyData);
+                const newReply = response.data;
+                setComments(prevComments =>
+                    prevComments.map(comment =>
+                        comment.id === commentId
+                            ? {
+                                ...comment,
+                                replies: [...comment.replies, newReply]
+                            }
+                            : comment
+                    )
+                );
+                setReplyContent('');
+            } catch (error) {
+                alert("답글 작성에 실패했습니다.")
+            }
         }
     };
-    const handleReplyLikeToggle = (commentId, replyId) => {
-        setComments(prevComments =>
-            prevComments.map(comment =>
-                comment.commentId === commentId
-                    ? {
-                        ...comment,
-                        replies: comment.replies.map(reply =>
-                            reply.commentId === replyId
-                                ? {
-                                    ...reply,
-                                    isActive: !reply.isActive,
-                                    likeCount: reply.isActive
-                                        ? (parseInt(reply.likeCount) - 1).toString()
-                                        : (parseInt(reply.likeCount) + 1).toString()
-                                }
-                                : reply
+
+    const handleLikeToggle = async (commentId, likeStatus, type) => {
+        try {
+            if (type === 'comment') {
+                if (likeStatus) {
+                    await postRequest(`/api/comment/${commentId}/unlike`);
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? { ...comment, likeStatus: false, likeCount: comment.likeCount - 1 }
+                                : comment
                         )
-                    }
-                    : comment
-            )
-        );
+                    );
+                } else {
+                    await postRequest(`/api/comment/${commentId}/like`);
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? { ...comment, likeStatus: true, likeCount: comment.likeCount + 1 }
+                                : comment
+                        )
+                    );
+                }
+            } else if (type === 'reply') {
+                if (likeStatus) {
+                    await postRequest(`/api/comment/${commentId}/unlike`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => ({
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, likeStatus: false, likeCount: reply.likeCount - 1 }
+                                    : reply
+                            )
+                        }))
+                    );
+                } else {
+                    await postRequest(`/api/comment/${commentId}/like`);
+                    setComments(prevComments =>
+                        prevComments.map(comment => ({
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId
+                                    ? { ...reply, likeStatus: true, likeCount: reply.likeCount + 1 }
+                                    : reply
+                            )
+                        }))
+                    );
+                }
+            }
+        } catch (error) {
+            alert("좋아요를 누를 수 없습니다.");
+        }
     };
+
+    const handleEditClick = async (commentId, content, isEdit, type) => {
+
+        const updateComment = (comment) => {
+            return comment.id === commentId ? { ...comment, isEdit: !isEdit } : comment;
+        };
+
+        const updateReply = (reply) => {
+            return reply.id === commentId ? { ...reply, isEdit: !isEdit } : reply;
+        };
+
+        if (!isEdit) {
+            setComments(prevComments =>
+                prevComments.map(comment =>
+                    type === 'comment' ? updateComment(comment) : {
+                        ...comment,
+                        replies: comment.replies.map(reply => updateReply(reply))
+                    }
+                )
+            );
+        } else {
+            const newCommentData = { commentID: commentId, content };
+
+            try {
+                await putRequest('/api/comment/edit', newCommentData);
+                setComments(prevComments =>
+                    prevComments.map(comment => {
+                        if (comment.id === commentId && type === 'comment') {
+                            return { ...comment, content, isEdit: false };
+                        }
+
+                        return {
+                            ...comment,
+                            replies: comment.replies.map(reply =>
+                                reply.id === commentId && type === 'reply'
+                                    ? { ...reply, content, isEdit: false }
+                                    : reply
+                            )
+                        };
+                    })
+                );
+            } catch (error) {
+                alert("수정 실패", error);
+            }
+        }
+    };
+
+    const handleDelete = async (commentId, type) => {
+        const isConfirmed = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
+
+        if (!isConfirmed) {
+            return;
+        }
+
+        try {
+            await deleteRequest(`/api/comment/${commentId}`);
+
+            setComments(prevComments =>
+                prevComments.map(comment => {
+                    if (type === 'comment' && comment.id === commentId) {
+                        return null;
+                    }
+
+                    // 답글 처리
+                    const updatedReplies = comment.replies.filter(reply => reply.id !== commentId);
+                    return {
+                        ...comment,
+                        replies: updatedReplies
+                    };
+                }).filter(comment => comment !== null)
+            );
+
+            setTotalItemsCount(comments.length-1);
+        } catch (error) {
+            alert("삭제 실패", error);
+        }
+    };
+
+    useEffect(() => {
+        if (articleId) {
+            fetchComment();
+            fetchUser();
+        }
+    }, [articleId]);
 
     return (
         <div className='mt2'>
@@ -148,25 +291,54 @@ const ArticleComment = () => {
                         댓글 작성
                     </button></div>
             </div>
+            <div className='flex mt2 mb1'>
+                <div>총 {totalItemsCount}개</div>
+                <div className='flex1'></div>
+                <div className={`${activeSort === 'like' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('like')}>좋아요순</div>
+                <div className={`ml1 ${activeSort === 'oldest' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('oldest')}>오래된순</div>
+                <div className={`ml1 ${activeSort === 'latest' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('latest')}>최신순</div>
+            </div>
             <div className='pd10'>
-                {comments.map((comment) => (
-                    <div key={comment.commentId} className='mb1'>
+                {currentComment.map((comment) => (
+                    <div key={comment.id} className='mb1'>
                         <div className='flex'>
-                            <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
+                            <img className='profile40' src={comment.userImg} />
                             <div className='mtbAuto ml05'>
-                                <h6 className='m0'>{obfuscateUsername(comment.user)}</h6>
-                                <small className='gray40'>{comment.date}</small>
+                                <h6 className='m0'>{obfuscateUsername(comment.userName)}</h6>
+                                <small className='gray40'>{dateOnly(new Date(comment.createdAt))}</small>
                             </div>
+                            <div className='flex1'></div>
+                            {comment.userId === nowUser && (
+
+                                <div className='flex'>
+                                    <div className='mr05 hoverGray' onClick={() => handleEditClick(comment.id, comment.content, comment.isEdit, 'comment')}>수정</div>
+                                    <div className='hoverGray' onClick={() => handleDelete(comment.id, 'comment')}>삭제</div>
+                                </div>)}
                         </div>
-                        <p className='mt05'>{comment.content}</p>
+
+                        {comment.isEdit ? (
+                            <textarea
+                                className='mt1'
+                                value={comment.content}
+                                onChange={(e) => {
+                                    setComments(prevComments =>
+                                        prevComments.map(c =>
+                                            c.id === comment.id
+                                                ? { ...c, content: e.target.value }
+                                                : c
+                                        )
+                                    );
+                                }}
+                            />) : (
+                            <p className='mt05'>{comment.content}</p>)}
                         <div className='flex mb1'>
-                            <small className={`cursor-pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.commentId)}>
+                            <small className={`pointer ${comment.isReplyVisible ? 'blue' : ''}`} onClick={() => toggleReplies(comment.id)}>
                                 답글 {comment.replies.length} {comment.isReplyVisible ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}
                             </small>
 
                             <i
-                                className={`bi block taCenter mlAuto ${comment.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                onClick={() => handleLikeToggle(comment.commentId)}
+                                className={`bi block taCenter mlAuto ${comment.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                onClick={() => handleLikeToggle(comment.id, comment.likeStatus, 'comment')}
                             ></i>
                             <small className='taCenter ml05'>{comment.likeCount}</small>
                         </div>
@@ -174,19 +346,49 @@ const ArticleComment = () => {
                         {comment.isReplyVisible && (
                             <div className='pdlr20'>
                                 {comment.replies.map((reply) => (
-                                    <div key={reply.commentId}>
+                                    <div key={reply.id}>
                                         <div className='flex'>
-                                            <img className='br50' src="https://placehold.co/40x40" alt="User Avatar" />
+                                            <img className='profile40' src={reply.userImg} />
                                             <div className='mtbAuto ml05'>
-                                                <h6 className='m0'>{obfuscateUsername(reply.user)}</h6>
-                                                <small className='gray40'>{reply.date}</small>
+                                                <h6 className='m0'>{obfuscateUsername(reply.userName)}</h6>
+                                                <small className='gray40'>{dateOnly(new Date(reply.createdAt))}</small>
                                             </div>
+                                            <div className='flex1'></div>
+                                            {reply.userId === nowUser && (
+
+                                                <div className='flex'>
+                                                    <div className='mr05 hoverGray' onClick={() => handleEditClick(reply.id, reply.content, reply.isEdit, 'reply')}>수정</div>
+                                                    <div className='hoverGray' onClick={() => handleDelete(reply.id, 'reply')}>삭제</div>
+                                                </div>)}
                                         </div>
-                                        <p className='mt05'>{reply.content}</p>
+
+                                        {reply.isEdit ? (
+                                            <textarea
+
+                                                className='mt1'
+                                                value={reply.content}
+                                                onChange={(e) => {
+                                                    setComments(prevComments =>
+                                                        prevComments.map(c =>
+                                                            c.id === comment.id
+                                                                ? {
+                                                                    ...c,
+                                                                    replies: c.replies.map(r =>
+                                                                        r.id === reply.id
+                                                                            ? { ...r, content: e.target.value }
+                                                                            : r
+                                                                    )
+                                                                }
+                                                                : c
+                                                        )
+                                                    );
+                                                }}
+                                            />) : (
+                                            <p className='mt05'>{reply.content}</p>)}
                                         <div className='flex'>
                                             <i
-                                                className={`bi block taCenter mlAuto ${reply.isActive ? 'bi-heart-fill blue' : 'bi-heart'}`}
-                                                onClick={() => handleReplyLikeToggle(comment.commentId, reply.commentId)}
+                                                className={`bi block taCenter mlAuto ${reply.likeStatus ? 'bi-heart-fill blue' : 'bi-heart'}`}
+                                                onClick={() => handleLikeToggle(reply.id, reply.likeStatus, 'reply')}
                                             ></i>
                                             <small className='taCenter ml05'>{reply.likeCount}</small>
                                         </div>
@@ -202,7 +404,7 @@ const ArticleComment = () => {
                                 />
                                 <div className='flex'>
                                     <button
-                                        onClick={() => handleReplySubmit(comment.commentId)}
+                                        onClick={() => handleReplySubmit(comment.id)}
                                         className='blueButton mlAuto'
                                         style={{ marginTop: '5px' }}>
                                         답글 작성
@@ -214,6 +416,14 @@ const ArticleComment = () => {
                     </div>
                 ))}
             </div>
+            <MyPagination
+                key={resetKey}
+                activePage={currentPage}
+                itemsCountPerPage={itemsCountPerPage}
+                totalItemsCount={totalItemsCount}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

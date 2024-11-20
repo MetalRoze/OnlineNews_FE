@@ -15,6 +15,7 @@ const ArticleDetail = () => {
     const isArticleDetail = location.pathname.includes('articleDetail');
 
     const [article, setArticle] = useState(null);
+    const [comment, setComment] = useState(null);
 
 
     const [isArticleLiked, setIsArticleLiked] = useState(false);
@@ -32,6 +33,8 @@ const ArticleDetail = () => {
                 console.error('Error fetching subscriptions:', error);
             });
     };
+
+    
     // 좋아요
     useEffect(() => {
         const checkLikeStatus = async () => {
@@ -41,8 +44,6 @@ const ArticleDetail = () => {
                 if (response.data) {
                     setIsArticleLiked(true);
                     setLikeId(response.data)
-                } else {
-                    console.log('없')
                 }
             } catch (error) {
                 console.error("Error checking like status", error);
@@ -153,7 +154,7 @@ const ArticleDetail = () => {
                         handleEmailSubscribe={handleEmailSubscribe}
                         handleEmailUnsubscribe={handleEmailUnsubscribe}
                     ></ArticleLikeShare>)}
-                <ArticleComment />
+                <ArticleComment articleId={articleId}/>
                 <GoogleAdsense
                     client="ca-pub-1195209293008237"
                     slot="3954159514"

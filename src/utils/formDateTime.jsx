@@ -1,4 +1,20 @@
+// yyyy년 mm월 dd일 w요일 hh:mm:ss
 const formatDateTime = (date) => {
+    const { formattedDate, formattedTime, weekday } = formatDateComponents(date);
+
+    const [year, month, day] = formattedDate.split('.').map(part => part.trim());
+    return `${year}년 ${month}월 ${day}일 ${weekday}요일 ${formattedTime}`;
+};
+
+// yyyy/mm/dd hh:mm:ss
+const dateOnly = (date) => {
+    const { formattedDate, formattedTime } = formatDateComponents(date);
+
+    const [year, month, day] = formattedDate.split('.').map(part => part.trim());
+    return `${year}/${month}/${day} ${formattedTime}`;
+};
+
+const formatDateComponents = (date) => {
     const dateOptions = {
         year: 'numeric',
         month: 'numeric',
@@ -10,16 +26,15 @@ const formatDateTime = (date) => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false, // 24시간 체계
+        hour12: false,
     };
 
     const formattedDate = date.toLocaleDateString('ko-KR', dateOptions);
     const formattedTime = date.toLocaleTimeString('ko-KR', timeOptions);
-
-    const [year, month, day] = formattedDate.split('.').map(part => part.trim()); // 각 부분을 분리하고 trim
     const weekday = date.toLocaleDateString('ko-KR', { weekday: 'short' });
 
-    return `${year}년 ${month}월 ${day}일 ${weekday}요일 ${formattedTime}`; // 년, 월, 일, 요일, 시, 분, 초 포함
+    return { formattedDate, formattedTime, weekday };
 };
 
 export default formatDateTime;
+export { formatDateTime, dateOnly };

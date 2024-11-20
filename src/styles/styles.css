@@ -397,9 +397,15 @@
     text-overflow: ellipsis;
 }
 
-.ACprofileImg {
+.profile50 {
     width: 50px;
     height: 50px;
+    border-radius: 50%;
+}
+
+.profile40 {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 
