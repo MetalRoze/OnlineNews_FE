@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 const ArticleDetail = () => {
     const { articleId } = useParams();
     const location = useLocation();
-    const isArticleDetail = location.pathname.includes('articleDetail');
+    const isArticleDetail = location.pathname.toLowerCase().includes('articledetail');
 
     const [article, setArticle] = useState(null);
     const [comment, setComment] = useState(null);
@@ -34,7 +34,7 @@ const ArticleDetail = () => {
             });
     };
 
-    
+
     // 좋아요
     useEffect(() => {
         const checkLikeStatus = async () => {
@@ -154,7 +154,7 @@ const ArticleDetail = () => {
                         handleEmailSubscribe={handleEmailSubscribe}
                         handleEmailUnsubscribe={handleEmailUnsubscribe}
                     ></ArticleLikeShare>)}
-                <ArticleComment articleId={articleId}/>
+                <ArticleComment articleId={articleId} />
                 <GoogleAdsense
                     client="ca-pub-1195209293008237"
                     slot="3954159514"

@@ -6,7 +6,7 @@ import blackLogo from '../../assets/myeongbo_black.svg';
 const ArticleLikeShare = ({
     article,
     handleArticleLikeToggle,
-    handleSubscriptionToggle, 
+    handleSubscriptionToggle,
     isModalOpen,
     isEmailSubscribed,
     isArticleLiked,
@@ -23,7 +23,7 @@ const ArticleLikeShare = ({
     return (
         <div>
             <div className='mt1 flex'>
-            <img src={blackLogo} alt="Bootstrap" className='logo block' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
+                <img src={blackLogo} alt="Bootstrap" className='logo block' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
                 <div className='mlAuto'>
                     <p className='m0'>{article.userName} 기자 {article.userEmail}</p>
                     <small className='gray40'>{article.userBio}</small>
@@ -56,7 +56,7 @@ const ArticleLikeShare = ({
                     ></i>
                     <small className='taCenter block'>{article.likes}</small>
                 </div>
-                <KakaoShare title={article.title} content={article.subtitle} link="articleDetail" THU="http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png" />
+                <KakaoShare title={article.title} content={article.subtitle.split(',./')[0]} link={`articleDetail/${article.id}`} THU={article.images[0]} />
             </div>
 
             <SubscriptionModal
