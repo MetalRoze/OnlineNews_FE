@@ -72,17 +72,19 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <div className='flex desktop-request-3buttons br10'>
+                    <div className="flex desktop-request-3buttons br10">
                         <button>승인</button>
-                        <button>보류</button>
-                        <button>거절</button>
+                        <button onClick={handleOpenModal}>보류</button>
+                        <button onClick={handleOpenModal}>거절</button>
                     </div>
                     <div style={{ height: '2rem' }} />
                 </div>
+                <CommentModal showModal={showModal} handleClose={handleCloseModal} />
             </div>
         </div>
     );
 };
+
 const StyledBackground = styled.div`
     width: 100%;
     height: 35vh;
