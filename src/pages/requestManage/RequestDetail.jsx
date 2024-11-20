@@ -6,13 +6,14 @@ import ProfileInfo from '../staffManage/ProfileInfo';
 import { getRequest, postRequest , patchRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
 import CommentModal from '../../components/CommentModal';
+import RequestButtons from './RequestButtons';
+
 export default function RequestDetail() {
 
     const { id } = useParams();
     const [request, setRequest] = useState();
     const [article, setArticle] = useState();
     const [userInfo, setUserInfo] = useState();
-    const [showModal, setShowModal] = useState(false);
 
     //request api
     const fetchRequestById = async (id) => {
@@ -51,15 +52,7 @@ export default function RequestDetail() {
             console.error('사용자 요청실패', error);
         }
     };
-    
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-
+  
     useEffect(() => {
         fetchRequestById(id);
     }, [id]);
@@ -83,14 +76,9 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <div className='flex desktop-request-3buttons br10'>
-                        <button onClick={()=>handleClickAccpet(request.id)}>승인</button>
-                        <button onClick={handleOpenModal}>보류</button>
-                        <button onClick={handleOpenModal}>거절</button>
-                    </div>
+                    <RequestButtons request={request}/>
                     <div style={{ height: '2rem' }} />
                 </div>
-                <CommentModal showModal={showModal} handleClose={handleCloseModal} />
             </div>
         </div>
     );
