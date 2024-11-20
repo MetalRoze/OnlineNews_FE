@@ -23,7 +23,6 @@ const RequestButtons = ({ request }) => {
         setShowModal(true);
     };
     const handleCloseModal = () => {
-        setActiveButton(null);
         setShowModal(false);
     };
 

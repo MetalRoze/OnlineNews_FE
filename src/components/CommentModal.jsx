@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { putRequest } from '../apis/axios';
 
 const CommentModal = ({ showModal, handleClose, type, reqId }) => {
     const [comment, setComment] = useState('');
     const [error, setError] = useState('');
-    
-    const handleSave = () => {
+
+    const handleClick = (type, reqId) => {
         if (!comment.trim()) {
             setError('코멘트를 입력해주세요.');
             return;
         }
-        console.log('저장된 코멘트:', comment);
-        handleClose(); 
+        if (type === 'hold') {
+            handleClickHold(reqId);
+        } else {
+            console.log("거절");
+        }
+        handleClick();
     };
-
+    const handleClickHold = async(reqId) => {
+        try {
+            const response = await putRequest(`/api/request/${reqId}/hold`, { comment: comment})
+            console.log(response.status);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
+        }
+    };
     return (
         <Modal show={showModal} onHide={handleClose} centered>
             <Modal.Header closeButton>
@@ -45,7 +57,7 @@ const CommentModal = ({ showModal, handleClose, type, reqId }) => {
                 <Button variant="secondary" onClick={handleClose}>
                     닫기
                 </Button>
-                <Button variant="primary" onClick={handleSave}>
+                <Button variant="primary" onClick={() => handleClick(type,reqId)}>
                     확인
                 </Button>
             </Modal.Footer>

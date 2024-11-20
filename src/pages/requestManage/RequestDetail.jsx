@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleContent from '../articleDetail/ArticleContent';
 import ProfileInfo from '../staffManage/ProfileInfo';
-import { getRequest, postRequest , patchRequest} from '../../apis/axios';
+import { getRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
 import CommentModal from '../../components/CommentModal';
 import RequestButtons from './RequestButtons';
