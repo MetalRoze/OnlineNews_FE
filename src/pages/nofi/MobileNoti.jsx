@@ -1,44 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Notification from './Notification';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import { PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
+import { getRequest } from '../../apis/axios';
 
 export default function MobileNoti() {
     const [activeTab, setActiveTab] = useState('allNoties');
+    const [user, setUser] = useState(null);
+    const [tabData, setTabData] = useState([]);
 
-    const tabData = [
-        { eventKey: 'allNoties', title: '전체알림', content: '전체알림' },
-        { eventKey: 'commentNoti', title: '댓글등록', content: '댓글등록' },
-        { eventKey: 'replyNoti', title: '대댓글등록', content: '대댓글등록' },
-    ];
-    const noties = {
-        allNoties: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 2, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 3, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 4, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 6, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
-        ],
-        commentNoti: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 2, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 3, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-        ],
-        replyNoti: [
-            { id: 4, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 6, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
-        ]
+    const fetchMyInfo = async () => {
+        try {
+            const response = await getRequest('/api/user/myPage');
+            console.log(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
+        }
     };
-
+    const fetchMyGrade = async () => {
+        try {
+            const response = await getRequest('/api/user/checkUserType');
+            console.log(response.data);
+            if (response.data === 'REPORTER' || response.data=== 'INTERN_REPORTER' || response.data=== 'CITIZEN_REPORTER' ) {
+                setTabData([
+                    { eventKey: 'approveNoti', title: '승인알림', content: '승인알림' },
+                    { eventKey: 'commentNoti', title: '댓글등록', content: '댓글등록' },
+                    { eventKey: 'likeNoti', title: '좋아요알림', content: '좋아요알림' },
+                ]);
+            } else {
+                setTabData([
+                    { eventKey: 'commentNoti', title: '댓글', content: '댓글알림' },
+                    { eventKey: 'replyNoti', title: '대댓글', content: '대댓글알림' },
+                ]);
+            }
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+    useEffect(() => {
+        fetchMyGrade();
+        fetchMyInfo();
+    }, []);
     return (
         <div className="mobile-container">
             <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
-            <TotalCount>전체 {noties[activeTab].length}개</TotalCount>
-            <StyledNotiListWrapper>
+            <TotalCount>전체 개</TotalCount>
+            {/* <StyledNotiListWrapper>
                 {noties[activeTab].map((noti) => (
                     <Notification
                         notiType={noti.notiType}
@@ -50,10 +59,10 @@ export default function MobileNoti() {
                         width={'100%'}
                     />
                 ))}
-            </StyledNotiListWrapper>
-            <PaginationContainer>
+            </StyledNotiListWrapper> */}
+            {/* <PaginationContainer>
                 <MyPagination itemsCountPerPage={10} totalItemsCount={noties[activeTab].length} pageRangeDisplayed={5} />
-            </PaginationContainer>
+            </PaginationContainer> */}
         </div>
     );
 }
