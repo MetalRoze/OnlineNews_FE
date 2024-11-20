@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleContent from '../articleDetail/ArticleContent';
 import ProfileInfo from '../staffManage/ProfileInfo';
-import { getRequest } from '../../apis/axios';
+import { getRequest, postRequest , patchRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
 import CommentModal from '../../components/CommentModal';
 export default function RequestDetail() {
@@ -32,7 +32,7 @@ export default function RequestDetail() {
             console.error('요청실패', error);
         }
     };
-    //article api -> 추후 dto수정
+    //article api
     const fetchArticleById = async (articleId) => {
         try {
             const response = await getRequest('/api/article/select', { id: articleId })
@@ -42,6 +42,7 @@ export default function RequestDetail() {
             console.error('기사 요청실패', error);
         }
     };
+    //userInfo
     const fetchUserInfo = async (userId) => {
         try {
             const response = await getRequest(`/api/user/${userId}`)
@@ -82,8 +83,8 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <div className="flex desktop-request-3buttons br10">
-                        <button>승인</button>
+                    <div className='flex desktop-request-3buttons br10'>
+                        <button onClick={()=>handleClickAccpet(request.id)}>승인</button>
                         <button onClick={handleOpenModal}>보류</button>
                         <button onClick={handleOpenModal}>거절</button>
                     </div>
