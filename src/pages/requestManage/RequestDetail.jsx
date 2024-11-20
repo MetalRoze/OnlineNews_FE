@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleContent from '../articleDetail/ArticleContent';
 import ProfileInfo from '../staffManage/ProfileInfo';
-import { getRequest } from '../../apis/axios';
+import { getRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
-import CommentModal from '../../components/CommentModal';
+import RequestButtons from './RequestButtons';
+
 export default function RequestDetail() {
 
     const { id } = useParams();
     const [request, setRequest] = useState();
     const [article, setArticle] = useState();
     const [userInfo, setUserInfo] = useState();
-    const [showModal, setShowModal] = useState(false);
 
     //request api
     const fetchRequestById = async (id) => {
@@ -32,7 +32,7 @@ export default function RequestDetail() {
             console.error('요청실패', error);
         }
     };
-    //article api -> 추후 dto수정
+    //article api
     const fetchArticleById = async (articleId) => {
         try {
             const response = await getRequest('/api/article/select', { id: articleId })
@@ -42,6 +42,7 @@ export default function RequestDetail() {
             console.error('기사 요청실패', error);
         }
     };
+    //userInfo
     const fetchUserInfo = async (userId) => {
         try {
             const response = await getRequest(`/api/user/${userId}`)
@@ -50,15 +51,7 @@ export default function RequestDetail() {
             console.error('사용자 요청실패', error);
         }
     };
-    
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-
+  
     useEffect(() => {
         fetchRequestById(id);
     }, [id]);
@@ -82,14 +75,9 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <div className="flex desktop-request-3buttons br10">
-                        <button>승인</button>
-                        <button onClick={handleOpenModal}>보류</button>
-                        <button onClick={handleOpenModal}>거절</button>
-                    </div>
+                    {request && <RequestButtons request={request} article={article} status={request.status}/>}
                     <div style={{ height: '2rem' }} />
                 </div>
-                <CommentModal showModal={showModal} handleClose={handleCloseModal} />
             </div>
         </div>
     );

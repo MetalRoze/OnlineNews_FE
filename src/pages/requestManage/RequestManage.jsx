@@ -7,12 +7,13 @@ import { getRequest } from '../../apis/axios';
 import { DesktopList } from '../../components/DesktopList';
 
 export default function RequestManage() {
-    const [activeTab, setActiveTab] = useState('allRequests');
+    const [activeTab, setActiveTab] = useState('pending');
     const [requests, setRequests] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
     const tabData = [
         { eventKey: 'allRequests', title: '전체요청' },
+        { eventKey: 'pending', title: '대기' },
         { eventKey: 'approved', title: '승인' },
         { eventKey: 'rejected', title: '거절' },
         { eventKey: 'holding', title: '보류' },
