@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import CommentModal from '../../components/CommentModal';
 import { postRequest, patchRequest } from '../../apis/axios';
 
-const RequestButtons = ({ request , article}) => {
-    const [activeButton, setActiveButton] = useState(null);
+const RequestButtons = ({ request , article, status}) => {
+    const [activeButton, setActiveButton] = useState(status);
     const [showModal, setShowModal] = useState(false);
-
+    
     const handleClickAccpet = async (reqId) => {
         try {
             setActiveButton('accept');
@@ -30,19 +30,19 @@ const RequestButtons = ({ request , article}) => {
         <div className='flex desktop-request-3buttons br10'>
             <button
                 onClick={() => handleClickAccpet(request.id)}
-                className={activeButton === 'accept' ? 'active' : ''}
+                className={activeButton === 'APPROVED' ? 'active' : ''}
             >
                 승인
             </button>
             <button
                 onClick={() => handleOpenModal('hold')}
-                className={activeButton === 'hold' ? 'active' : ''}
+                className={activeButton === 'HOLDING' ? 'active' : ''}
             >
                 보류
             </button>
             <button
                 onClick={() => handleOpenModal('reject')}
-                className={activeButton === 'reject' ? 'active' : ''}
+                className={activeButton === 'REJECTED' ? 'active' : ''}
             >
                 거절
             </button>

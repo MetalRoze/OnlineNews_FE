@@ -5,7 +5,6 @@ import ArticleContent from '../articleDetail/ArticleContent';
 import ProfileInfo from '../staffManage/ProfileInfo';
 import { getRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
-import CommentModal from '../../components/CommentModal';
 import RequestButtons from './RequestButtons';
 
 export default function RequestDetail() {
@@ -76,7 +75,7 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <RequestButtons request={request} article={article}/>
+                    {request && <RequestButtons request={request} article={article} status={request.status}/>}
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>
