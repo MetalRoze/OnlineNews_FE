@@ -66,7 +66,7 @@ const Header = () => {
                     <img src={blueLogo} alt="Bootstrap" className='logo' onClick={handleLogoClick} style={{ cursor: 'pointer' }} />
                 </div>
                 <div className='flex column aiCenter jcFlexend'>
-                    <div className='flex' >
+                    <div className='flex mb05' >
                         <i
                             className="bi bi-search mr05 pointer"
                             onClick={handleSearchClick}
