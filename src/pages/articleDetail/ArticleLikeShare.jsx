@@ -11,19 +11,19 @@ const ArticleLikeShare = ({
         navigate('/');
     };
     return (
-        <div>
-            <div className='mt1 flex'>
-                <img src={blackLogo} alt="Bootstrap" className='logo block' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
-                <div className='mlAuto'>
+        <div className='mt1'>
+            <div className='mlAuto flex'>
+                <img className='profile50 mr05' src={article.userImg} />
+                <div>
                     <p className='m0'>{article.userName} 기자 {article.userEmail}</p>
                     <small className='gray40'>{article.userBio}</small>
                 </div>
+                <img src={blackLogo} alt="Bootstrap" className='mlAuto' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
             </div>
-            <a href={article.publisherUrl} className='gray40 mt1'>{article.publisherUrl} &gt;</a>
 
             <hr className='mt1' style={{ margin: '1rem 0' }} />
 
-            <div className='flex'>
+            <div className='flex mt1'>
                 <div>
                     <i
                         className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
