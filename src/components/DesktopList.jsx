@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { postRequest } from '../apis/axios';
 
 export const DesktopList = ({ pathTo, contents, headers, columns }) => {
     const navigate = useNavigate();
@@ -10,7 +11,18 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
     };
     const handleActionClick = (id) => {
         console.log(`${id} - 헤드라인 지정 클릭`);
+        postHeadline(id);
     };
+
+    const postHeadline = async (articleId) => {
+        try {
+            const response = await postRequest(`/api/main-article/${articleId}/select`)
+            console.log(response.data);
+        } catch (error) {
+            console.error('등록실패', error);
+        }
+    };
+  
     return (
         <ul>
             <StyledLi>
