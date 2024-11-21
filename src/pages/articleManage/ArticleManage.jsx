@@ -24,8 +24,8 @@ export default function ArticleManage() {
             console.error('요청실패', error);
         }
     };
-    const headers = ["입력일자", "이름", "구분", "제목", "수정일자"];
-    const columns = "1fr 0.8fr 0.8fr 2fr 1fr";
+    const headers = ["입력일자", "이름", "구분", "제목", "수정일자","작업"];
+    const columns = "1fr 0.8fr 0.8fr 2fr 1fr 0.8fr";
     
     const startIdx = (currentPage - 1) * 12;
     const endIdx = startIdx + 12;
@@ -38,6 +38,7 @@ export default function ArticleManage() {
         제목: article.title,
         수정일자: article.modifiedAt !==null ? article.modifiedAt.split("T")[0] : null,
         id: article.id,
+        작업: "헤드라인 지정",
     }));
 
     useEffect(() => {

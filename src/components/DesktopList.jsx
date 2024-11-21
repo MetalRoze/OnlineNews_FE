@@ -8,7 +8,9 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
     const navigateToPath = (pathTo, id) => {
         navigate(`${pathTo}/${id}`);
     };
-
+    const handleActionClick = (id) => {
+        console.log(`${id} - 헤드라인 지정 클릭`);
+    };
     return (
         <ul>
             <StyledLi>
@@ -22,10 +24,23 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
                 <StyledLi key={index}>
                     <ListItemWrapper columns={columns} onClick={() => navigateToPath(pathTo, item.id)}>
                         {Object.entries(item)
-                            .filter(([key]) => key !== 'id')
+                            .filter(([key]) => key !== 'id' && key !== '작업')
                             .map(([key, value], i) => (
                                 <ListItem key={i}>{value}</ListItem>
                             ))}
+                        {item.작업 && ( //article 화면에서만, 
+                            <ListItem>
+                                <button
+                                    className="desktop-request-privatebutton"
+                                    onClick={(e) => {
+                                        e.stopPropagation(); 
+                                        handleActionClick(item.id);
+                                    }}
+                                >
+                                    {item.작업}
+                                </button>
+                            </ListItem>
+                        )}
                     </ListItemWrapper>
                 </StyledLi>
             ))}
