@@ -1,54 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import SubscriptionModal from './SubscriptionModal';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
 import blackLogo from '../../assets/myeongbo_black.svg';
 
 const ArticleLikeShare = ({
     article,
     handleArticleLikeToggle,
-    handleSubscriptionToggle,
-    isModalOpen,
-    isEmailSubscribed,
     isArticleLiked,
-    isSubscribed,
-    setIsModalOpen,
-    handleSubscribe,
-    handleUnsubscribe,
-    handleEmailSubscribe,
-    handleEmailUnsubscribe
 }) => {
     const handleLogoClick = () => {
         navigate('/');
     };
     return (
-        <div>
-            <div className='mt1 flex'>
-                <img src={blackLogo} alt="Bootstrap" className='logo block' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
-                <div className='mlAuto'>
+        <div className='mt1'>
+            <div className='mlAuto flex'>
+                <img className='profile50 mr05' src={article.userImg} />
+                <div>
                     <p className='m0'>{article.userName} 기자 {article.userEmail}</p>
                     <small className='gray40'>{article.userBio}</small>
                 </div>
+                <img src={blackLogo} alt="Bootstrap" className='mlAuto' style={{ width: '5rem', cursor: 'pointer' }} onClick={handleLogoClick} />
             </div>
-            <a href={article.publisherUrl} className='gray40 mt1'>{article.publisherUrl} &gt;</a>
-            <button
-                className={`mt2 ${isSubscribed ? 'unsubsButton' : 'subsButton'}`}
-                onClick={() => {
-                    if (isSubscribed) {
-                        handleSubscriptionToggle();
-                    } else {
-                        handleSubscribe();
-                    }
-                }}
-            >
-                {isSubscribed && isEmailSubscribed !== null && (
-                    <i className={`bi ${isEmailSubscribed ? 'bi-envelope-check' : 'bi-envelope-x-fill'}`}></i>
-                )}
-                &nbsp;{isSubscribed ? '구독중' : '구독'}
-            </button>
 
             <hr className='mt1' style={{ margin: '1rem 0' }} />
 
-            <div className='flex'>
+            <div className='flex mt1'>
                 <div>
                     <i
                         className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
@@ -58,14 +33,6 @@ const ArticleLikeShare = ({
                 </div>
                 <KakaoShare title={article.title} content={article.subtitle.split(',./')[0]} link={`articleDetail/${article.id}`} THU={article.images[0]} />
             </div>
-
-            <SubscriptionModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onEmailSubscribe={handleEmailSubscribe}
-                onEmailUnsubscribe={handleEmailUnsubscribe}
-                onUnsubscribe={handleUnsubscribe}
-            />
 
         </div>
     );

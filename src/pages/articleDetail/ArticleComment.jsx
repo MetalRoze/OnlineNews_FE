@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MyPagination from '../../components/Pagination';
 import { getRequest, postRequest, deleteRequest, putRequest } from '../../apis/axios';
-import {dateOnly} from '../../utils/formDateTime';
+import { dateOnly } from '../../utils/formDateTime';
 
 const ArticleComment = ({
     articleId
@@ -32,10 +32,9 @@ const ArticleComment = ({
         }
         const userResponse = await getRequest('/api/user/myPage');
         setNowUser(userResponse.data.id);
-
     };
 
-    const [activeSort, setActiveSort]=useState('')
+    const [activeSort, setActiveSort] = useState('')
     // 댓글/답글 조회
     const fetchComment = async (sortType = 'latest') => {
         getRequest(`/api/comment/article/${articleId}?sortType=${sortType}`)
@@ -84,7 +83,7 @@ const ArticleComment = ({
                 const response = await postRequest('/api/comment', newCommentData);
                 setComments(prevComments => [response.data, ...prevComments]);
 
-                setTotalItemsCount(comments.length+1);
+                setTotalItemsCount(comments.length + 1);
                 setNewComment('');
             } catch (error) {
                 alert("댓글 작성에 실패했습니다.")
@@ -237,7 +236,7 @@ const ArticleComment = ({
     };
 
     const handleDelete = async (commentId, type) => {
-        const isConfirmed = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
+        const isConfirmed = window.confirm("댓글을 삭제하시겠습니까?");
 
         if (!isConfirmed) {
             return;
@@ -261,7 +260,7 @@ const ArticleComment = ({
                 }).filter(comment => comment !== null)
             );
 
-            setTotalItemsCount(comments.length-1);
+            setTotalItemsCount(comments.length - 1);
         } catch (error) {
             alert("삭제 실패", error);
         }
@@ -294,11 +293,14 @@ const ArticleComment = ({
             <div className='flex mt2 mb1'>
                 <div>총 {totalItemsCount}개</div>
                 <div className='flex1'></div>
-                <div className={`${activeSort === 'like' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('like')}>좋아요순</div>
+                <div className={`${activeSort === 'latest' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('latest')}>최신순</div>
                 <div className={`ml1 ${activeSort === 'oldest' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('oldest')}>오래된순</div>
-                <div className={`ml1 ${activeSort === 'latest' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('latest')}>최신순</div>
+                <div className={`ml1 ${activeSort === 'like' ? 'black pointer' : 'gray40 pointer'}`} onClick={() => fetchComment('like')}>좋아요순</div>
             </div>
-            <div className='pd10'>
+            <div className='pd10 mb2'>
+
+                {totalItemsCount < 1 &&
+                    <div>댓글이 없습니다.</div>}
                 {currentComment.map((comment) => (
                     <div key={comment.id} className='mb1'>
                         <div className='flex'>
@@ -416,14 +418,19 @@ const ArticleComment = ({
                     </div>
                 ))}
             </div>
-            <MyPagination
-                key={resetKey}
-                activePage={currentPage}
-                itemsCountPerPage={itemsCountPerPage}
-                totalItemsCount={totalItemsCount}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageChange}
-            />
+
+
+            {totalItemsCount > 0 &&
+
+                <MyPagination
+                    key={resetKey}
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsCountPerPage}
+                    totalItemsCount={totalItemsCount}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                />}
+
         </div>
     );
 };
