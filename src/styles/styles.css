@@ -28,7 +28,7 @@
 .mobile-header-grid a,
 .mobile-header-grid .date,
 .mobile-header-grid .link{
-    color: var(--color-gray60); 
+    color: var(--color-gray40); 
 }
 
 .mobile-header-grid img {
