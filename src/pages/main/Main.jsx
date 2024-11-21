@@ -7,27 +7,31 @@ import axios from "axios";
 import { getRequest } from '../../apis/axios';
 
 export default function Main() {
-
+    const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);
     // const articles = Array(6).fill(0);
     useEffect(() => {
-        const fetchArticles = async () => {
+        const fetchData = async () => {
             try {
-                const response = await getRequest("/api/main-article");
-                setArticles(response.data); // 가져온 데이터를 articles 상태에 저장
-                console.log(response.data);
+                const headlineResponse = await getRequest("/api/main-article/headline");
+                setHead(headlineResponse.data); // 가져온 데이터를 head 상태에 저장
+                console.log("Headline:", headlineResponse.data);
+
+                const articleResponse = await getRequest("/api/main-article");
+                setArticles(articleResponse.data); // 가져온 데이터를 articles 상태에 저장
+                console.log(articleResponse.data);
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
             }
         };
 
-        fetchArticles();
+        fetchData();
     }, []);
 
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <HeadlineArticle></HeadlineArticle>
+            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
             {/* <Divider />  */}
 
