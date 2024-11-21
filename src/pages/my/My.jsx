@@ -20,11 +20,25 @@ export default function My() {
         navigate('/subManage');
     }
 
+<<<<<<< HEAD
     const fetchMy = async () => {
         try {
             const response = await getRequest('/api/subscription');
             setSubscriptions(response.data);
         } catch (error) {
+=======
+    useEffect(() => {
+        // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
+        axios.get('/api/subscription', {
+            headers: {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjUwOTY5LCJpYXQiOjE3MzEyNDczNjl9.wRfgQnCFATY9mJISzszrQhiEEPWg_OtgpDLpe-hg0UU`
+            }
+        })
+        .then(response => {
+            setSubscriptions(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
+        })
+        .catch(error => {
+>>>>>>> d2804b5f1164ef29057b54966df3a699ca93f87d
             console.error('Error fetching subscriptions:', error);
         }
     }

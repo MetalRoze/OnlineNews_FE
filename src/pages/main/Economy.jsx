@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
+import { getRequest } from "../../apis/axios";
 
 export default function Economy() {
-    const articles = Array(6).fill(0);
+    const [articles, setArticles] = useState([]);
 
+    useEffect(() => {
+        const fetchArticles = async () => {
+            try {
+                const response = await getRequest("/api/article/select?category=ECONOMY");
+                setArticles(response.data); // 데이터 저장
+            } catch (error) {
+                console.error("Failed to fetch articles:", error);
+            }
+        };
+    
+        fetchArticles();
+    }, []);
+    
+    useEffect(() => {
+        // console.log(articles); // articles 상태가 업데이트 된 후에 출력
+    }, [articles]);
+    
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
             <HeadlineArticle></HeadlineArticle>
 
+            {/* Divider */}
             {/* <Divider />  */}
 
-            {articles.map((_, index) => (
-                <div>
-                    <BasicArticle key={index} />
-                    <hr></hr>
+            {articles.map((article) => (  // map에서 'article'로 이름 변경
+                <div key={article.id}>    {/* article.id로 고유값을 설정 */}
+                    <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
+                    <hr />
                 </div>
             ))}
         </div>

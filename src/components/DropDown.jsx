@@ -70,10 +70,10 @@ const CustomDropdown = styled(DropdownButton)`
         width: fit-content;
         padding: 0;
         background-color: transparent;
-        color: ${(props) => props.theme.colors.gray60};
+        color: ${(props) => props.theme.colors.black};
         border: none;   
         &:hover, &:active{
-            color: ${(props) => props.theme.colors.black};
+            color: ${(props) => props.theme.colors.blue};
         }
     }
     .dropdown-toggle::before {

@@ -23,15 +23,11 @@ const StyledTabs = styled(Tabs)`
 
 `;
 
-export default function DesktopTab({ tabData, setActiveTab }) {
+export default function DesktopTab({ tabData, activeTab, setActiveTab }) {
   return (
-    <StyledTabs defaultActiveKey={tabData[0]?.eventKey}  onSelect={setActiveTab} className="mb-3">
+    <StyledTabs activeKey={activeTab} onSelect={(key) => setActiveTab(key)} className="mb-3">
       {tabData.map((tab) => (
-        <Tab
-          eventKey={tab.eventKey}
-          title={tab.title}
-          key={tab.eventKey}
-        />
+        <Tab eventKey={tab.eventKey} title={tab.title} key={tab.eventKey} />
       ))}
     </StyledTabs>
   );

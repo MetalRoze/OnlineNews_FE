@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import AdminRequest from '../../components/AdminRequest';
-import AdminArticle from '../../components/AdminArticle';
+import AdminRequest from './AdminRequest';
+import AdminArticle from './AdminArticle';
+import { getRequest } from '../../apis/axios';
 
 export default function AdminMain() {
     const navigate = useNavigate();
+    const [requests, setRequests] = useState([]);
+    const [articles, setArticles] = useState([]);
 
     const goToRequest = () => {
         navigate('/requestManage');
@@ -13,6 +16,30 @@ export default function AdminMain() {
     const goToArticle = () => {
         navigate('/articleManage');
     };
+
+    const fetchRequests = async () => {
+        try {
+            const response = await getRequest("api/request");
+            setRequests(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+
+    const fetchArticles = async () => {
+        try {
+            const response = await getRequest('api/article/select', { sortBy: "createdAt", sortDirection: "desc" });
+            setArticles(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchRequests();
+        fetchArticles();
+    }, []);
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter">
@@ -23,12 +50,9 @@ export default function AdminMain() {
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToRequest} />
                     </div>
                     <StyledRequestListWrapper>
-                        <AdminRequest type={'시민기자'} />
-                        <AdminRequest />
-                        <AdminRequest />
-                        <AdminRequest  type={'시민기자'}/>
-                        <AdminRequest />
-                        <AdminRequest  type={'시민기자'}/>
+                        {requests && requests.length >= 8 && requests.slice(0, 8).map((request, index) => (
+                            <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`}/>
+                        ))}
                     </StyledRequestListWrapper>
                 </div>
                 <div style={{ height: '3rem' }}></div>
@@ -36,18 +60,12 @@ export default function AdminMain() {
                 <div className='flex column aiFlexstart' style={{ width: '78rem' }}>
                     <div className='flex aiCenter mb1'>
                         <h2 className='m0 mr05' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
-                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToArticle} />
+                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer'}} onClick={goToArticle} />
                     </div>
                     <StyledArticleListWrapper>
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
+                        {articles && articles.length >= 8 && articles.slice(0, 8).map((article, index) => (
+                            <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
+                        ))}
                     </StyledArticleListWrapper>
                 </div>
                 <div style={{ height: '3rem' }}></div>
