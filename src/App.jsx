@@ -30,7 +30,6 @@ import FindPasswordResultPage from './pages/findPassword/FindPasswordResult';
 import FindIdResultPage from './pages/findId/FindIdResult';
 import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
-import DesktopNoti from './pages/nofi/DesktopNoti';
 import MobileNoti from './pages/nofi/MobileNoti';
 import AdminMypage from './pages/adminMypage/AdminMypage';
 import GeneralMyPage from './pages/mypage/GeneralMyPage';
@@ -67,7 +66,7 @@ const Basic = () => {
   const isDetail = location.pathname.toLowerCase().startsWith('/articledetail');
 
   // 데스크탑 푸터 사용할 페이지 경로
-  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail", "/desktopNoti", "/adminMypage"].map(path => path.toLowerCase());
+  const excludedPaths = ["/adminMain", "/requestManage", "/articleManage", "/staffManage", "/staffManage/staffDetail", "/requestManage/requestDetail", "/adminMypage"].map(path => path.toLowerCase());
   const isDesktop = excludedPaths.some(path => location.pathname.toLowerCase().startsWith(path));
 
 
@@ -118,7 +117,6 @@ const Basic = () => {
         <Route path="/staffManage" element={<StaffManage />} />
         <Route path="/staffManage/staffDetail/:id" element={<StaffDetail />} />
         <Route path="/requestManage/requestDetail/:id" element={<RequestDetail />} />
-        <Route path="/desktopNoti" element={<DesktopNoti />} />
         <Route path="/mobileNoti" element={<MobileNoti />} />
         <Route path="/adminMypage" element={<AdminMypage />} />
         <Route path="/login" element={<LoginPage />} />
