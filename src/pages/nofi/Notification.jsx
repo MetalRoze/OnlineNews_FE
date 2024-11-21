@@ -2,55 +2,46 @@ import React from 'react';
 import styled from 'styled-components';
 import Label from '../../components/Label';
 
-export default function Notification({ notiType, type, userName, title, comment, reply, width }) {
-    const { label, roleText, message } = getNotificationDetails({ notiType, type, userName, title, comment, reply });
-    return (
-        <div className='desktop-item pd10 aiCenter jcCenter' style={{width:width}}>
-            <div className='flex column jcCenter' style={{  width : '100%' }}>
-                <div className='flex spaceBetween mb05 aiCenter'>
-                    <Label text={label} color={'white'} backgroundColor={'black'}/>
-                    <small className='m0'>1분전</small>
-                </div>
-                <div className='flex mb05 aiCenter'>
-                    <h5 className='mr05 m0'>{userName}{roleText}</h5>
-                    {type === '시민기자' && <Label text="시민" />}
-                </div>
-                <p className='m0'>{message}</p>
-            </div>
+export default function Notification({ notiType, userName, message, comment, createdAt, width }) {
+  const { label } = getNotificationDetails({ notiType });
+  return (
+    <div className='desktop-item pd10 aiCenter jcCenter' style={{ width: width }}>
+      <div className='flex column jcCenter' style={{ width: '100%' }}>
+        <div className='flex spaceBetween mb05 aiCenter'>
+          <Label text={label} color={'white'} backgroundcolor={'black'} />
+          <small className='m0'>{createdAt.split('T')[0]}</small>
         </div>
-    );
+        <div className='flex mb05 aiCenter'>
+          <h5 className='mr05 m0'>{userName}</h5>
+        </div>
+        <p className='m0'>{message}</p>
+        {comment && <p className='m0' style={{ color: 'black' }}>{comment}</p>}
+      </div>
+    </div>
+  );
 }
-const getNotificationDetails = ({ notiType, title, comment, reply }) => {
-    switch (notiType) {
-      case 'commentNoti': // 일반 사용자 알림
-        return {
-          label: '댓글',
-          roleText: ' 님',
-          message: `${comment} 댓글이 달렸습니다.`,
-        };
-      case 'replyNoti':
-        return {
-          label: '대댓글',
-          roleText: ' 님',
-          message: `${reply} 대댓글이 달렸습니다.`,
-        };
-      case 'requestNoti': // 편집장 알림
-        return {
-          label: '승인요청',
-          roleText: ' 기자',
-          message: `${title} 승인요청입니다.`,
-        };
-      case 'enrollNoti':
-        return {
-          label: '기자 등록',
-          roleText: ' 기자',
-          message: `${title}`,
-        };
-      default:
-        return {
-          label: '알림',
-          roleText: '',
-          message: '알림이 도착했습니다.',
-        };
-    }
-  };
+const getNotificationDetails = ({ notiType }) => {
+  switch (notiType) {
+    case 'REPORTER_COMMENT':
+      return {
+        label: '댓글',
+      };
+    case 'REPORTER_LIKE':
+    case 'USER_LIKE':
+      return {
+        label: '좋아요'
+      };
+    case 'USER_REPLY':
+      return {
+        label: '대댓글'
+      };
+    case 'REQUEST':
+      return {
+        label: '승인'
+      };
+    default:
+      return {
+        label: '알림'
+      };
+  }
+};
