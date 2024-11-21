@@ -42,7 +42,7 @@ export default function My() {
 
         fetchArticles();  // 컴포넌트 마운트 시 API 호출
 
-    }, []);  
+    }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
 
     return (
         <div>
