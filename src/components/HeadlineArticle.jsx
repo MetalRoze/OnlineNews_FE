@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 
-export default function HeadlineArticle() {
+export default function HeadlineArticle({head}) {
     const navigate = useNavigate();
 
     const handleArticleClick = () => {

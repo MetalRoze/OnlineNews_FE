@@ -11,7 +11,6 @@ export default function Main() {
     const [articles, setArticles] = useState([]);
     // const articles = Array(6).fill(0);
     useEffect(() => {
-        // ECONOMY 카테고리에 해당하는 기사 데이터를 가져옵니다.
         const fetchArticles = async () => {
             try {
                 const response = await getRequest("/api/main-article");
