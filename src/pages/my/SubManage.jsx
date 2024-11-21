@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SubPub from "./SubPub";
 import styled from "styled-components";
 import PubProfile from "./PubProfile";
-import { getRequest } from "../../apis/axios";
+import { getRequest, deleteRequest } from "../../apis/axios";
 
 export default function SubManage() {
     const labels = ["전체", "종합지", "인터넷", "매거진", "방송/엔터", "경제지", "지역지"];
@@ -40,6 +40,21 @@ export default function SubManage() {
         }
     };
 
+    // 구독 취소 요청
+    const handleSubPubClick = async (publisherId) => {
+        try {
+            console.log(publisherId);
+            await deleteRequest(`/api/subscription/unsubscribe/${publisherId}`);
+            setSubscriptions((prev) =>
+                prev.filter((sub) => sub.publisher_id !== publisherId)
+            ); // 구독 상태 업데이트
+            alert("구독이 취소되었습니다.");
+        } catch (error) {
+            console.error("Error unsubscribing:", error);
+            alert("구독 취소에 실패했습니다.");
+        }
+    };
+
     // 라벨 클릭 시 호출되는 함수
     const handleLabelClick = (label) => {
         setSelectedLabel(label);
@@ -59,7 +74,11 @@ export default function SubManage() {
             <CenteredContainer>
                 <GrayBox>
                     {subscriptions.slice(0, 7).map((sub, index) => (
-                        <SubPub key={index} publisher={sub.publisher_name} />
+                          <SubPub
+                          key={index}
+                          publisher={sub.publisher_name}
+                          onClick={() => handleSubPubClick(sub.publisher_id)} // 클릭 이벤트 전달
+                      />
                     ))}
                 </GrayBox>
             </CenteredContainer>

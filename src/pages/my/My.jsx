@@ -51,12 +51,17 @@ export default function My() {
                     <CenteredContainer>
                         <GrayBox>
                             {subscriptions.map((subscription, index) => (
-                                <SubPub key={index} publisher={subscription.publisher_name} />
+                                <SubPub
+                                    key={index}
+                                    publisher={subscription.publisher_name}
+                                    onClick={null} // 명시적으로 클릭 이벤트를 전달하지 않음
+                                />
                             ))}
                             <AddIconBox>
-                                <CgAddR size={28} onClick={handleSetPub} /> {/* 8번째 칸에 아이콘만 표시 */}
+                                <CgAddR size={28} onClick={handleSetPub} />
                             </AddIconBox>
                         </GrayBox>
+
                     </CenteredContainer>
                 </div>
 
