@@ -16,8 +16,8 @@ export default function BasicArticle({ article }) {  // article prop을 받아�
       onClick={handleArticleClick}
     >
       <img className='m0'
-        style={{ marginLeft: "0.5rem", marginRight: "0.7rem", width: "13rem", height: "8rem" }}
-        src={article.images[0]}  // article.images[0]을 사용
+        style={{ marginLeft: "0.5rem", marginRight: "0.7rem", width: "13rem", height: "rem" }}
+        src={article.articleImg}  // article.images[0]을 사용
         alt={article.articleTitle} />
       <ArticleInfo>
         <Title>{article.title}</Title>
