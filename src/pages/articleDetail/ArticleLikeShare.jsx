@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import SubscriptionModal from './SubscriptionModal';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
 import blackLogo from '../../assets/myeongbo_black.svg';
 
 const ArticleLikeShare = ({
     article,
     handleArticleLikeToggle,
-    handleSubscriptionToggle,
-    isModalOpen,
-    isEmailSubscribed,
     isArticleLiked,
-    isSubscribed,
-    setIsModalOpen,
-    handleSubscribe,
-    handleUnsubscribe,
-    handleEmailSubscribe,
-    handleEmailUnsubscribe
 }) => {
     const handleLogoClick = () => {
         navigate('/');
@@ -30,21 +20,6 @@ const ArticleLikeShare = ({
                 </div>
             </div>
             <a href={article.publisherUrl} className='gray40 mt1'>{article.publisherUrl} &gt;</a>
-            <button
-                className={`mt2 ${isSubscribed ? 'unsubsButton' : 'subsButton'}`}
-                onClick={() => {
-                    if (isSubscribed) {
-                        handleSubscriptionToggle();
-                    } else {
-                        handleSubscribe();
-                    }
-                }}
-            >
-                {isSubscribed && isEmailSubscribed !== null && (
-                    <i className={`bi ${isEmailSubscribed ? 'bi-envelope-check' : 'bi-envelope-x-fill'}`}></i>
-                )}
-                &nbsp;{isSubscribed ? '구독중' : '구독'}
-            </button>
 
             <hr className='mt1' style={{ margin: '1rem 0' }} />
 
@@ -58,14 +33,6 @@ const ArticleLikeShare = ({
                 </div>
                 <KakaoShare title={article.title} content={article.subtitle.split(',./')[0]} link={`articleDetail/${article.id}`} THU={article.images[0]} />
             </div>
-
-            <SubscriptionModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onEmailSubscribe={handleEmailSubscribe}
-                onEmailUnsubscribe={handleEmailUnsubscribe}
-                onUnsubscribe={handleUnsubscribe}
-            />
 
         </div>
     );

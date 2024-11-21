@@ -7,7 +7,7 @@ export default function BasicArticle({ article }) {  // article prop을 받아�
   const navigate = useNavigate();
 
   const handleArticleClick = () => {
-    navigate("/articleDetail", { state: { articleId: article.id } });
+    navigate(`/articleDetail/${article.id}`);
   };
 
   return (

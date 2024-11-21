@@ -40,4 +40,25 @@ const convertToKor = (englishCategory) => {
     }
 };
 
-export { convertToEng, convertToKor };
+const convertToIdx = (englishCategory) => {
+    switch (englishCategory) {
+        case "SOCIAL":
+            return 4;
+        case "ECONOMY":
+            return 3;
+        case "LIFE_CULTURE":
+            return 6;
+        case "ENTERTAINMENT":
+            return 5;
+        case "SCIENCE_TECH":
+            return 7;
+        case "POLITICS":
+            return 2;
+        case "OPINION":
+            return 8;
+        default:
+            throw new Error("유효하지 않은 카테고리입니다.");
+    }
+};
+
+export { convertToEng, convertToKor, convertToIdx };
