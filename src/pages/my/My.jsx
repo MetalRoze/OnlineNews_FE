@@ -5,14 +5,13 @@ import styled from "styled-components";
 import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
-import { getRequest } from '../../apis/axios';
-
+import { getRequest } from "../../apis/axios"; // getRequest 임포트 (이미 정의된 함수로 가정)
 
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
+    const [articles, setArticles] = useState([]);  // 추천 기사 데이터를 저장할 상태
 
-    const articles = Array(7).fill(0); // 배열 선언
-    const subPubs = subscriptions.slice(0, 7); // 최대 7개의 구독만 렌더링
+    const subPubs = Array(7).fill(0); // 7개의 SubPub 컴포넌트를 생성
     const navigate = useNavigate();
     const [publishers, setPublishers] = useState([]); // API에서 가져온 데이터를 저장할 상태
 
@@ -20,38 +19,30 @@ export default function My() {
         navigate('/subManage');
     }
 
-<<<<<<< HEAD
-    const fetchMy = async () => {
-        try {
-            const response = await getRequest('/api/subscription');
-            setSubscriptions(response.data);
-        } catch (error) {
-=======
     useEffect(() => {
-        // useEffect를 사용하여 컴포넌트가 마운트될 때 API 호출
-        axios.get('/api/subscription', {
-            headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJldW5qdUBnbWFpbC5jb20iLCJyb2xlIjpbIlJPTEVfR0VORVJBTF9NRU1CRVIiXSwiZXhwIjoxNzMxMjUwOTY5LCJpYXQiOjE3MzEyNDczNjl9.wRfgQnCFATY9mJISzszrQhiEEPWg_OtgpDLpe-hg0UU`
-            }
-        })
+        // 구독 정보를 가져오는 API 요청
+        getRequest('/api/subscription')
         .then(response => {
             setSubscriptions(response.data);  // 받은 데이터로 subscriptions 상태 업데이트
         })
         .catch(error => {
->>>>>>> d2804b5f1164ef29057b54966df3a699ca93f87d
             console.error('Error fetching subscriptions:', error);
-        }
-    }
+        });
 
-    useEffect(() => {
+        // 추천 기사를 가져오는 API 요청 (async/await 방식으로 처리)
+        const fetchArticles = async () => {
+            try {
+                const articleResponse = await getRequest("/api/main-article");
+                setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
+                console.log(articleResponse.data);  // 가져온 데이터 확인
+            } catch (error) {
+                console.error('Error fetching main articles:', error);
+            }
+        };
 
-        fetchMy();
-    }, []);  // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
+        fetchArticles();  // 컴포넌트 마운트 시 API 호출
 
-    useEffect(() => {
-        // subscriptions 값이 변경될 때마다 로그 출력
-        console.log(subscriptions);
-    }, [subscriptions]);  // subscriptions 상태가 바뀔 때마다 실행됨
+    }, []);  
 
     return (
         <div>
@@ -74,9 +65,9 @@ export default function My() {
 
                 <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
 
-                {articles.map((_, index) => (
+                {articles.map((article, index) => (
                     <div key={index}>
-                        <BasicArticle />
+                        <BasicArticle article={article} />  {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
                         <hr />
                     </div>
                 ))}
@@ -105,7 +96,6 @@ const AddIconBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* AddIconBox는 배경이나 테두리 없이 아이콘만 표시 */
     width: 7rem; /* SubPub와 동일한 크기 */
     height: 4rem;
     cursor : pointer;
