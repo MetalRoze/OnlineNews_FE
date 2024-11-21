@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MyDropdown from './DropDown';
-import blackLogo from '../assets/myeongbo_blue.svg';
+import blueLogo from '../assets/myeongbo_blue.svg';
 
 const formatDate = (date) => {
     const options = {
@@ -60,35 +60,32 @@ const Header = () => {
 
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div className='mobile-header'>
-                <div className='flex'>
-                    <img src={blackLogo} alt="Bootstrap" className='logo' onClick={handleLogoClick} // 클릭 이벤트 추가
-                        style={{ cursor: 'pointer' }} />
-                    <div className='date'>{formatDate(today)}</div>
-                </div>
+            <div className='mobile-header mobile-header-grid'>
+                <div className='date'>{formatDate(today)}</div>
                 <div>
-                    <div className='flex aiCenter' style={{ width: 'fit-content', justifySelf: 'flex-end' }}>
+                    <img src={blueLogo} alt="Bootstrap" className='logo' onClick={handleLogoClick} style={{ cursor: 'pointer' }} />
+                </div>
+                <div className='flex column aiCenter jcFlexend'>
+                    <div className='flex mb05' >
                         <i
-                            className="bi bi-search mr1"
+                            className="bi bi-search mr05 pointer"
                             onClick={handleSearchClick}
-                            style={{ cursor: 'pointer' }}>
+                            >
                         </i>
                         <MyDropdown />
                     </div>
-                    <div className='flex aiCenter'>
                     <div className='link'>
-                            {isLoggedIn ? (
-                                // 로그인된 상태일 때 '로그아웃' 버튼 표시
-                                <a href='#' onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>로그아웃</a>
-                            ) : (
-                                // 로그인 안된 상태일 때 '로그인'과 '회원가입' 버튼 표시
-                                <>
-                                    <a href='#' onClick={handleLoginClick} style={{ cursor: 'pointer' }}>로그인</a>
-                                    <span> &nbsp;&nbsp;|&nbsp;&nbsp; </span>
-                                    <a href='#' onClick={handleSignupClick} style={{ cursor: 'pointer' }}>회원가입</a>
-                                </>
-                            )}
-                        </div>
+                        {isLoggedIn ? (
+                            // 로그인된 상태일 때 '로그아웃' 버튼 표시
+                            <a href='#' onClick={handleLogoutClick} style={{ cursor: 'pointer' }}>로그아웃</a>
+                        ) : (
+                            // 로그인 안된 상태일 때 '로그인'과 '회원가입' 버튼 표시
+                            <>
+                                <a href='#' onClick={handleLoginClick} style={{ cursor: 'pointer' }}>로그인</a>
+                                <span> &nbsp;&nbsp;|&nbsp;&nbsp; </span>
+                                <a href='#' onClick={handleSignupClick} style={{ cursor: 'pointer' }}>회원가입</a>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

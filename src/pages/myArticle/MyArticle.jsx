@@ -235,6 +235,7 @@ function MyArticle() {
                     </ul>
 
                     <MyPagination
+                        activePage={currentPage}
                         itemsCountPerPage={itemsCountPerPage}
                         totalItemsCount={totalItemsCount}
                         pageRangeDisplayed={5}
