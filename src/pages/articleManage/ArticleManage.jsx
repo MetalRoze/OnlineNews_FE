@@ -38,7 +38,7 @@ export default function ArticleManage() {
         제목: article.title,
         수정일자: article.modifiedAt !==null ? article.modifiedAt.split("T")[0] : null,
         id: article.id,
-        작업: "헤드라인 지정",
+        작업: "헤드라인",
     }));
 
     useEffect(() => {

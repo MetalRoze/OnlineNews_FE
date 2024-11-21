@@ -10,7 +10,6 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
         navigate(`${pathTo}/${id}`);
     };
     const handleActionClick = (id) => {
-        console.log(`${id} - 헤드라인 지정 클릭`);
         postHeadline(id);
     };
 
