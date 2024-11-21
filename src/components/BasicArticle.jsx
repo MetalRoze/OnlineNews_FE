@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "../styles/theme";
 import { useNavigate } from 'react-router-dom';
 
-export default function BasicArticle({ article }) {  // article prop을 받아옵니다.
+export default function BasicArticle({ article }) {
   const navigate = useNavigate();
 
   const handleArticleClick = () => {
@@ -12,20 +12,51 @@ export default function BasicArticle({ article }) {  // article prop을 받아�
 
   return (
     <div className='basicArticle pd0'
-      style={{ cursor: "pointer", display: "flex" }}
+      style={{ cursor: "pointer", display: "flex", marginTop: "0.5rem" }}
       onClick={handleArticleClick}
     >
-      <img className='m0'
-        style={{ marginLeft: "0.5rem", marginRight: "0.7rem", width: "13rem", height: "rem" }}
-        src={article.articleImg}  // article.images[0]을 사용
-        alt={article.articleTitle} />
+      {/* 이미지가 있을 경우 보여주고, 없으면 빈 공간을 보여줍니다 */}
+      <ImageWrapper>
+        {article.articleImg && article.articleImg.length > 0 ? (
+          <Img 
+            src={article.articleImg}  
+            alt={article.articleTitle} 
+          />
+        ) : (
+          <EmptyImage />  // 이미지가 없으면 빈 공간을 보여줌
+        )}
+      </ImageWrapper>
+      
       <ArticleInfo>
-        <Title>{article.title}</Title>
+        <Title>{article.articleTitle}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>
     </div>
   );
 }
+
+// 이미지와 빈 화면을 감싸는 Wrapper
+const ImageWrapper = styled.div`
+  margin-left: 0.5rem;
+  margin-right: 0.7rem;
+  width: 12rem;
+  height: 7.5rem;
+  background-color: #f0f0f0;  /* 기본 배경색 (빈 이미지일 경우 사용) */
+`;
+
+// 실제 이미지
+const Img = styled.img`
+  width: 12rem; // 부모 div에 맞게 100%로 크기 조정
+  height: 100%;  // 부모 div에 맞게 100%로 크기 조정
+  object-fit: cover;  /* 이미지가 크기를 채우면서 비율을 유지 */
+`;
+
+// 이미지가 없을 경우 표시되는 빈 공간
+const EmptyImage = styled.div`
+  width : 12rem;
+  height: 100%;
+  background-color: #f0f0f0;  /* 빈 공간의 배경색 */
+`;
 
 const ArticleInfo = styled.div`
   display: flex;
@@ -38,22 +69,21 @@ const ArticleInfo = styled.div`
 const Title = styled.p`
   margin: 0;
   margin-top: 0.3rem;
-  width: 100%;      /* Title이 부모 영역에 맞게 크기를 가질 수 있도록 설정 */
+  width: 100%;      
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* 두 줄로 제한 */
-  -webkit-box-orient: vertical; /* 수직 방향으로 박스 배치 */
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* 넘칠 경우 "..."으로 표시 */
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 `;
-
 
 const Source = styled.p`
   margin: 0;
   color: ${theme.colors.gray50}; 
   text-align: left;
   margin-bottom: 0.3rem;
-  width: 100%;     /* Source도 부모 영역에 맞게 크기를 가질 수 있도록 설정 */
+  width: 100%;     
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; /* 한 줄로 표시 */
+  white-space: nowrap; 
 `;
