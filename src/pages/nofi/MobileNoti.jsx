@@ -11,6 +11,7 @@ export default function MobileNoti() {
     const [userGrade, setUserGrade] = useState();
     const [noties, setNoties] = useState([]);
     const [tabData, setTabData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchMyGrade = async () => {
         try {
@@ -66,8 +67,8 @@ export default function MobileNoti() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await fetchMyGrade(); 
-                if (userGrade) {     
+                await fetchMyGrade();
+                if (userGrade) {
                     await fetchNoties(userGrade, activeTab);
                 }
             } catch (error) {
@@ -75,7 +76,16 @@ export default function MobileNoti() {
             }
         };
         fetchData();
+        setCurrentPage(1);
     }, [userGrade, activeTab]);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const startIdx = (currentPage - 1) * 8;
+    const endIdx = startIdx + 8;
+    const currentNoties = noties.slice(startIdx, endIdx);
 
     return (
         <div className="mobile-container">
@@ -83,7 +93,7 @@ export default function MobileNoti() {
             <TotalCount>전체 {noties.length}개</TotalCount>
 
             <StyledNotiListWrapper>
-                {noties && noties.map((noti, index) => (
+                {currentNoties.length > 0 && currentNoties.map((noti, index) => (
                     <Notification
                         key={index}
                         notiType={noti.type}
@@ -94,11 +104,12 @@ export default function MobileNoti() {
                         width={'100%'}
                     />
                 ))}
+                {noties.length === 0 && <div className='taCenter mt1'>알림이 없습니다.</div>}
             </StyledNotiListWrapper>
 
-            <PaginationContainer>
-                <MyPagination itemsCountPerPage={10} totalItemsCount={noties.length} pageRangeDisplayed={5} />
-            </PaginationContainer>
+            {noties.length !== 0 && (
+                <MyPagination itemsCountPerPage={8} totalItemsCount={noties.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+            )}
         </div>
     );
 }
