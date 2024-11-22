@@ -114,8 +114,9 @@ export default function GeneralTerm() {
 
     const [allChecked, setAllChecked] = useState(false); 
     const [termsChecked, setTermsChecked] = useState({
-        service:false,
-        privacy:false
+        useTerm: false,
+        privacyTerm: false,
+        serviceTerm: false,  
     }); 
 
 
@@ -143,7 +144,11 @@ export default function GeneralTerm() {
 
     const handleNext = () => {
         if(isFormValid){
-            navigate('/signup/generalForm');
+            navigate('/signup/generalForm', {
+                state:{
+                    isMailing:termsChecked.serviceTerm,
+                }
+            });
         }
     }; 
 
