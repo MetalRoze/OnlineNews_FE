@@ -1,5 +1,5 @@
 import React, { useState } from 'react';  
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
@@ -166,6 +166,8 @@ export default function GeneralForm() {
     });
 
     const [profileImg, setProfileImg] = useState(profileIcon);
+    const location = useLocation();
+    const isMailing = location.state?.isMailing;  
 
     const handleSubmit = () => {
         checkNickNameEmpty(); 
@@ -173,6 +175,27 @@ export default function GeneralForm() {
             handleSignupApi(); 
         }
     };
+
+    const handleMailingSubscribe = async (userId) => {
+        try {
+            // 수신 설정
+            postRequest(`/api/mailing/subscribe?userId=${userId}`)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log('메일링 서비스 구독 성공');
+                    } else {
+                        console.log('메일링 서비스 구독 실패');
+                    }
+                })
+                .catch(error => {
+                    console.error("메일링 수신 설정 실패", error);
+                });
+
+        } catch (error) {
+            console.error('메일링 리스트 구독 오류:', error);
+        }
+    };
+
 
     const handleSignupApi = async () => {
         const formDataToSubmit = new FormData();
@@ -182,6 +205,8 @@ export default function GeneralForm() {
         formDataToSubmit.append("user_pw2", formData.passwordCheck);
         formDataToSubmit.append("user_cp", `${formData.cellphone.part1}-${formData.cellphone.part2}-${formData.cellphone.part3}`);
         formDataToSubmit.append("user_sex", formData.gender);
+        console.log("닉네임 누락 확인 : " + formData.nickname); 
+
         formDataToSubmit.append("user_nickname", formData.nickname);
         
         if (formData.profileImg) {
@@ -193,6 +218,9 @@ export default function GeneralForm() {
                 console.log('응답 상태:', response.status);  // 응답 내용 확인
 
                 if (response.status === 200) {
+                    if(isMailing){
+                        handleMailingSubscribe(response.data); 
+                    }
                     navigate('/signup/success');
                 } else {
                     alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
@@ -235,7 +263,7 @@ export default function GeneralForm() {
     }; 
 
     const checkNickNameEmpty = () =>{
-        if(!formData.nickname){
+        if(!formData.nickname.trim()){
             setFormData((prevData) => ({
                 ...prevData,
                 nickname: "익명",
@@ -247,6 +275,7 @@ export default function GeneralForm() {
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            setProfileImg(URL.createObjectURL(file)); // 프로필 이미지 상태 변경
             setFormData((prevData) => ({
                 ...prevData,
                 profileImg: file 
