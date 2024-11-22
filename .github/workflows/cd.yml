@@ -25,9 +25,13 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           script: |
             cd /home/ubuntu/OnlineNews_FE/
+            pwd 
+            git status
             git reset --hard HEAD
             git clean -fd
             git pull origin main
-            npm install
+            npm run install
+            npm run build
             nohup npm run dev -- --host 0.0.0.0 > app.log 2>&1 &
             sudo systemctl restart nginx  
+

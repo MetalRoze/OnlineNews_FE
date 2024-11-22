@@ -40,6 +40,7 @@ export default function Main() {
             <MenuList />
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
+
             {/* 조건부 렌더링: articles가 배열인지 확인하고, 배열일 때만 map() 사용 */}
             {Array.isArray(articles) && articles.length > 0 ? (
                 articles.map((article) => (
