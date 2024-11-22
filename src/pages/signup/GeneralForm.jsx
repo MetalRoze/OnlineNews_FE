@@ -247,6 +247,7 @@ export default function GeneralForm() {
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            setProfileImg(URL.createObjectURL(file)); // 프로필 이미지 상태 변경
             setFormData((prevData) => ({
                 ...prevData,
                 profileImg: file 
