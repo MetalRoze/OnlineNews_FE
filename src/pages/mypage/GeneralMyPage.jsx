@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import profileIcon  from '../../assets/profileDefault.png'; 
-import { getRequest } from '../../apis/axios';
+import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
+import MailingSettingModal from '../../components/MailingSettingModal'; // 추가된 import
 
 const ProfileWrapper = styled.div`
     width: 500px; 
@@ -125,30 +126,33 @@ const NextButton = styled.button`
 `; 
 
 
-
 export default function GeneralMyPage() {
     const navigate = useNavigate(); 
     const [userData, setUserData] = useState({
+        id:'', 
         nickname: '',
         bio: '',
         name: '',
         email: '',
         phoneNumber: '',
         gender: '',
-        profileImg:''
+        profileImg:'', 
+        isMailing: false
     });
 
     const getUserData = async () => {
         getRequest('/api/user/myPage')
             .then(response => {
                 setUserData({
+                    id:response.data.id, 
                     nickname: response.data.nickname,
                     bio: response.data.bio,
                     name: response.data.name,
                     email: response.data.email,
                     phoneNumber: response.data.cp, 
                     gender: response.data.sex, 
-                    profileImg : response.data.img
+                    profileImg : response.data.img, 
+                    isMailing : response.data.mailing 
                 });
 
                 console.log(response.data);
@@ -180,6 +184,43 @@ export default function GeneralMyPage() {
             alert('회원 탈퇴가 완료되었습니다.');
             navigate('/main'); 
         }
+    };
+
+    const [showMailingModal, setShowMailingModal] = useState(false); // 모달 상태
+    const [mailingStatus, setMailingStatus] = useState(userData.isMailing); // 메일링 수신 여부
+
+     // 메일링 수신 여부 변경 후 저장
+    const handleMailingSave = async (newStatus) => {
+        setMailingStatus(newStatus);
+        setShowMailingModal(false);
+
+        const userId = userData.id; 
+
+        try {
+            if (newStatus) {
+                // 수신 설정
+                postRequest(`/api/mailing/subscribe?userId=${userData.id}`, { status: newStatus })
+                    .then(response => {
+                        console.log("메일링 수신 여부 변경:", newStatus);
+                    })
+                    .catch(error => {
+                        console.error("메일링 수신 설정 실패", error);
+                    });
+            } else {
+                // 수신 해지
+                deleteRequest(`/api/mailing/unsubscribe?userId=${userData.id}`)
+                    .then(response => {
+                        console.log("메일링 수신 해지 완료");
+                    })
+                    .catch(error => {
+                        console.error("메일링 수신 해지 실패", error);
+                    });
+            }
+        } catch (error) {
+            console.error("메일링 수신 여부 변경 실패:", error);
+        }
+
+        console.log("메일링 수신 여부 변경:", newStatus);
     };
 
     return (
@@ -230,9 +271,22 @@ export default function GeneralMyPage() {
                 </InfoColumn>
             </InfoWrapper>
             <HorizontalLine></HorizontalLine>
+           
+            {/* 메일링 수신 설정 버튼 추가 */}
+            <NextButton onClick={() => setShowMailingModal(true)}>메일링 수신 설정</NextButton>
             <NextButton onClick={handleEditInfo}>정보수정</NextButton>
             <NextButton onClick={handleLogout}>로그아웃</NextButton>
             <NextButton onClick={handleDeleteAccount}>회원 탈퇴</NextButton>
+        
+
+            {/* 메일링 수신 설정 모달 */}
+            <MailingSettingModal 
+                showModal={showMailingModal}
+                handleClose={() => setShowMailingModal(false)}
+                isSubscribed={mailingStatus}
+                handleSave={handleMailingSave}
+            />
+
         </div>
     
     ); 
