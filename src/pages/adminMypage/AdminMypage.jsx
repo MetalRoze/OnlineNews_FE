@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Sidebar from '../../components/Sidebar';
-
 
 export default function AdminMypage() {
     const navigate= useNavigate();
@@ -12,7 +10,6 @@ export default function AdminMypage() {
     };
     return (
         <div className="flex" style={{ width: "100vw" }}>
-            <Sidebar />
             <div className="desktop-container jcCenter aiCenter">
                 <StyledProfileWrapper>
                     <div className='flex aiCenter'>
