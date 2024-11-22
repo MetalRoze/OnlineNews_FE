@@ -26,10 +26,8 @@ export default function MobileNoti() {
                 ]);
             } else {
                 setTabData([
-                    { eventKey: 'allNoties', title: '전체', content: '전체알림' },
-                    { eventKey: 'commentNoti', title: '댓글', content: '댓글알림' },
-                    { eventKey: 'USER_REPLY', title: '대댓글', content: '대댓글알림' },
-                    { eventKey: 'USER_LIKE', title: '좋아요', content: '좋아요알림' },
+                    { eventKey: 'replyNoties', title: '대댓글', content: '대댓글알림' },
+                    { eventKey: 'likeNoties', title: '좋아요', content: '좋아요알림' },
                 ]);
             }
         } catch (error) {
@@ -52,7 +50,11 @@ export default function MobileNoti() {
             }
         }
         else if (userGrade === 'GENERAL_MEMBER') {
-            // 사용자 알림 나중에 함
+            if (status === 'replyNoties') {
+                endpoint = '/api/notification/user/reply';
+            } else if (status === 'likeNoties') {
+                endpoint = '/api/notification/user/like';
+            }
         }
 
         try {
