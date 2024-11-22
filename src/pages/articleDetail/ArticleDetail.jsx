@@ -8,18 +8,19 @@ import ArticleLikeShare from './ArticleLikeShare'
 import GoogleAdsense from '../../components/GoogleAdsense';
 import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
 import { useLocation } from 'react-router-dom';
+import { convertToIdx } from '../../utils/convertCategories'
 
 const ArticleDetail = () => {
     const { articleId } = useParams();
     const location = useLocation();
-    const isArticleDetail = location.pathname.includes('articleDetail');
+    const isArticleDetail = location.pathname.toLowerCase().includes('articledetail');
 
     const [article, setArticle] = useState(null);
 
 
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [likeId, setLikeId] = useState(null);
-    const [isEmailSubscribed, setIsEmailSubscribed] = useState(true);
+    const [categoryIdx, setCategoryIdx] = useState()
 
     // 기사 가져오기
     const fetchArticle = async () => {
@@ -27,11 +28,14 @@ const ArticleDetail = () => {
             .then(response => {
                 setArticle(response.data[0]);
                 console.log(response.data[0])
+                setCategoryIdx(convertToIdx(response.data[0].category));
+
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
             });
     };
+
     // 좋아요
     useEffect(() => {
         const checkLikeStatus = async () => {
@@ -41,8 +45,6 @@ const ArticleDetail = () => {
                 if (response.data) {
                     setIsArticleLiked(true);
                     setLikeId(response.data)
-                } else {
-                    console.log('없')
                 }
             } catch (error) {
                 console.error("Error checking like status", error);
@@ -89,31 +91,6 @@ const ArticleDetail = () => {
         }
     };
 
-    // 구독 팝업
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSubscribed, setIsSubscribed] = useState(false);
-    useEffect(() => {
-        console.log(isSubscribed);
-    }, [isSubscribed]);
-    const handleSubscriptionToggle = () => {
-        setIsModalOpen(true);
-    };
-    const handleSubscribe = () => {
-        setIsSubscribed(true);
-    };
-    const handleUnsubscribe = () => {
-        setIsSubscribed(false);
-        setIsModalOpen(false);
-    };
-    const handleEmailSubscribe = () => {
-        setIsEmailSubscribed(true);
-        setIsModalOpen(false);
-    };
-    const handleEmailUnsubscribe = () => {
-        setIsEmailSubscribed(false);
-        setIsModalOpen(false);
-    };
-
     // 카카오톡 공유하기
     useEffect(() => {
         const script = document.createElement("script");
@@ -134,26 +111,16 @@ const ArticleDetail = () => {
     }
     return (
         <div>
-            <ArticleHeader />
+            <ArticleHeader id={categoryIdx} />
             <div className='mobile-container pd20'>
                 <ArticleContent article={article} />
                 {isArticleDetail && (
                     <ArticleLikeShare
                         article={article}
                         handleArticleLikeToggle={handleArticleLikeToggle}
-                        handleSubscriptionToggle={handleSubscriptionToggle}
-                        isArticleDetail={isArticleDetail}
-                        isSubscribe={isSubscribed}
                         isArticleLiked={isArticleLiked}
-                        isModalOpen={isModalOpen}
-                        isEmailSubscribed={isEmailSubscribed}
-                        setIsModalOpen={setIsModalOpen}
-                        handleSubscribe={handleSubscribe}
-                        handleUnsubscribe={handleUnsubscribe}
-                        handleEmailSubscribe={handleEmailSubscribe}
-                        handleEmailUnsubscribe={handleEmailUnsubscribe}
                     ></ArticleLikeShare>)}
-                <ArticleComment />
+                <ArticleComment articleId={articleId} />
                 <GoogleAdsense
                     client="ca-pub-1195209293008237"
                     slot="3954159514"

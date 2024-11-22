@@ -1,38 +1,90 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import AdminArticle from '../../components/AdminArticle';
+import AdminArticle from '../adminMain/AdminArticle';
 import SearchBar from '../../components/SearchBar';
 import MyPagination from '../../components/Pagination';
-import ProfileInfo from './ProfileInfo'; // 새로 만든 컴포넌트 import
+import ProfileInfo from './ProfileInfo';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
+import { getRequest } from '../../apis/axios';
+import { useParams } from 'react-router-dom';
 
 export default function StaffDetail() {
+
+    const { id } = useParams();
+    const [articles, setArticles] = useState([]);
+    const [userInfo, setUserInfo] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const fetchUserInfo = async (userId) => {
+        try {
+            const response = await getRequest(`/api/user/${userId}`)
+            setUserInfo(response.data);
+        } catch (error) {
+            console.error('사용자 요청실패', error);
+        }
+    };
+    //최신기사 api
+    const fetchArticles = async (id) => {
+        try {
+            const response = await getRequest('/api/article/select', { userId: id, sortBy: "createdAt", sortDirection: "desc" });
+            if (response.data !== "검색 결과가 없습니다.") {
+                setArticles(response.data);
+            }
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserInfo(id);
+        fetchArticles(id);
+    }, [id]);
+
+    const startIdx = (currentPage - 1) * 8;
+    const endIdx = startIdx + 8;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
                 <StyledBackground>
-                    <h1>홍길동 기자</h1>
-                    <p className='mb2'>example@example.com</p>
+                    {userInfo && (
+                        <>
+                            <h1>{userInfo.name}</h1>
+                            <p className='mb2'>{userInfo.email}</p>
+                        </>
+                    )}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <ProfileInfo /> {/* ProfileInfo 사용 */}
-                    <div className='flex aiCenter spaceBetween pd10' style={{ width: '100%' }}>
+                    {userInfo && <ProfileInfo user={userInfo} />}
+                    <div className='flex aiCenter spaceBetween pd10 mt2' style={{ width: '100%' }}>
                         <h2 className='m0'>최신기사</h2>
                         <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
-                        <AdminArticle />
+                        {currentArticles && currentArticles.length > 0 ? (
+                            currentArticles.map((article, index) => (
+                                <AdminArticle key={index} article={article} />
+                            ))
+                        ) : (
+                            <div className="taCenter mb05" style={{ width: '100%' }}>
+                                요청이 없습니다.
+                            </div>
+                        )}
                     </StyledArticleListWrapper>
                     <div style={{ height: '3rem' }} />
-                    <MyPagination itemsCountPerPage={5} totalItemsCount={20} pageRangeDisplayed={5} />
+
+                    {articles.length !== 0 && (
+                        <MyPagination itemsCountPerPage={8} totalItemsCount={articles.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+                    )}
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

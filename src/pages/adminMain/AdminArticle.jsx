@@ -1,17 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-export default function AdminArticle() {
-
+export default function AdminArticle({ article, pathTo }) {
+    const navigate = useNavigate();
+    
+    const navigateToPath = (pathTo) => {
+        navigate(pathTo);
+    };
     return (
-        <div className='desktop-item pd10 aiCenter' >
+        <div className='desktop-item pd10 aiCenter pointer' onClick={() => navigateToPath(pathTo)}>
 
             <StyledArticleContentWrapper className='ml05' >
-                <h5 className='ellipsis'>AI로 ‘그놈 목소리’ 잡는다…KT, 규제샌드박스 실증특례 승인</h5>
-                <p className='ellipsis m0'>KT는 인공지능(AI) 기술을 활용해 실시간 통화에서 보이스피싱을 자동 탐지하는 ‘KT 실시간</p>
+                <h5 className='ellipsis'>{article.title}</h5>
+                <p className='ellipsis m0'>{article.subtitle}</p>
                 <div className='flex'>
                     <i className="bi bi-eye" />
-                    <p className=' m0 ml05' >99,999</p>
+                    <p className=' m0 ml05' >{article.views}</p>
                 </div>
             </StyledArticleContentWrapper>
             <img src="https://placehold.co/160x120" alt="Bootstrap" />

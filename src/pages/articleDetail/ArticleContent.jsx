@@ -10,14 +10,14 @@ const ArticleContent = ({
             <div>
                 <h1 className='mt1'>{article.title}</h1>
                 {article.subtitle.split(',./').map((sub, index) => (
-                    <h3 className='articleSubtitle' key={index}>{sub.trim()}</h3>  // 공백 제거
+                    <h3 className='articleSubtitle' key={index}>{sub.trim()}</h3>
                 ))}
                 <small className='mt1 gray30 block'>입력 {formDateTime(new Date(article.createdAt))}</small>
                 {article.modifiedAt && (
                     <small className='mt1 gray30'>수정 {formDateTime(new Date(article.modifiedAt))}</small>
                 )}<div className='mt1 taRight'>
                     <p className='mr1 inline'>{article.userName} 기자</p>
-                    <img className='ACprofileImg' src={article.userImg} alt="Author" />
+                    <img className='profile50' src={article.userImg} alt="Author" />
                 </div>
             </div>
             <hr style={{ margin: '1rem 0' }} />

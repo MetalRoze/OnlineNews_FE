@@ -1,62 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Notification from './Notification';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
 import { PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
+import { getRequest } from '../../apis/axios';
 
 export default function MobileNoti() {
-    const [activeTab, setActiveTab] = useState('allNoties');
+    const [activeTab, setActiveTab] = useState('requestNoties');
+    const [userGrade, setUserGrade] = useState();
+    const [noties, setNoties] = useState([]);
+    const [tabData, setTabData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const tabData = [
-        { eventKey: 'allNoties', title: '전체알림', content: '전체알림' },
-        { eventKey: 'commentNoti', title: '댓글등록', content: '댓글등록' },
-        { eventKey: 'replyNoti', title: '대댓글등록', content: '대댓글등록' },
-    ];
-    const noties = {
-        allNoties: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 2, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 3, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 4, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 6, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
-        ],
-        commentNoti: [
-            { id: 1, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 2, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-            { id: 3, name: '김철수', type: '일반', comment: '좋은 기사 잘 봤습니다~', notiType: 'commentNoti' },
-        ],
-        replyNoti: [
-            { id: 4, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 5, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' },
-            { id: 6, name: '김철수', type: '일반', reply: '우와 저도 같은 생각이에요~', notiType: 'replyNoti' }
-        ]
+    const fetchMyGrade = async () => {
+        try {
+            const response = await getRequest('/api/user/checkUserType');
+            console.log(response.data);
+            setUserGrade(response.data);
+            if (response.data === 'REPORTER' || response.data === 'INTERN_REPORTER' || response.data === 'CITIZEN_REPORTER') {
+                setTabData([
+                    { eventKey: 'requestNoties', title: '승인', content: '승인알림' },
+                    { eventKey: 'commentNoties', title: '댓글', content: '댓글등록' },
+                    { eventKey: 'likeNoties', title: '좋아요', content: '좋아요알림' },
+                ]);
+            } else {
+                setTabData([
+                    { eventKey: 'allNoties', title: '전체', content: '전체알림' },
+                    { eventKey: 'commentNoti', title: '댓글', content: '댓글알림' },
+                    { eventKey: 'USER_REPLY', title: '대댓글', content: '대댓글알림' },
+                    { eventKey: 'USER_LIKE', title: '좋아요', content: '좋아요알림' },
+                ]);
+            }
+        } catch (error) {
+            console.error('요청실패', error);
+        }
     };
+
+    const fetchNoties = async (userGrade, status) => {
+        if (!userGrade) return;
+        let endpoint = '';
+
+        // 기자 알림
+        if (userGrade === 'REPORTER' || userGrade === 'INTERN_REPORTER' || userGrade === 'CITIZEN_REPORTER') {
+            if (status === 'requestNoties') {
+                endpoint = '/api/notification/journalist/request';
+            } else if (status === 'likeNoties') {
+                endpoint = '/api/notification/journalist/like';
+            } else if (status === 'commentNoties') {
+                endpoint = '/api/notification/journalist/comment';
+            }
+        }
+        else if (userGrade === 'GENERAL_MEMBER') {
+            // 사용자 알림 나중에 함
+        }
+
+        try {
+            const response = await getRequest(endpoint);
+            setNoties(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('요청실패', error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await fetchMyGrade();
+                if (userGrade) {
+                    await fetchNoties(userGrade, activeTab);
+                }
+            } catch (error) {
+                console.error("데이터 가져오기 실패", error);
+            }
+        };
+        fetchData();
+        setCurrentPage(1);
+    }, [userGrade, activeTab]);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const startIdx = (currentPage - 1) * 8;
+    const endIdx = startIdx + 8;
+    const currentNoties = noties.slice(startIdx, endIdx);
 
     return (
         <div className="mobile-container">
             <DesktopTab tabData={tabData} setActiveTab={setActiveTab} />
-            <TotalCount>전체 {noties[activeTab].length}개</TotalCount>
+            <TotalCount>전체 {noties.length}개</TotalCount>
+
             <StyledNotiListWrapper>
-                {noties[activeTab].map((noti) => (
+                {currentNoties.length > 0 && currentNoties.map((noti, index) => (
                     <Notification
-                        notiType={noti.notiType}
-                        type={noti.type}
-                        userName={noti.name}
-                        title={noti.title}
-                        comment={noti.comment}
-                        reply={noti.reply}
+                        key={index}
+                        notiType={noti.type}
+                        userName={noti.sentBy}
+                        message={noti.notificationContent}
+                        comment={noti.comment !== null ? noti.comment : null}
+                        createdAt={noti.createdAt}
                         width={'100%'}
                     />
                 ))}
+                {noties.length === 0 && <div className='taCenter mt1'>알림이 없습니다.</div>}
             </StyledNotiListWrapper>
-            <PaginationContainer>
-                <MyPagination itemsCountPerPage={10} totalItemsCount={noties[activeTab].length} pageRangeDisplayed={5} />
-            </PaginationContainer>
+
+            {noties.length !== 0 && (
+                <MyPagination itemsCountPerPage={8} totalItemsCount={noties.length} pageRangeDisplayed={5} onPageChange={handlePageChange} />
+            )}
         </div>
     );
 }
+
 const StyledNotiListWrapper = styled.div`
     display: grid;
     grid-template-rows: repeat(5, 1fr);

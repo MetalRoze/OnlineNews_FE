@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import ArticleContent from '../articleDetail/ArticleContent';
 import ProfileInfo from '../staffManage/ProfileInfo';
-import { getRequest } from '../../apis/axios';
+import { getRequest} from '../../apis/axios';
 import { useParams } from 'react-router-dom';
+import RequestButtons from './RequestButtons';
+
 export default function RequestDetail() {
 
     const { id } = useParams();
@@ -30,7 +32,7 @@ export default function RequestDetail() {
             console.error('요청실패', error);
         }
     };
-    //article api -> 추후 dto수정
+    //article api
     const fetchArticleById = async (articleId) => {
         try {
             const response = await getRequest('/api/article/select', { id: articleId })
@@ -40,6 +42,7 @@ export default function RequestDetail() {
             console.error('기사 요청실패', error);
         }
     };
+    //userInfo
     const fetchUserInfo = async (userId) => {
         try {
             const response = await getRequest(`/api/user/${userId}`)
@@ -48,7 +51,7 @@ export default function RequestDetail() {
             console.error('사용자 요청실패', error);
         }
     };
-
+  
     useEffect(() => {
         fetchRequestById(id);
     }, [id]);
@@ -72,17 +75,14 @@ export default function RequestDetail() {
                             userInfo && <ProfileInfo user={userInfo}/>
                         )}
                     </div>
-                    <div className='flex desktop-request-3buttons br10'>
-                        <button>승인</button>
-                        <button>보류</button>
-                        <button>거절</button>
-                    </div>
+                    {request && <RequestButtons request={request} article={article} status={request.status}/>}
                     <div style={{ height: '2rem' }} />
                 </div>
             </div>
         </div>
     );
 };
+
 const StyledBackground = styled.div`
     width: 100%;
     height: 35vh;
