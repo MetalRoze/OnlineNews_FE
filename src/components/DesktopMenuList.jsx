@@ -12,6 +12,7 @@ const DesktopMenuList = () => {
                     <Nav.Link href="/articleManage">기사</Nav.Link>
                     <Nav.Link href="/requestManage">승인</Nav.Link>
                     <Nav.Link href="/staffManage">직원</Nav.Link>
+                    <Nav.Link href="/adminMypage">내 정보</Nav.Link>
                 </Nav>
             </Container>
             <div className='side-menu' style={{ position: 'absolute', bottom: '0', left: '1rem' }}>

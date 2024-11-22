@@ -237,7 +237,8 @@
 .desktop-detail {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: calc(100vw - 8px);
+    max-width: 600px;
     background-color: var(--color-white);
 }
 
