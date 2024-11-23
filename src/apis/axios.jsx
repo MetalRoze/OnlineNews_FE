@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reissueToken, subscribeTokenRefresh } from './util/tokenUtils';
 
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -18,8 +19,28 @@ apiClient.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
-export default apiClient;
 
+// 응답 인터셉터
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          console.log('토큰 갱신 로직 실행');
+          const newAccessToken = await reissueToken();
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          console.log('토큰 갱신 완료! API를 다시 호출합니다');
+
+          return apiClient(originalRequest);
+      }
+
+      return Promise.reject(error);
+  }
+);
+
+export default apiClient;
 
 // GET 요청 함수
 const getRequest = (url, params = {}, headers = {}) => {
@@ -33,8 +54,6 @@ const getRequest = (url, params = {}, headers = {}) => {
 const postRequest = (url, data, headers = {}) => {
   return apiClient.post(url, data, { headers });
 };
-
-//POST 요청 함수 + 
 
 // PUT 요청 함수
 const putRequest = (url, data, headers = {}) => {

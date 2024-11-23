@@ -40,17 +40,15 @@ export default function Login() {
         }
         postRequest('/api/user/login', data)
             .then(response => {
-                console.log(response.data);
                 sessionStorage.setItem('authToken', response.data.accessToken);
-                console.log('저장된 authToken:', sessionStorage.getItem('authToken'));
-            
+                sessionStorage.setItem('refreshToken', response.data.refreshToken);
+
+                console.log('token 정보 저장 완료!');
                 navigate('/main')
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
             });
-
-        console.log('Logging in with:', { email, password });
     };
 
     return (
