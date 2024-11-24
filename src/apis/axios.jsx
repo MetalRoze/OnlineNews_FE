@@ -26,19 +26,39 @@ apiClient.interceptors.response.use(
   async (error) => {
       const originalRequest = error.config;
 
+      // 401 에러 처리
       if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-          console.log('토큰 갱신 로직 실행');
-          const newAccessToken = await reissueToken();
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          console.log('토큰 갱신 완료! API를 다시 호출합니다');
+        const errorCode = error.response?.data?.code;
 
-          return apiClient(originalRequest);
-      }
+        originalRequest._retry = true;
 
-      return Promise.reject(error);
+        console.log('토큰 갱신 로직 실행');
+        try {
+            const newAccessToken = await reissueToken();
+            if (newAccessToken) {
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                console.log('토큰 갱신 완료! API를 다시 호출합니다.');
+                return apiClient(originalRequest);
+            } 
+        } catch (e) {
+            console.error('토큰 갱신 중 오류 발생:', e);
+            if (e.response?.data?.code === 'TOKEN_003') {
+              console.error('리프레시 토큰이 만료되었습니다. 로그인 창으로 이동');
+              redirectToLogin(); 
+            }
+        }
+    }
+
+    return Promise.reject(error);
   }
 );
+
+// 로그인 페이지로 리다이렉트 함수
+function redirectToLogin() {
+  alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+  sessionStorage.clear(); 
+  window.location.href = '/login'; 
+}
 
 export default apiClient;
 
