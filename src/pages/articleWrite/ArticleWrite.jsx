@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getRequest, postRequest, patchRequest } from '../../apis/axios.jsx';
+import { getRequest, postRequest, patchRequest, getRunMyCodeRequest  } from '../../apis/axios.jsx';
 import formatDateTime from '../../utils/formDateTime.jsx';
 const ArticleWrite = () => {
 
@@ -227,8 +227,20 @@ const ArticleWrite = () => {
 
                     if (response.status === 200) {
                         alert('기사가 성공적으로 제출되었습니다.');
+                        
+                        console.log(response.data);
+                        const articleId = response.data;
+                        const runMyCodeResponse = await getRunMyCodeRequest(`${articleId}`);
+
+                        if (runMyCodeResponse.status === 200){
+                            console.log('키워드 추출 성공')
+                        }
+                        else{
+                            console.log('키워드 추출 실패')
+                        }
+
                         navigate('/main');
-                    }
+                      }
                 } catch (error) {
                     console.error("기사 제출 중 오류가 발생했습니다.", error);
                     alert('기사 제출에 실패했습니다.');
