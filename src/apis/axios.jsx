@@ -8,6 +8,13 @@ const apiClient = axios.create({
     },
 });
 
+const apiClientForRunMyCode = axios.create({
+  baseURL: import.meta.env.VITE_PY_API_URL,  // run-my-code만 해당 서버로 보냄
+  headers: {
+      'Content-Type': 'application/json',
+  },
+});
+
 // 요청 인터셉터 설정
 apiClient.interceptors.request.use(config => {
     const authToken = sessionStorage.getItem('authToken');
@@ -90,4 +97,10 @@ const deleteRequest = (url, data, headers = {}) => {
   return apiClient.delete(url, { headers, data });
 };
 
-export { getRequest, postRequest, putRequest, patchRequest, deleteRequest };
+// run-my-code 요청을 위한 POST 요청 함수
+const getRunMyCodeRequest = (articleId) => {
+  return apiClientForRunMyCode.get(`/run-my-code/${articleId}`);
+};
+
+
+export { getRequest, postRequest, putRequest, patchRequest, deleteRequest, getRunMyCodeRequest };
