@@ -35,7 +35,7 @@ export default function Economy() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <HeadlineArticle></HeadlineArticle>
+            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
             {/* Divider */}
             {/* <Divider /> */}
