@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const KakaoAdFit = ({ adType = 'small' }) => {
-    const [adError, setAdError] = useState(false);
 
     useEffect(() => {
-        // 광고 스크립트 로드
         const script = document.createElement("script");
         const ins = document.createElement("ins");
 
@@ -25,19 +23,16 @@ const KakaoAdFit = ({ adType = 'small' }) => {
 
         script.onload = () => {
             console.log("광고 스크립트 로드 성공");
-            setAdError(false);
         };
 
         script.onerror = () => {
             console.error("광고 스크립트 로드 실패");
-            setAdError(true);
         };
 
         let parent = document.getElementById('adFit');
         parent?.appendChild(ins);
         parent?.appendChild(script);
 
-        // Clean up on component unmount
         return () => {
             if (parent) {
                 parent.innerHTML = '';
