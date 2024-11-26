@@ -24,7 +24,6 @@ function MyDetail() {
                 .then(response => {
                     console.log(response.data.code);
                     if (response.data.code === '200') {
-                        const mergedSubTitles = subTitles.join(',./');
                         navigate('/main');
                     }
                 })
