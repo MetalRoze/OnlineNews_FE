@@ -3,55 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import JournalistMyPage from './JournalistMyPage';
-import ProfileInfo from '../staffManage/ProfileInfo';
-import EditProfileInfo from './EditProfileInfo';
 import { getRequest } from '../../apis/axios';
 
 
 export default function AdminMypage() {
     const navigate = useNavigate();
-    const [edit, setEdit] = useState(false);
     const changeBtnClick = async (e) => {
         e.preventDefault();
         navigate('/main');
     };
 
-    const handleEditClick = async (e) => {
-        setEdit(true);
-    };
-
-    const handleLogoutClick = () => {
-        sessionStorage.removeItem('authToken');
-        setIsLoggedIn(false);
-        navigate('/adminMain');
-    };
-    const [userData, setUserData] = useState({
-        name: '',
-        bio: '',
-        publisher: '',
-        email: '',
-        phoneNumber: '',
-        gender: '',
-        profileImg: ''
-    });
+    const [publisher, setPublisher] = useState();
     const getUserData = async () => {
-        getRequest('/api/user/myPage')
-            .then(response => {
-                setUserData({
-                    name: response.data.name,
-                    bio: response.data.bio,
-                    publisher: response.data.publisher,
-                    email: response.data.email,
-                    phoneNumber: response.data.cp,
-                    gender: response.data.sex,
-                    profileImg: response.data.img
-                });
-
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error("회원 정보 불러오기 실패", error);
-            });
+        try{
+            const response = await getRequest('/api/user/myPage');
+            setPublisher(response.data.publisher);
+        }catch{
+            console.error("회원 정보 불러오기 실패", error);
+        }
+    
     };
 
     useEffect(() => {
@@ -62,7 +32,7 @@ export default function AdminMypage() {
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
                 <StyledBackground>
-                    {userData && <h1>{userData.publisher}</h1>}
+                    {publisher && <h1>{publisher}</h1>}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
                     <JournalistMyPage />
