@@ -39,8 +39,14 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div>광고1</div>
-            <KakaoAdFit unit={"DAN-zuzxRmoWnjvO6oLm"} width={"320"} height={"250"} disabled={false} />
+            <div>광고수정2</div>
+            <div className="advertisement">
+                <ins class="kakao_ad_area" style="display:none;"
+                    data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
+                    data-ad-width="300"
+                    data-ad-height="250"></ins>
+                <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+            </div>
 
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
