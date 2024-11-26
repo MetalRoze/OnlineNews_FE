@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CgAddR } from "react-icons/cg";
-import { postRequest } from "../../apis/axios"; // postRequest 가져오기
+import { postRequest, getRequest } from "../../apis/axios"; // postRequest 가져오기
 
 export default function PubProfile({
     publisherImg,
@@ -14,14 +14,27 @@ export default function PubProfile({
     // 클릭 핸들러
     const handleSubscribe = async () => {
         try {
+              // 구독 요청
             const data = { publisherId };
             console.log("Request data:", data);
-    
-            const response = await postRequest('/api/subscription/subscribe', data);
+
+            // 구독 상태 확인
+            const checkUrl = `/api/subscription/check/${publisherId}`;
+            const isSubscribed = await getRequest(checkUrl);
+            console.log(`${publisherName} 구독 상태:`, isSubscribed);
+
+            if (isSubscribed.data) {
+                alert(`${publisherName}은(는) 이미 구독 중입니다.`);
+                return; // 이미 구독 상태라면 구독 요청을 보내지 않음
+            }
+
+            const response = await postRequest('/api/subscription/subscribe', data,{
+                headers : {'Content-Type' : 'application/json'}
+            });
             console.log(`${publisherName} 구독 완료`, response);
-    
+
             if (fetchMy) {
-                await fetchMy();
+                await fetchMy(); // 상태 업데이트
             }
         } catch (error) {
             console.error(`Error subscribing to ${publisherName}:`, error.response?.data || error.message);
@@ -29,7 +42,6 @@ export default function PubProfile({
     };
     
     
-
     return (
         <ProfileBox onClick={handleSubscribe}>
             <IconWrapper>
