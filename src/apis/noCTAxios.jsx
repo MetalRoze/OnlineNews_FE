@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reissueToken, subscribeTokenRefresh } from './util/tokenUtils';
 
 const noContentTypeApiClient = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -14,6 +15,39 @@ noContentTypeApiClient.interceptors.request.use(config => {
 }, error => {
     return Promise.reject(error);
 });
+
+// 응답 인터셉터
+noContentTypeApiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        // 401 에러 처리
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            const errorCode = error.response?.data?.code;
+
+            originalRequest._retry = true;
+
+            console.log('토큰 갱신 로직 실행');
+            try {
+                const newAccessToken = await reissueToken();
+                if (newAccessToken) {
+                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                    console.log('토큰 갱신 완료! API를 다시 호출합니다.');
+                    return apiClient(originalRequest);
+                } 
+            } catch (e) {
+                console.error('토큰 갱신 중 오류 발생:', e);
+                if (e.response?.data?.code === 'TOKEN_003') {
+                console.error('리프레시 토큰이 만료되었습니다. 로그인 창으로 이동');
+                redirectToLogin(); 
+                }
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);
 
 export default noContentTypeApiClient;
 

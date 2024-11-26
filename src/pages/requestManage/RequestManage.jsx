@@ -83,12 +83,7 @@ export default function RequestManage() {
         </div>
     );
 }
-export const PaginationContainer = styled.div`
-  grid-column: 1 / -1; 
-  display: flex;
-  justify-content: center; 
-  margin-top: 1rem; 
-`;
+
 export const TotalCount = styled.p`
     color: ${(props) => props.theme.colors.gray50};
 `;

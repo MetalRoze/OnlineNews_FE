@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Notification from './Notification';
 import DesktopTab from '../../components/DesktopTab';
 import MyPagination from '../../components/Pagination';
-import { PaginationContainer, TotalCount } from '../../pages/requestManage/RequestManage';
+import { TotalCount } from '../../pages/requestManage/RequestManage';
 import { getRequest } from '../../apis/axios';
 
 export default function MobileNoti() {
-    const [activeTab, setActiveTab] = useState('requestNoties');
+    const [activeTab, setActiveTab] = useState('commentNoties');
     const [userGrade, setUserGrade] = useState();
     const [noties, setNoties] = useState([]);
     const [tabData, setTabData] = useState([]);
@@ -20,16 +20,14 @@ export default function MobileNoti() {
             setUserGrade(response.data);
             if (response.data === 'REPORTER' || response.data === 'INTERN_REPORTER' || response.data === 'CITIZEN_REPORTER') {
                 setTabData([
-                    { eventKey: 'requestNoties', title: '승인', content: '승인알림' },
                     { eventKey: 'commentNoties', title: '댓글', content: '댓글등록' },
                     { eventKey: 'likeNoties', title: '좋아요', content: '좋아요알림' },
+                    { eventKey: 'requestNoties', title: '승인', content: '승인알림' },
                 ]);
             } else {
                 setTabData([
-                    { eventKey: 'allNoties', title: '전체', content: '전체알림' },
-                    { eventKey: 'commentNoti', title: '댓글', content: '댓글알림' },
-                    { eventKey: 'USER_REPLY', title: '대댓글', content: '대댓글알림' },
-                    { eventKey: 'USER_LIKE', title: '좋아요', content: '좋아요알림' },
+                    { eventKey: 'commentNoties', title: '대댓글', content: '대댓글알림' },
+                    { eventKey: 'likeNoties', title: '좋아요', content: '좋아요알림' },
                 ]);
             }
         } catch (error) {
@@ -39,24 +37,18 @@ export default function MobileNoti() {
 
     const fetchNoties = async (userGrade, status) => {
         if (!userGrade) return;
-        let endpoint = '';
+        const endpoint = '/api/notification';
+        let param={};
 
-        // 기자 알림
-        if (userGrade === 'REPORTER' || userGrade === 'INTERN_REPORTER' || userGrade === 'CITIZEN_REPORTER') {
-            if (status === 'requestNoties') {
-                endpoint = '/api/notification/journalist/request';
-            } else if (status === 'likeNoties') {
-                endpoint = '/api/notification/journalist/like';
-            } else if (status === 'commentNoties') {
-                endpoint = '/api/notification/journalist/comment';
-            }
+        if (status === 'requestNoties') {
+            param = {type: 'request'};
+        } else if (status === 'likeNoties') {
+            param = {type: 'like'};
+        } else if (status === 'commentNoties') {
+            param = {type: 'comment'};
         }
-        else if (userGrade === 'GENERAL_MEMBER') {
-            // 사용자 알림 나중에 함
-        }
-
         try {
-            const response = await getRequest(endpoint);
+            const response = await getRequest(endpoint, param);
             setNoties(response.data);
             console.log(response.data);
         } catch (error) {

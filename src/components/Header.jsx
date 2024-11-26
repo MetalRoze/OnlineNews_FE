@@ -72,8 +72,8 @@ const Header = () => {
                             onClick={handleSearchClick}
                             >
                         </i>
-                        <MyDropdown />
-                    </div>
+                        {isLoggedIn && <MyDropdown />}
+                        </div>
                     <div className='link'>
                         {isLoggedIn ? (
                             // 로그인된 상태일 때 '로그아웃' 버튼 표시

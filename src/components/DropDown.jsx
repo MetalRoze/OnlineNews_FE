@@ -8,6 +8,7 @@ import axios from 'axios';
 function MyDropdown() {
     const navigate = useNavigate();
     const [isJournalist, setIsJournalist] = useState(false);  // 회원 유형을 상태로 관리
+    const [isEditor, setIsEditor] = useState(false);  
 
     const checkUserType = async () => {
         const accessToken = sessionStorage.getItem('authToken');  // sessionStorage에서 토큰을 가져옴
@@ -26,8 +27,12 @@ function MyDropdown() {
     
             if (userType === 'GENERAL_MEMBER') {
                 setIsJournalist(false);
-            } else {
+            } else if(userType === 'REPORTER' || userType === 'INTERN_REPORTER' || userType === 'CITIZEN_REPORTER') {
                 setIsJournalist(true);
+            }
+            else {
+                setIsJournalist(true);
+                setIsEditor(true);
             }
         } catch (error) {
             console.error("회원 유형 확인 실패", error);
@@ -51,10 +56,10 @@ function MyDropdown() {
     return (
         <CustomDropdown id="dropdown-basic-button" title="메뉴" drop={'start'}>
             <Dropdown.Item onClick={handleAccountClick}>계정</Dropdown.Item>
-            <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>
+            {!isEditor && <Dropdown.Item href="../mobileNoti">알림</Dropdown.Item>}
             <Dropdown.Item href="../log">내 활동</Dropdown.Item>
             {/* 기자일 때만 보여지는 메뉴 */}
-            {isJournalist && (
+            {isJournalist  &&(
                 <>
                     <Dropdown.Item href="../articleWrite">기사 작성</Dropdown.Item>
                     <Dropdown.Item href="../myArticle">작성한 기사</Dropdown.Item>

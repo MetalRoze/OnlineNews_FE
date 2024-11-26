@@ -4,6 +4,7 @@ import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from '../../apis/axios';
+import KakaoAdFit from '../../components/KakaoAdFit'
 
 export default function Main() {
     const [head, setHead] = useState(null);
@@ -38,6 +39,7 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
+            <KakaoAdFit adType={2} />
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
 
