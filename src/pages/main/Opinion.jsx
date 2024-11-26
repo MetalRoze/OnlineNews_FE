@@ -13,17 +13,17 @@ export default function Opinion() {
         const fetchData = async () => {
             try {
                 // 헤드라인 데이터 먼저 가져오기
-                const headlineResponse = await getRequest("/api/main-article/category/headline?category=LIFE_CULTURE");
+                const headlineResponse = await getRequest("/api/main-article/category/headline?category=OPINION");
 
                 if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
-                    console.log(headlineResponse.data);
-                    setHead(headlineResponse.data);
+                    console.log("헤드라인 : ", headlineResponse.data[0]);
+                    setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");
                 }
 
                 // 그 후 기사 데이터 가져오기
-                const articleResponse = await getRequest("/api/article/rss/category?categoryName=CULTURE");
+                const articleResponse = await getRequest("/api/article/rss/category?categoryName=OPINION");
                 setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
                 console.log(articleResponse.data);
 
