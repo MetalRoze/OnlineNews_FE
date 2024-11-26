@@ -31,7 +31,7 @@ import FindIdResultPage from './pages/findId/FindIdResult';
 import SubManage from './pages/my/SubManage';
 import StaffManage from './pages/staffManage/StaffManage';
 import MobileNoti from './pages/nofi/MobileNoti';
-import AdminMypage from './pages/adminMypage/AdminMypage';
+import AdminMypage from './pages/mypage/AdminMypage';
 import GeneralMyPage from './pages/mypage/GeneralMyPage';
 import JournalistMyPage from './pages/mypage/JournalistMyPage';
 import GeneralMyPageEdit from './pages/mypage/GeneralMyPageEdit';

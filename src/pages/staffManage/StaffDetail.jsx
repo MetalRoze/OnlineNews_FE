@@ -17,8 +17,21 @@ export default function StaffDetail() {
 
     const fetchUserInfo = async (userId) => {
         try {
-            const response = await getRequest(`/api/user/${userId}`)
-            setUserInfo(response.data);
+            getRequest(`/api/user/${userId}`)
+            .then(response => {
+                setUserInfo({
+                    name: response.data.name,
+                    bio: response.data.bio,
+                    publisher: response.data.publisher,
+                    email: response.data.email,
+                    phoneNumber: response.data.cp, 
+                    gender: response.data.sex, 
+                    profileImg:response.data.img
+                });
+            })
+            .catch(error => {
+                console.error("회원 정보 불러오기 실패", error);
+            });
         } catch (error) {
             console.error('사용자 요청실패', error);
         }
