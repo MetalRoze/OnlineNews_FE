@@ -19,8 +19,8 @@ export default function BasicArticle({ article }) {
       <ImageWrapper>
         {article.articleImg && article.articleImg.length > 0 ? (
           <Img 
-            src={article.articleImg}  
-            alt={article.articleTitle} 
+            src={article.url}  
+            alt={article.title} 
           />
         ) : (
           <EmptyImage />  // 이미지가 없으면 빈 공간을 보여줌
@@ -28,7 +28,7 @@ export default function BasicArticle({ article }) {
       </ImageWrapper>
       
       <ArticleInfo>
-        <Title>{article.articleTitle}</Title>
+        <Title>{article.title}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>
     </div>

@@ -23,7 +23,7 @@ export default function Politics() {
                 }
 
                 // 그 후 기사 데이터 가져오기
-                const articleResponse = await getRequest("/api/main-article");
+                const articleResponse = await getRequest("/api/article/rss/category?categoryName=POLITICS");
                 setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
                 console.log(articleResponse.data);
 
@@ -37,7 +37,10 @@ export default function Politics() {
 
     }, []);
 
-    
+    useEffect(() => {
+        console.log(articles); // articles 상태가 업데이트 된 후에 출력
+    }, [articles]);
+
 
     // articles가 배열일 경우에만 map 호출
     return (
