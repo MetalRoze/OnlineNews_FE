@@ -65,15 +65,11 @@ export default function AdminMypage() {
                     {userData && <h1>{userData.publisher}</h1>}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <div className='mr1 mt1' style={{ alignSelf: 'flex-end' }}>
-                        {!edit &&  <i className="bi bi-pencil-square pointer" onClick={handleEditClick}></i>}
-                    </div>
-                    {userData && (edit ? <EditProfileInfo user={userData} /> : <ProfileInfo user={userData} />)}
+                    <JournalistMyPage />
 
                     <div style={{ height: '2rem' }} />
 
                     <div className='flex mb2' style={{ gap: '1rem' }}>
-                        <button className='desktop-request-privatebutton' onClick={handleLogoutClick}>로그아웃</button>
                         <button className='desktop-request-privatebutton' onClick={changeBtnClick}>화면전환</button>
                     </div>
                 </div>
