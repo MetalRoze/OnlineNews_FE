@@ -8,8 +8,7 @@ import { getRequest } from '../../apis/axios';
 export default function Main() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);  // 기본값을 빈 배열로 설정
-    const scriptElement = useRef(null);
-
+    const [adError, setAdError] = useState(false);  // 광고 로드 오류 상태
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,51 +34,57 @@ export default function Main() {
 
         fetchData();
 
+        // 광고 스크립트 로드
         const script = document.createElement("script");
-        script.setAttribute(
-            "src",
-            "https://t1.daumcdn.net/kas/static/ba.min.js"
-        );
-        script.setAttribute(
-            "charset",
-            "utf-8"
-        );
-        script.setAttribute("async", "true");
-        scriptElement.current?.appendChild(script);
-        return () => {
-            if (scriptElement.current) {
-                scriptElement.current.innerHTML = '광고 로드 실패';
-            }
+        const ins = document.createElement("ins");
+
+        ins.className = 'kakao_ad_area';
+        ins.setAttribute('style', 'display: none;');
+        script.async = true;
+        script.type = 'text/javascript';
+        script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
+        ins.setAttribute('data-ad-unit', 'DAN-zuzxRmoWnjvO6oLm');
+        ins.setAttribute('data-ad-width', '300');
+        ins.setAttribute('data-ad-height', '250');
+
+        script.onload = () => {
+            console.log("광고 스크립트 로드 성공");
+            setAdError(false);
         };
+
+        script.onerror = () => {
+            console.error("광고 스크립트 로드 실패");
+            setAdError(true);
+        };
+
+        let parent = document.getElementById('adFit');
+        parent?.appendChild(ins);
+        parent?.appendChild(script);
+
     }, []);
 
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div>광고수정6</div>
-            <div ref={scriptElement}>
-                <ins
-                    className="kakao_ad_area"
-                    data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
-                    data-ad-width="300"
-                    data-ad-height="250"
-                ></ins>
+            <div>광고수정7</div>
+            <div id="adFit">
+                {adError && <p>광고 로드 실패</p>}
             </div>
+
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
-
-
-            { }
-            {Array.isArray(articles) && articles.length > 0 ? (
-                articles.map((article) => (
-                    <div key={article.id}>
-                        <BasicArticle article={article} />
-                        <hr />
-                    </div>
-                ))
-            ) : (
-                <p>No articles available or loading...</p>
-            )}
-        </div>
+            {
+                Array.isArray(articles) && articles.length > 0 ? (
+                    articles.map((article) => (
+                        <div key={article.id}>
+                            <BasicArticle article={article} />
+                            <hr />
+                        </div>
+                    ))
+                ) : (
+                    <p>No articles available or loading...</p>
+                )
+            }
+        </div >
     );
 }
 

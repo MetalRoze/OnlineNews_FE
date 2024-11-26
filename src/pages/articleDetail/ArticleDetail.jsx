@@ -17,7 +17,7 @@ const ArticleDetail = () => {
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [likeId, setLikeId] = useState(null);
     const [categoryIdx, setCategoryIdx] = useState();
-    const scriptElement = useRef(null);
+    const [adError, setAdError] = useState(false);  // 광고 로드 오류 상태
 
     // 기사 가져오기
     const fetchArticle = async () => {
@@ -106,22 +106,33 @@ const ArticleDetail = () => {
     // 광고 스크립트 로드
 
     useEffect(() => {
+        // 광고 스크립트 로드
         const script = document.createElement("script");
-        script.setAttribute(
-            "src",
-            "https://t1.daumcdn.net/kas/static/ba.min.js"
-        );
-        script.setAttribute(
-            "charset",
-            "utf-8"
-        );
-        script.setAttribute("async", "true");
-        scriptElement.current?.appendChild(script);
-        return () => {
-            if (scriptElement.current) {
-                scriptElement.current.innerHTML = '광고 로드 실패';
-            }
+        const ins = document.createElement("ins");
+
+        ins.className = 'kakao_ad_area';
+        ins.setAttribute('style', 'display: none;');
+        script.async = true;
+        script.type = 'text/javascript';
+        script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
+        ins.setAttribute('data-ad-unit', 'DAN-zuzxRmoWnjvO6oLm');
+        ins.setAttribute('data-ad-width', '300');
+        ins.setAttribute('data-ad-height', '250');
+
+        script.onload = () => {
+            console.log("광고 스크립트 로드 성공");
+            setAdError(false);
         };
+
+        script.onerror = () => {
+            console.error("광고 스크립트 로드 실패");
+            setAdError(true);
+        };
+
+        let parent = document.getElementById('adFit');
+        parent?.appendChild(ins);
+        parent?.appendChild(script);
+
     }, []);
 
     if (!article) {
@@ -142,14 +153,9 @@ const ArticleDetail = () => {
                     />
                 )}
 
-                <div>광고수정6</div>
-                <div ref={scriptElement}>
-                    <ins
-                        className="kakao_ad_area"
-                        data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
-                        data-ad-width="300"
-                        data-ad-height="250"
-                    ></ins>
+                <div>광고수정7</div>
+                <div id="adFit">
+                    {adError && <p>광고 로드 실패</p>}
                 </div>
 
                 <ArticleComment articleId={articleId} />
