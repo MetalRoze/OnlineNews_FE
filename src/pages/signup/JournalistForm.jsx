@@ -161,7 +161,7 @@ export default function JournalistForm() {
         cellphone: { part1: '', part2: '', part3: '' },
         gender:'', 
         profileImg:'', 
-        publisher:'경향신문' //DB 업데이트 시 명보 신문으로 수정 예정 
+        publisher:'명보신문' 
     });
 
     const [profileImg, setProfileImg] = useState(profileIcon);
