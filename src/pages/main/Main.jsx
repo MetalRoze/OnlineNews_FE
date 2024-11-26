@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from '../../apis/axios';
-import KakaoAdFit from '../../components/KakaoAdFit'
+import KakaoAdFit from "../../components/KakaoAdFit";
 
 export default function Main() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);  // 기본값을 빈 배열로 설정
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -34,27 +33,29 @@ export default function Main() {
         };
 
         fetchData();
+
     }, []);
 
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <KakaoAdFit adType={2} />
+
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
-
-            {/* 조건부 렌더링: articles가 배열인지 확인하고, 배열일 때만 map() 사용 */}
-            {Array.isArray(articles) && articles.length > 0 ? (
-                articles.map((article) => (
-                    <div key={article.id}>
-                        <BasicArticle article={article} />
-                        <hr />
-                    </div>
-                ))
-            ) : (
-                <p>No articles available or loading...</p>
-            )}
-        </div>
+            <KakaoAdFit />
+            {
+                Array.isArray(articles) && articles.length > 0 ? (
+                    articles.map((article) => (
+                        <div key={article.id}>
+                            <BasicArticle article={article} />
+                            <hr />
+                        </div>
+                    ))
+                ) : (
+                    <p>No articles available or loading...</p>
+                )
+            }
+        </div >
     );
 }
 
