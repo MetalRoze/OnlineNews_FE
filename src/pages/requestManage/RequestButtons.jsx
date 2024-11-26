@@ -13,6 +13,7 @@ const RequestButtons = ({ request, article, status }) => {
                 ? `/api/request/${reqId}/approve` //기사 승인
                 : `/api/request/${reqId}/enroll`; //시민기자 승인
             const response = await patchRequest(url)
+            alert("승인되었습니다.")
             console.log(response.status);
         } catch (error) {
             console.error("승인 실패", error);

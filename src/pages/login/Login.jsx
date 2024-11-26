@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import {postRequest} from '../../apis/axios'
+import {getRequest, postRequest} from '../../apis/axios'
 
 const LoginTitle = styled.h1`
 margin-bottom: 10px; 
@@ -44,11 +44,22 @@ export default function Login() {
                 sessionStorage.setItem('refreshToken', response.data.refreshToken);
 
                 console.log('token 정보 저장 완료!');
-                navigate('/main')
+                navigateByUserGrade();
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
             });
+
+            
+    };
+    const navigateByUserGrade = async() => {
+        const response = await getRequest('/api/user/checkUserType');
+        if(response.data === 'EDITOR'){
+            navigate("/adminMain");
+        }
+        else{
+            navigate("/main");
+        }
     };
 
     return (

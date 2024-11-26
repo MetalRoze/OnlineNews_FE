@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
 export default function HeadlineArticle({ head }) {
     const navigate = useNavigate();
 
     const handleArticleClick = () => {
+        
         navigate(`/articleDetail/${head.id}`);
     };
+
 
     return (
         <div
@@ -14,8 +16,8 @@ export default function HeadlineArticle({ head }) {
             style={{ cursor: "pointer" }}
             onClick={handleArticleClick}
         >
-            <h2>{head.articleTitle}</h2>
-            <h4>{head.articleSubTitle}</h4>
+            <h2>{head.title}</h2>
+            <h4>{head.subtitle}</h4>
             <img
                 src={head.articleImg}
                 alt={head.articleTitle}

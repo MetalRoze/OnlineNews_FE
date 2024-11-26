@@ -6,27 +6,36 @@ import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 
 export default function Economy() {
+    const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
-        const fetchArticles = async () => {
+        const fetchData = async () => {
             try {
-                const response = await getRequest("/api/article/select?category=ENTERTAINMENT");
-                
-                // 응답이 올바른 배열인지 확인
-                if (Array.isArray(response.data)) {
-                    setArticles(response.data); // 데이터 저장
+                // 헤드라인 데이터 먼저 가져오기
+                const headlineResponse = await getRequest("/api/main-article/category/headline?category=ENTERTAINMENT");
+
+                if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
+                    console.log(headlineResponse.data);
+                    setHead(headlineResponse.data);
                 } else {
-                    console.error("응답 데이터가 배열이 아닙니다:", response.data);
+                    console.error("No headline data found.");
                 }
+
+                // 그 후 기사 데이터 가져오기
+                const articleResponse = await getRequest("/api/article/rss/category?categoryName=ENTERTAINMENT");
+                setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
+                console.log(articleResponse.data);
+
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
+                setArticles([]);  // 오류가 발생한 경우에도 빈 배열로 설정
             }
         };
-    
-        fetchArticles();
+
+        fetchData();
+
     }, []);
-    
     useEffect(() => {
         console.log(articles); // articles 상태가 업데이트 된 후에 출력
     }, [articles]);
@@ -35,7 +44,7 @@ export default function Economy() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <HeadlineArticle></HeadlineArticle>
+            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
             {/* Divider */}
             {/* <Divider /> */}

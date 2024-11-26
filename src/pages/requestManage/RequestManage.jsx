@@ -27,6 +27,7 @@ export default function RequestManage() {
             const params = status === 'allRequests' ? {} : { keyword: status };
             const response = await getRequest(endpoint, params);
             setRequests(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('요청실패', error);
         }

@@ -7,34 +7,39 @@ export default function BasicArticle({ article }) {
   const navigate = useNavigate();
 
   const handleArticleClick = () => {
-    navigate(`/articleDetail/${article.id}`);
+    if (article.articleImg && article.articleImg.length > 0) {
+      // 이미지가 있으면 상세 페이지로 이동
+      navigate(`/articleDetail/${article.id}`);
+    } else {
+      // 이미지가 없으면 URL로 이동
+      window.location.href = article.url; // `article.url`은 URL 필드로 가정
+    }
   };
 
   return (
-    <div className='basicArticle pd0'
+    <div
+      className='basicArticle pd0'
       style={{ cursor: "pointer", display: "flex", marginTop: "0.5rem" }}
       onClick={handleArticleClick}
     >
-      {/* 이미지가 있을 경우 보여주고, 없으면 빈 공간을 보여줍니다 */}
       <ImageWrapper>
         {article.articleImg && article.articleImg.length > 0 ? (
           <Img 
             src={article.articleImg}  
-            alt={article.articleTitle} 
+            alt={article.title} 
           />
         ) : (
-          <EmptyImage />  // 이미지가 없으면 빈 공간을 보여줌
+          <EmptyImage />
         )}
       </ImageWrapper>
       
       <ArticleInfo>
-        <Title>{article.articleTitle}</Title>
+        <Title>{article.title}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>
     </div>
   );
 }
-
 // 이미지와 빈 화면을 감싸는 Wrapper
 const ImageWrapper = styled.div`
   margin-left: 0.5rem;

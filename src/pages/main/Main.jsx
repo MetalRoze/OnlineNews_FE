@@ -16,6 +16,7 @@ export default function Main() {
                 const headlineResponse = await getRequest("/api/main-article/headline");
 
                 if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
+                    console.log("headline:", headlineResponse.data[0]);
                     setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");

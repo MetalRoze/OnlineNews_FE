@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar';
 import styled from 'styled-components';
-import { getRequest } from "../../apis/axios";  // getRequest import 추가
+import { getRequest } from "../../apis/axios";
 import BasicArticle from "../../components/BasicArticle";
 import RadioGroup from "../../components/RadioGroup";
 import Radio from "../../components/Radio";
@@ -10,58 +10,76 @@ import Radio from "../../components/Radio";
 export default function SearchResult() {
     const [searchResults, setSearchResults] = useState([]);
     const location = useLocation();
-    const [searchText, setSearchText] = useState("");  // 기본값 빈 문자열로 설정
+    const [searchText, setSearchText] = useState(""); // 기본값 빈 문자열
+    const [searchCategory, setSearchCategory] = useState("ALL"); // 기본 검색 카테고리
 
     useEffect(() => {
         const queryParam = new URLSearchParams(location.search).get('query');
 
         if (queryParam) {
-            setSearchText(queryParam);  // queryParam 값으로 searchText 설정
-            // console.log("검색어:", queryParam);  // 검색어 확인
-
-            getRequest('/api/article/select', { title: queryParam, content: queryParam })
-                .then((response) => {
-                    // console.log(response); // 응답 데이터 확인
-                    if (response && response.data && Array.isArray(response.data)) {
-                        setSearchResults(response.data); // 배열을 state에 저장
-                    } else {
-                        setSearchResults([]); // 결과가 없거나 예상과 다른 경우 빈 배열 설정
-                    }
-                })
-                .catch((error) => {
-                    // console.error("검색 중 에러 발생:", error);
-                    setSearchResults([]); // 에러 발생 시 빈 배열 설정
-                });
+            setSearchText(queryParam);
+            fetchSearchResults(queryParam, searchCategory);
         }
-    }, [location]);  // location이 변경될 때마다 실행
+    }, [location, searchCategory]); // location, searchCategory 변경 시 실행
+
+    const fetchSearchResults = (query, category) => {
+        const apiUrl = "/api/article/select";
+    
+        if (category === "ALL") {
+            Promise.all([
+                getRequest(apiUrl, { title: query }),   // 제목 기준 검색
+                getRequest(apiUrl, { content: query }) // 내용 기준 검색
+            ])
+                .then(([titleResponse, contentResponse]) => {
+                    console.log(titleResponse.data);
+                    console.log(contentResponse.data);
+                    const titleResults = titleResponse.data || [];
+                    const contentResults = contentResponse.data || [];
+    
+                    // 중복 제거 및 통합
+                    const combinedResults = [
+                        ...new Map(
+                            [...titleResults, ...contentResults].map(item => [item.id, item])
+                        ).values()
+                    ];
+    
+                    setSearchResults(combinedResults);
+                })
+                .catch(() => setSearchResults([])); // 에러 발생 시 빈 배열
+        } else if (category === "TITLE") {
+            getRequest(apiUrl, { title: query })
+                .then((response) => {
+                    setSearchResults(response.data || []);
+                })
+                .catch(() => setSearchResults([]));
+        } else if (category === "CONTENT") {
+            getRequest(apiUrl, { content: query })
+                .then((response) => {
+                    setSearchResults(response.data || []);
+                })
+                .catch(() => setSearchResults([]));
+        }
+    };
+    
 
     const handleSearch = (query) => {
-        setSearchText(query); // 검색어 변경 시 상태 업데이트
-        getRequest('/api/article/select', { title: query, content: query })
-            .then((response) => {
-                console.log(response); // 응답 데이터 확인
-                if (response && response.data && Array.isArray(response.data)) {
-                    setSearchResults(response.data); // 결과가 배열이라면
-                } else {
-                    setSearchResults([]); // 배열이 아닌 경우 빈 배열 설정
-                }
-            })
-            .catch((error) => {
-                console.error("검색 중 에러 발생:", error);
-                setSearchResults([]); // 에러 발생 시 빈 배열 설정
-            });
+        setSearchText(query);
+        fetchSearchResults(query, searchCategory);
+    };
+
+    const handleCategoryChange = (event) => {
+        setSearchCategory(event.target.value); // 선택된 카테고리 업데이트
+        console.log(searchCategory);
     };
 
     return (
         <div className="flex column mobile-container">
             <StyledSearchWrapper>
-                {/* SearchBar의 value로 searchText 전달 */}
                 <SearchBar value={searchText} onSearch={handleSearch} />
             </StyledSearchWrapper>
             <div>
-
-                <div className='flex'>
-                    <RadioGroup className='mlAuto'>
+                <div className="flex" style={{ justifyContent: "flex-end" }}>
+                    <RadioGroup className="mlAuto" onChange={handleCategoryChange}>
                         <Radio name="searchCategory" value="ALL" defaultChecked>
                             전체
                         </Radio>
@@ -76,8 +94,7 @@ export default function SearchResult() {
 
                 <Divider />
 
-
-                {searchResults.length === 0 ? (
+                {!searchResults || searchResults.length === 0 ? (
                     <p>검색 결과가 없습니다.</p>
                 ) : (
                     <div>
@@ -93,14 +110,14 @@ export default function SearchResult() {
 
 const StyledSearchWrapper = styled.div`
     display: flex;
-    justify-content: center;  // 수평 중앙 정렬
-    width: 100%;               // 가로 전체 너비 사용
-    margin-bottom: 20px;       // 아래 여백 추가
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
 `;
 
 const Divider = styled.div`
-    width: 100%;                 /* 전체 너비 사용 */
-    height: 2px;                 /* 직선의 높이 (두께) */
-    background-color: #E5E5EA;   /* 직선의 색상 */
-    margin: 10px 0;              /* 직선 위아래 여백 */
+    width: 100%;
+    height: 2px;
+    background-color: #E5E5EA;
+    margin: 10px 0;
 `;
