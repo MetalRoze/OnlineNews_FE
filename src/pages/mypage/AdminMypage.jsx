@@ -66,7 +66,7 @@ export default function AdminMypage() {
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
                     <div className='mr1 mt1' style={{ alignSelf: 'flex-end' }}>
-                        <i className="bi bi-pencil-square pointer" onClick={handleEditClick}></i>
+                        {!edit &&  <i className="bi bi-pencil-square pointer" onClick={handleEditClick}></i>}
                     </div>
                     {userData && (edit ? <EditProfileInfo user={userData} /> : <ProfileInfo user={userData} />)}
 

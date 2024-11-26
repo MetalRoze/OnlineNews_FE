@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { convertUserGradeToKor } from "../../utils/convertUserGrade";
-import { FaPencilAlt } from "react-icons/fa";
 import editIcon from '../../assets/editIcon.png';
 
 export default function EditProfileInfo({ user }) {
@@ -23,17 +22,40 @@ export default function EditProfileInfo({ user }) {
         }));
     };
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUserData((prevUserData) => ({
+                ...prevUserData,
+                profileImg: file
+            }));
+        }
+    };
+
+    const triggerFileInput = () => {
+        document.getElementById('profileImageInput').click();
+    };
+
     const handleSave = (field) => {
         console.log(`Saving ${field}:`, tempUser[field]);
         setEditField(null);
     };
+
 
     return (
         <StyledProfileWrapper>
             <img
                 src={tempUser.img || "https://placehold.co/150x200"}
                 alt="Profile"
+                onClick={triggerFileInput} 
                 style={{ width: "150px", height: "200px", objectFit: "cover" }}
+            />
+            <input 
+                type="file" 
+                id="profileImageInput" 
+                style={{ display: 'none' }} 
+                accept="image/*" 
+                onChange={handleImageUpload}
             />
             <ProfileInfoTable>
                 <tbody>
@@ -78,7 +100,7 @@ function renderRow(label, value, field, editField, onEditToggle, onChange, onSav
                         <div style={{minWidth: '90%'}}>
                             {value}
                         </div>
-                        <img src={editIcon} onClick={() => onEditToggle(field)} style={{ width: '15px' }} />
+                        <img className='pointer' src={editIcon} onClick={() => onEditToggle(field)} style={{ width: '15px' }} />
                     </TdWrapper>
 
                 )}
