@@ -4,12 +4,10 @@ import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from '../../apis/axios';
-import KakaoAdFit from '../../components/KakaoAdFit'
 
 export default function Main() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);  // 기본값을 빈 배열로 설정
-    const [isAdLoaded, setIsAdLoaded] = useState(false);  // 광고 로드 상태
     const scriptElement = useRef(null);
 
     useEffect(() => {
@@ -36,19 +34,21 @@ export default function Main() {
         };
 
         fetchData();
-    }, []);
 
-    useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js";
-        script.async = true;
-        script.onload = () => {
-            setIsAdLoaded(true);  // 광고 로드 완료 시 상태 업데이트
-        };
+        script.setAttribute(
+            "src",
+            "https://t1.daumcdn.net/kas/static/ba.min.js"
+        );
+        script.setAttribute(
+            "charset",
+            "utf-8"
+        );
+        script.setAttribute("async", "true");
         scriptElement.current?.appendChild(script);
         return () => {
             if (scriptElement.current) {
-                scriptElement.current.innerHTML = '';  // cleanup on unmount
+                scriptElement.current.innerHTML = '광고 로드 실패';
             }
         };
     }, []);
@@ -56,18 +56,19 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div>광고수정5</div>
+            <div>광고수정6</div>
             <div ref={scriptElement}>
-                <ins class="kakao_ad_area"
+                <ins
+                    className="kakao_ad_area"
                     data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
                     data-ad-width="300"
-                    data-ad-height="250"></ins>
+                    data-ad-height="250"
+                ></ins>
             </div>
-
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
 
-            {/* 조건부 렌더링: articles가 배열인지 확인하고, 배열일 때만 map() 사용 */}
+            { }
             {Array.isArray(articles) && articles.length > 0 ? (
                 articles.map((article) => (
                     <div key={article.id}>

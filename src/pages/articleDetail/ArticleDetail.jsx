@@ -17,7 +17,6 @@ const ArticleDetail = () => {
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [likeId, setLikeId] = useState(null);
     const [categoryIdx, setCategoryIdx] = useState();
-    const [isAdLoaded, setIsAdLoaded] = useState(false);  // 광고 로드 상태
     const scriptElement = useRef(null);
 
     // 기사 가져오기
@@ -105,17 +104,22 @@ const ArticleDetail = () => {
     }, [articleId]);
 
     // 광고 스크립트 로드
+
     useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js";
-        script.async = true;
-        script.onload = () => {
-            setIsAdLoaded(true);  // 광고 로드 완료 시 상태 업데이트
-        };
+        script.setAttribute(
+            "src",
+            "https://t1.daumcdn.net/kas/static/ba.min.js"
+        );
+        script.setAttribute(
+            "charset",
+            "utf-8"
+        );
+        script.setAttribute("async", "true");
         scriptElement.current?.appendChild(script);
         return () => {
             if (scriptElement.current) {
-                scriptElement.current.innerHTML = '';  // cleanup on unmount
+                scriptElement.current.innerHTML = '광고 로드 실패';
             }
         };
     }, []);
@@ -138,14 +142,13 @@ const ArticleDetail = () => {
                     />
                 )}
 
-                <div>광고수정5</div>
+                <div>광고수정6</div>
                 <div ref={scriptElement}>
                     <ins
                         className="kakao_ad_area"
-                        style={{ display: isAdLoaded ? "block" : "none" }}
-                        data-ad-unit="DAN-2LQytWC5DIiifh3N"
-                        data-ad-width="320"
-                        data-ad-height="100"
+                        data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
+                        data-ad-width="300"
+                        data-ad-height="250"
                     ></ins>
                 </div>
 
