@@ -2,24 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
+import JournalistMyPage from './JournalistMyPage';
 import ProfileInfo from '../staffManage/ProfileInfo';
 import { getRequest } from '../../apis/axios';
-import editIcon from '../../assets/editIcon.png';
+
 
 export default function AdminMypage() {
     const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState();
-    const [edit, setEdit] = useState(false);
-
-    const fetchUserInfo = async () => {
-        try {
-            const response = await getRequest(`/api/user/myPage`)
-            setUserInfo(response.data);
-        } catch (error) {
-            console.error('사용자 요청실패', error);
-        }
-    };
-
     const changeBtnClick = async (e) => {
         e.preventDefault();
         navigate('/main');
@@ -34,29 +23,54 @@ export default function AdminMypage() {
         setIsLoggedIn(false);
         navigate('/adminMain');
     };
+    const [userData, setUserData] = useState({
+        name: '',
+        bio: '',
+        publisher:'',
+        email: '',
+        phoneNumber: '',
+        gender: '',
+        profileImg:''
+    });
+    const getUserData = async () => {
+        getRequest('/api/user/myPage')
+            .then(response => {
+                setUserData({
+                    name: response.data.name,
+                    bio: response.data.bio,
+                    publisher: response.data.publisher,
+                    email: response.data.email,
+                    phoneNumber: response.data.cp, 
+                    gender: response.data.sex, 
+                    profileImg:response.data.img
+                });
+
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error("회원 정보 불러오기 실패", error);
+            });
+    };
 
     useEffect(() => {
-        fetchUserInfo();
+        getUserData();
     }, []);
+
+    const handleEditInfo = () => {
+        navigate('/myPageJournalist/edit', {state: {userData}});
+    };
 
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
                 <StyledBackground>
-                    {userInfo && (
-                        <h1>{userInfo.publisher}</h1>
-                    )}
+                    {userData && <h1>{userData.publisher}</h1>}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
                     <div className='mr1 mt1'style={{alignSelf:'flex-end'}}>
                         <i className="bi bi-pencil-square pointer" onClick={handleEditClick}></i>
                     </div>
-                    {/* <img src={editIcon} style={{ width: '15px' }} /> */}
-                    <div>
-
-                    </div>
-                    {userInfo && <ProfileInfo user={userInfo} />}
-
+                    {userData && <ProfileInfo user={userData}/>}
                     <div style={{ height: '2rem' }} />
 
                     <div className='flex mb2' style={{ gap: '1rem' }}>

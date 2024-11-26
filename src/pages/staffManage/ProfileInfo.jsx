@@ -14,7 +14,7 @@ export default function ProfileInfo(user) {
                     </tr>
                     <tr>
                         <td>소개</td>
-                        <td>{user.bio}</td>
+                        <td>{user.user.bio}</td>
                     </tr>
                     <tr>
                         <td>구분</td>
@@ -22,7 +22,7 @@ export default function ProfileInfo(user) {
                     </tr>
                     <tr>
                         <td>전화번호</td>
-                        <td>{user.user.cp}</td>
+                        <td>{user.user.phoneNumber}</td>
                     </tr>
                     <tr>
                         <td>이메일</td>
