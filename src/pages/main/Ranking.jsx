@@ -5,6 +5,7 @@ import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import RankingArticle from "./RankingArticle";
 import { getRequest } from "../../apis/axios";
+import KakaoAdFit from "../../components/KakaoAdFit";
 
 export default function Ranking() {
     const [selectedTab, setSelectedTab] = useState("많이 본 뉴스"); // 기본값 설정
@@ -40,7 +41,7 @@ export default function Ranking() {
 
     return (
         <div className='flex column mobile-container m0 pd0'>
-            <MenuList />
+            <MenuList /><KakaoAdFit />
             <div className="mAuto flex jfCcenter mt1" style={{ width: "100%" }}>
                 <Tab
                     isSelected={selectedTab === "많이 본 뉴스"}

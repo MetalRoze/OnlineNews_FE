@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
 import blackLogo from '../../assets/myeongbo_black.svg';
+import KakaoAdFit from '../../components/KakaoAdFit'
 
 const ArticleLikeShare = ({
     article,
@@ -23,7 +24,7 @@ const ArticleLikeShare = ({
 
             <hr className='mt1' style={{ margin: '1rem 0' }} />
 
-            <div className='flex mt1'>
+            <div className='flex mt1 mb1'>
                 <div>
                     <i
                         className={`bi block taCenter ${isArticleLiked ? 'bi-heart-fill blue' : 'bi-heart'}`}
@@ -33,7 +34,9 @@ const ArticleLikeShare = ({
                 </div>
                 <KakaoShare title={article.title} content={article.subtitle.split(',./')[0]} link={`articleDetail/${article.id}`} THU={article.images[0]} />
             </div>
-
+            <div className='jfCcenter flex'>
+                <KakaoAdFit adType={'large'} />
+            </div>
         </div>
     );
 };

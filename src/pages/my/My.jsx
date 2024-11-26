@@ -6,6 +6,7 @@ import SubPub from "./SubPub";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
 import { getRequest } from "../../apis/axios"; // getRequest 임포트 (이미 정의된 함수로 가정)
+import KakaoAdFit from "../../components/KakaoAdFit";
 
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
@@ -65,6 +66,7 @@ export default function My() {
                     </CenteredContainer>
                 </div>
 
+                <KakaoAdFit />
                 <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
 
                 {articles.map((article, index) => (
