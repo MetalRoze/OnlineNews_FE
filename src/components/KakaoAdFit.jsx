@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const KakaoAdFit = () => {
-    const [adError, setAdError] = useState(false);  // 광고 로드 오류 상태
+const KakaoAdFit = ({ adType = 'small' }) => {
+    const [adError, setAdError] = useState(false);
 
     useEffect(() => {
         // 광고 스크립트 로드
@@ -13,9 +13,15 @@ const KakaoAdFit = () => {
         script.async = true;
         script.type = 'text/javascript';
         script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
-        ins.setAttribute('data-ad-unit', 'DAN-2LQytWC5DIiifh3N');
-        ins.setAttribute('data-ad-width', '320');
-        ins.setAttribute('data-ad-height', '100');
+        if (adType === 'large') {
+            ins.setAttribute('data-ad-unit', 'DAN-zuzxRmoWnjvO6oLm');  // 큰 광고
+            ins.setAttribute('data-ad-width', '300');
+            ins.setAttribute('data-ad-height', '250');
+        } else {
+            ins.setAttribute('data-ad-unit', 'DAN-2LQytWC5DIiifh3N');  // 작은 광고
+            ins.setAttribute('data-ad-width', '320');
+            ins.setAttribute('data-ad-height', '100');
+        }
 
         script.onload = () => {
             console.log("광고 스크립트 로드 성공");
@@ -40,9 +46,7 @@ const KakaoAdFit = () => {
     }, []);
 
     return (
-        <div id="adFit">
-            {adError && <p>광고 로드 실패</p>}
-        </div>
+        <div id="adFit" />
     );
 };
 
