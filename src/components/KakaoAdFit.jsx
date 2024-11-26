@@ -1,40 +1,36 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from "react";
 
-const KakaoAdFit = ({ adType }) => {
+function KakaoAdFit({ unit, width, height, disabled }) {
+    const scriptElementWrapper = useRef(null);
+
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
-        script.async = true;
-        document.body.appendChild(script);
-        console.log(adType)
+        if (!disabled) {
+            const script = document.createElement("script");
+            script.setAttribute("src", "https://t1.daumcdn.net/kas/static/ba.min.js");
+            if (scriptElementWrapper.current) {
+                scriptElementWrapper.current.appendChild(script);
+            }
 
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+            return () => {
+                const globalAdfit = window.adfit;
+                if (globalAdfit) {
+                    globalAdfit.destroy(unit);
+                }
+            };
+        }
+    }, [unit, disabled]);  // Adding unit and disabled as dependencies
 
     return (
-        <div>
-            {adType === 1 && (
-                <ins
-                    className="kakao_ad_area"
-                    style={{ display: 'none' }}
-                    data-ad-unit="DAN-2LQytWC5DIiifh3N"
-                    data-ad-width="320"
-                    data-ad-height="100"
-                />
-            )}
-            {adType === 2 && (
-                <ins
-                    className="kakao_ad_area"
-                    style={{ display: 'none' }}
-                    data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
-                    data-ad-width="300"
-                    data-ad-height="250"
-                />
-            )}
+        <div ref={scriptElementWrapper}>
+            <ins
+                className="kakao_ad_area"
+                style={{ display: "none" }}
+                data-ad-unit={unit}
+                data-ad-width={width}
+                data-ad-height={height}
+            ></ins>
         </div>
     );
-};
+}
 
 export default KakaoAdFit;

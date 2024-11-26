@@ -120,7 +120,8 @@ const ArticleDetail = () => {
                         handleArticleLikeToggle={handleArticleLikeToggle}
                         isArticleLiked={isArticleLiked}
                     ></ArticleLikeShare>)}
-                <KakaoAdFit adType={1} />
+                <div>광고수정1</div>
+                <KakaoAdFit unit={"DAN-2LQytWC5DIiifh3N"} width={"320"} height={"100"} disabled={false} />
                 <ArticleComment articleId={articleId} />
             </div>
         </div>

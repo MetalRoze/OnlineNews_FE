@@ -39,7 +39,9 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <KakaoAdFit adType={2} />
+            <div>광고1</div>
+            <KakaoAdFit unit={"DAN-zuzxRmoWnjvO6oLm"} width={"320"} height={"250"} disabled={false} />
+
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
 
 
