@@ -13,7 +13,6 @@ export default function StaffDetail() {
     const { id } = useParams();
     const [articles, setArticles] = useState([]);
     const [userInfo, setUserInfo] = useState();
-    const [edit, setEdit] = useState();
     const [currentPage, setCurrentPage] = useState(1);
 
     const fetchUserInfo = async (userId) => {

@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import BackgroundImage from '../../assets/staffDetailBackground.png';
 import JournalistMyPage from './JournalistMyPage';
 import ProfileInfo from '../staffManage/ProfileInfo';
+import EditProfileInfo from './EditProfileInfo';
 import { getRequest } from '../../apis/axios';
 
 
 export default function AdminMypage() {
     const navigate = useNavigate();
+    const [edit, setEdit] = useState(false);
     const changeBtnClick = async (e) => {
         e.preventDefault();
         navigate('/main');
@@ -26,11 +28,11 @@ export default function AdminMypage() {
     const [userData, setUserData] = useState({
         name: '',
         bio: '',
-        publisher:'',
+        publisher: '',
         email: '',
         phoneNumber: '',
         gender: '',
-        profileImg:''
+        profileImg: ''
     });
     const getUserData = async () => {
         getRequest('/api/user/myPage')
@@ -40,9 +42,9 @@ export default function AdminMypage() {
                     bio: response.data.bio,
                     publisher: response.data.publisher,
                     email: response.data.email,
-                    phoneNumber: response.data.cp, 
-                    gender: response.data.sex, 
-                    profileImg:response.data.img
+                    phoneNumber: response.data.cp,
+                    gender: response.data.sex,
+                    profileImg: response.data.img
                 });
 
                 console.log(response.data);
@@ -56,10 +58,6 @@ export default function AdminMypage() {
         getUserData();
     }, []);
 
-    const handleEditInfo = () => {
-        navigate('/myPageJournalist/edit', {state: {userData}});
-    };
-
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter" style={{ padding: 0 }}>
@@ -67,10 +65,11 @@ export default function AdminMypage() {
                     {userData && <h1>{userData.publisher}</h1>}
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
-                    <div className='mr1 mt1'style={{alignSelf:'flex-end'}}>
+                    <div className='mr1 mt1' style={{ alignSelf: 'flex-end' }}>
                         <i className="bi bi-pencil-square pointer" onClick={handleEditClick}></i>
                     </div>
-                    {userData && <ProfileInfo user={userData}/>}
+                    {userData && (edit ? <EditProfileInfo user={userData} /> : <ProfileInfo user={userData} />)}
+
                     <div style={{ height: '2rem' }} />
 
                     <div className='flex mb2' style={{ gap: '1rem' }}>
