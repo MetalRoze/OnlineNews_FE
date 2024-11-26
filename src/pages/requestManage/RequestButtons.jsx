@@ -33,10 +33,7 @@ const RequestButtons = ({ request, article, status, type }) => {
                 url = `/api/article/${articleId}/public`;
             }
             const response = await patchRequest(url);
-            console.log(response.data);
-            if (response.data === '200') {
-                alert("승인되었습니다.")
-            }
+            alert("승인되었습니다.")
         } catch (error) {
             console.error("승인 실패", error);
         }
