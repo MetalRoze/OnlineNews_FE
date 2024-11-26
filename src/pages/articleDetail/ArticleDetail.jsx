@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import ArticleHeader from './ArticleHeader';
 import ArticleContent from './ArticleContent';
 import ArticleComment from './ArticleComment';
 import ArticleLikeShare from './ArticleLikeShare'
-import GoogleAdsense from '../../components/GoogleAdsense';
 import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
 import { useLocation } from 'react-router-dom';
 import { convertToIdx } from '../../utils/convertCategories'
+import KakaoAdFit from '../../components/KakaoAdFit'
 
 const ArticleDetail = () => {
     const { articleId } = useParams();
@@ -90,7 +90,6 @@ const ArticleDetail = () => {
             handleLike();
         }
     };
-
     // 카카오톡 공유하기
     useEffect(() => {
         const script = document.createElement("script");
@@ -109,6 +108,7 @@ const ArticleDetail = () => {
     if (!article) {
         return <div>Loading...</div>;
     }
+
     return (
         <div>
             <ArticleHeader id={categoryIdx} />
@@ -120,14 +120,8 @@ const ArticleDetail = () => {
                         handleArticleLikeToggle={handleArticleLikeToggle}
                         isArticleLiked={isArticleLiked}
                     ></ArticleLikeShare>)}
+                <KakaoAdFit adType={1} />
                 <ArticleComment articleId={articleId} />
-                <GoogleAdsense
-                    client="ca-pub-1195209293008237"
-                    slot="3954159514"
-                    format="fluid"
-                    responsive="true"
-                    layoutKey="-fz+6a+19-cg+hh"
-                />
             </div>
         </div>
     );
