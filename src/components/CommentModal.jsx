@@ -23,6 +23,7 @@ const CommentModal = ({ showModal, handleClose, type, reqId }) => {
         try {
             const response = await putRequest(`/api/request/${reqId}/hold`, { comment: comment})
             console.log(response.status);
+            alert("보류 되었습니다.");
         } catch (error) {
             console.error('사용자 요청실패', error);
         }
@@ -31,6 +32,7 @@ const CommentModal = ({ showModal, handleClose, type, reqId }) => {
         try {
             const response = await putRequest(`/api/request/${reqId}/reject`, { comment: comment})
             console.log(response.status);
+            alert("거절 되었습니다.");
         } catch (error) {
             console.error('사용자 요청실패', error);
         }

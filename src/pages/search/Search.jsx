@@ -6,36 +6,33 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 export default function Search() {
-    const [history, setHistory] = useState([]);  // 초기값을 빈 배열로 설정
-    const [loading, setLoading] = useState(true);  // 로딩 상태
-    const navigate = useNavigate(); // Hook for navigation
+    const [history, setHistory] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setLoading(true);  // 데이터 요청 전 로딩 상태 활성화
+        setLoading(true);
         getRequest('/api/history')
             .then((response) => {
-                console.log(response);
                 if (response && Array.isArray(response.data)) {
-                    setHistory(response.data); // 응답 데이터를 history 상태에 저장
-                    console.log("Fetched history:", response.data);  // history 상태 확인
+                    setHistory(response.data);
                 } else {
-                    setHistory([]); // 데이터가 없으면 빈 배열
+                    setHistory([]);
                 }
             })
             .catch((error) => {
                 console.error("Error fetching history:", error);
-                setHistory([]); // 에러 발생 시 빈 배열로 설정
+                setHistory([]);
             })
             .finally(() => {
-                setLoading(false); // 데이터 로딩 완료 후 로딩 상태 비활성화
+                setLoading(false);
             });
-    }, []); // 컴포넌트 마운트 시 한 번만 실행
+    }, []);
 
     const handleRightClick = () => {
         deleteRequest('/api/history/alldelete')
             .then(() => {
-                console.log("기록 삭제 완료");
-                setHistory([]); // 삭제 완료 후 검색 기록 초기화
+                setHistory([]);
             })
             .catch((error) => {
                 console.error("Error deleting history:", error);
@@ -44,28 +41,24 @@ export default function Search() {
 
     const handleSearch = (query) => {
         setLoading(true);
-    
-        postRequest('/api/history/search', { searchTerm: query })  // 검색어 기록
+        postRequest('/api/history/search', { searchTerm: query })
             .then(() => {
-                console.log("Search term recorded successfully!");
-    
                 return getRequest(`/api/article/select?title=${encodeURIComponent(query)}&content=${encodeURIComponent(query)}`);
             })
             .then((response) => {
                 if (response.data && response.data.length > 0) {
-                    setHistory(response.data);  // 응답 데이터를 history 상태에 저장
-                    console.log("Navigating to result page...");
-                    navigate(`/result?query=${query}`);  // 검색 결과 페이지로 리디렉션
+                    setHistory(response.data);
+                    navigate(`/result?query=${query}`);
                 } else {
-                    setHistory([]); // 검색 결과가 없으면 빈 배열로 설정
+                    setHistory([]);
                 }
             })
             .catch((error) => {
                 console.error("Error searching history or fetching results:", error);
-                setHistory([]);  
+                setHistory([]);
             })
             .finally(() => {
-                setLoading(false); 
+                setLoading(false);
             });
     };
 
@@ -87,13 +80,18 @@ export default function Search() {
                     ) : history.length === 0 ? (
                         <CenteredText>저장된 검색어가 없습니다.</CenteredText>
                     ) : (
-                        <SearchRecords history={history} setHistory={setHistory} /> 
+                        <SearchRecords
+                            history={history}
+                            setHistory={setHistory}
+                            onSearch={handleSearch} // 클릭 시 검색 수행
+                        />
                     )}
                 </div>
             </div>
         </div>
     );
 }
+
 
 // Styled components
 
