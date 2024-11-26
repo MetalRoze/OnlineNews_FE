@@ -99,7 +99,7 @@ const deleteRequest = (url, data, headers = {}) => {
 
 // run-my-code 요청을 위한 POST 요청 함수
 const getRunMyCodeRequest = (articleId) => {
-  return apiClientForRunMyCode.get(`/run-my-code/${articleId}`);
+  return apiClientForRunMyCode.get(`/pyapi/run-my-code/${articleId}`);
 };
 
 
