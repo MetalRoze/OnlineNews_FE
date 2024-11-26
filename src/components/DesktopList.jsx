@@ -16,7 +16,11 @@ export const DesktopList = ({ pathTo, contents, headers, columns }) => {
     const postHeadline = async (articleId) => {
         try {
             const response = await postRequest(`/api/main-article/${articleId}/select`)
-            console.log(response.data);
+            console.log(response.data.code);
+            if(response.data.code ==='200'){
+                 alert("헤드라인 지정되었습니다.");
+            }
+           
         } catch (error) {
             console.error('등록실패', error);
         }
