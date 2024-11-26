@@ -39,7 +39,7 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div>광고수정2</div>
+            <div>광고수정3</div>
             <div className="advertisement">
                 <ins class="kakao_ad_area" style="display:none;"
                     data-ad-unit="DAN-zuzxRmoWnjvO6oLm"

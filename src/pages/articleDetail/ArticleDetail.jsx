@@ -122,7 +122,7 @@ const ArticleDetail = () => {
                     />
                 )}
 
-                <div>광고수정2</div>
+                <div>광고수정3</div>
                 <div className="advertisement">
                     <ins className="kakao_ad_area" style={{ display: "none" }}
                         data-ad-unit="DAN-2LQytWC5DIiifh3N"
