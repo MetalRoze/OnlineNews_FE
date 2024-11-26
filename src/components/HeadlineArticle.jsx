@@ -16,8 +16,8 @@ export default function HeadlineArticle({ head }) {
             style={{ cursor: "pointer" }}
             onClick={handleArticleClick}
         >
-            <h2>{head.articleTitle}</h2>
-            <h4>{head.articleSubTitle}</h4>
+            <h2>{head.title}</h2>
+            <h4>{head.subtitle}</h4>
             <img
                 src={head.articleImg}
                 alt={head.articleTitle}

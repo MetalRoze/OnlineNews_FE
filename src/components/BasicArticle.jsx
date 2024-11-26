@@ -34,7 +34,7 @@ export default function BasicArticle({ article }) {
       </ImageWrapper>
       
       <ArticleInfo>
-        <Title>{article.articleTitle}</Title>
+        <Title>{article.title}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>
     </div>
