@@ -17,13 +17,14 @@ const ArticleDetail = () => {
     const [isArticleLiked, setIsArticleLiked] = useState(false);
     const [likeId, setLikeId] = useState(null);
     const [categoryIdx, setCategoryIdx] = useState();
+    const [isAdLoaded, setIsAdLoaded] = useState(false);  // 광고 로드 상태
+    const scriptElement = useRef(null);
 
     // 기사 가져오기
     const fetchArticle = async () => {
         getRequest('/api/article/select', { id: articleId })
             .then(response => {
                 setArticle(response.data[0]);
-                console.log(response.data[0]);
                 setCategoryIdx(convertToIdx(response.data[0].category));
             })
             .catch(error => {
@@ -31,12 +32,11 @@ const ArticleDetail = () => {
             });
     };
 
-    // 좋아요
+    // 좋아요 상태 확인
     useEffect(() => {
         const checkLikeStatus = async () => {
             try {
                 const response = await getRequest(`/api/article/${articleId}/like/check`);
-                console.log(response.data);
                 if (response.data) {
                     setIsArticleLiked(true);
                     setLikeId(response.data);
@@ -65,7 +65,6 @@ const ArticleDetail = () => {
 
     const handleUnlike = async () => {
         try {
-            console.log(likeId);
             if (likeId) {
                 await deleteRequest(`/api/article/like/${likeId}/unlike`);
                 setIsArticleLiked(false);
@@ -89,7 +88,7 @@ const ArticleDetail = () => {
         }
     };
 
-    // 카카오톡 공유하기
+    // 카카오톡 스크립트 로드
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -98,11 +97,28 @@ const ArticleDetail = () => {
         return () => document.body.removeChild(script);
     }, []);
 
+    // 기사 가져오기
     useEffect(() => {
         if (articleId) {
             fetchArticle();
         }
     }, [articleId]);
+
+    // 광고 스크립트 로드
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js";
+        script.async = true;
+        script.onload = () => {
+            setIsAdLoaded(true);  // 광고 로드 완료 시 상태 업데이트
+        };
+        scriptElement.current?.appendChild(script);
+        return () => {
+            if (scriptElement.current) {
+                scriptElement.current.innerHTML = '';  // cleanup on unmount
+            }
+        };
+    }, []);
 
     if (!article) {
         return <div>Loading...</div>;
@@ -122,13 +138,15 @@ const ArticleDetail = () => {
                     />
                 )}
 
-                <div>광고수정4</div>
-                <div className="advertisement">
-                    <ins className="kakao_ad_area"
+                <div>광고수정5</div>
+                <div ref={scriptElement}>
+                    <ins
+                        className="kakao_ad_area"
+                        style={{ display: isAdLoaded ? "block" : "none" }}
                         data-ad-unit="DAN-2LQytWC5DIiifh3N"
                         data-ad-width="320"
-                        data-ad-height="100"></ins>
-                    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+                        data-ad-height="100"
+                    ></ins>
                 </div>
 
                 <ArticleComment articleId={articleId} />

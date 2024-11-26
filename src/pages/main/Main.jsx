@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
@@ -9,6 +9,8 @@ import KakaoAdFit from '../../components/KakaoAdFit'
 export default function Main() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);  // 기본값을 빈 배열로 설정
+    const [isAdLoaded, setIsAdLoaded] = useState(false);  // 광고 로드 상태
+    const scriptElement = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,16 +38,30 @@ export default function Main() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://t1.daumcdn.net/kas/static/ba.min.js";
+        script.async = true;
+        script.onload = () => {
+            setIsAdLoaded(true);  // 광고 로드 완료 시 상태 업데이트
+        };
+        scriptElement.current?.appendChild(script);
+        return () => {
+            if (scriptElement.current) {
+                scriptElement.current.innerHTML = '';  // cleanup on unmount
+            }
+        };
+    }, []);
+
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <div>광고수정4</div>
-            <div className="advertisement">
+            <div>광고수정5</div>
+            <div ref={scriptElement}>
                 <ins class="kakao_ad_area"
                     data-ad-unit="DAN-zuzxRmoWnjvO6oLm"
                     data-ad-width="300"
                     data-ad-height="250"></ins>
-                <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
             </div>
 
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
