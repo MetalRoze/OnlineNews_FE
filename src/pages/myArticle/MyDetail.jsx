@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArticleContent from '../articleDetail/ArticleContent';
-import { getRequest } from '../../apis/axios';
+import { getRequest, postRequest } from '../../apis/axios';
 
 function MyDetail() {
     const navigate = useNavigate();
@@ -17,12 +17,37 @@ function MyDetail() {
         navigate(`/articleDetail/${articleId}`);
     };
 
-    const clickPrivate = (id) => {
+    const clickPrivate = () => {
         const isConfirmed = window.confirm('기사 비공개를 요청하시겠습니까?');
         if (isConfirmed) {
-            // 여기에서 api 연결
-            const mergedSubTitles = subTitles.join(',./');
-            navigate('/main');
+            postRequest(`/api/request/${articleId}/convert-private`)
+                .then(response => {
+                    console.log(response.data.code);
+                    if (response.data.code === '200') {
+                        alert("비공개 요청을 전송했습니다");
+                        navigate("/myArticle");
+                    }
+                })
+                .catch(error => {
+                    console.error("비공개 요청 실패", error);
+                });
+        }
+    };
+
+    const clickPublic = () => {
+        const isConfirmed = window.confirm('기사 공개를 요청하시겠습니까?');
+        if (isConfirmed) {
+            postRequest(`/api/request/${articleId}/convert-public`)
+                .then(response => {
+                    console.log(response.data.code);
+                    if (response.data.code === '200') {
+                        alert("공개 요청을 전송했습니다");
+                        navigate("/myArticle");
+                    }
+                })
+                .catch(error => {
+                    console.error("공개 요청 실패", error);
+                });
         }
     };
 
@@ -66,7 +91,7 @@ function MyDetail() {
             <div className='flex spaceBetween mb1'>
                 <div className='flex'>
                     <a onClick={clickEdit} className='mr1 pointer'>수정</a>
-                    <a onClick={clickPrivate} className='mr1 pointer'>비공개</a>
+                    {article && (article.isPublic?<a onClick={clickPrivate} className='mr1 pointer'>비공개</a>: <a onClick={clickPublic} className='mr1 pointer'>공개</a> ) }
                     <a onClick={clickOriginal} className='pointer pointer'>원문보기</a>
                 </div>
                 <div className='flex' style={{
