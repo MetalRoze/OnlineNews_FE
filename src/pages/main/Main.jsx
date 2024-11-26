@@ -39,10 +39,10 @@ export default function Main() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            <KakaoAdFit />
-
 
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
+
+            <KakaoAdFit />
             {
                 Array.isArray(articles) && articles.length > 0 ? (
                     articles.map((article) => (
