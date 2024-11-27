@@ -19,8 +19,9 @@ export default function AdminMain() {
 
     const fetchRequests = async () => {
         try {
-            const response = await getRequest("api/request");
+            const response = await getRequest("api/request/status", { keyword: 'pending' });
             setRequests(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error('요청실패', error);
         }
@@ -50,9 +51,17 @@ export default function AdminMain() {
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToRequest} />
                     </div>
                     <StyledRequestListWrapper>
-                        {requests && requests.length >= 8 && requests.slice(0, 8).map((request, index) => (
-                            <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`}/>
-                        ))}
+                        {requests ? (
+                            requests.length > 8
+                                ? requests.slice(0, 8).map((request, index) => (
+                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
+                                ))
+                                : requests.map((request, index) => (
+                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
+                                ))
+                        ) : (
+                            <p>요청이 없습니다.</p>
+                        )}
                     </StyledRequestListWrapper>
                 </div>
                 <div style={{ height: '3rem' }}></div>
@@ -60,12 +69,20 @@ export default function AdminMain() {
                 <div className='flex column aiFlexstart' style={{ width: '78rem' }}>
                     <div className='flex aiCenter mb1'>
                         <h2 className='m0 mr05' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
-                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer'}} onClick={goToArticle} />
+                        <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToArticle} />
                     </div>
                     <StyledArticleListWrapper>
-                        {articles && articles.length >= 8 && articles.slice(0, 8).map((article, index) => (
-                            <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
-                        ))}
+                        {articles ? (
+                            articles.length > 8
+                                ? articles.slice(0, 8).map((article, index) => (
+                                    <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
+                                ))
+                                : articles.map((article, index) => (
+                                    <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
+                                ))
+                        ) : (
+                            <p>기사가 없습니다.</p>
+                        )}
                     </StyledArticleListWrapper>
                 </div>
                 <div style={{ height: '3rem' }}></div>
