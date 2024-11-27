@@ -64,7 +64,7 @@ export default function Lifestyle() {
             {/* <Divider /> */}
 
             {Array.isArray(articles) && articles.length > 0 ? (
-                articles.map((article) => (  // map에서 'article'로 이름 변경
+                currentArticles.map((article) => (  // map에서 'article'로 이름 변경
                     <div key={article.id}>    {/* article.id로 고유값을 설정 */}
                         <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
                         <hr />
