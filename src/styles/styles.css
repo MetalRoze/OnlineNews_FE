@@ -45,6 +45,19 @@
     }
 }
 
+@media(max-width:390px) {
+
+    .mobile-header-grid {
+        display: grid;
+        grid-template-columns: 2fr 1.5fr 2fr;
+        gap: 0rem;
+    }
+
+    .mobile-header-grid img {
+        width: 100%;
+    }
+}
+
 /* 헤더 */
 .desktop-header {
     width: 100%;
