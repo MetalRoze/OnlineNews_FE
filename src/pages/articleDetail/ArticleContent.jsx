@@ -16,13 +16,14 @@ const ArticleContent = ({
                 <small className='mt1 gray30 block'>입력 {formDateTime(new Date(article.createdAt))}</small>
                 {article.modifiedAt && (
                     <small className='mt1 gray30'>수정 {formDateTime(new Date(article.modifiedAt))}</small>
-                )}<div className='mt1 taRight'>
+                )}
+                <div className='mt1 taRight'>
                     <p className='mr1 inline'>{article.userName} 기자</p>
                     <img className='profile50' src={article.userImg || profileIcon} />
                 </div>
             </div>
             <hr style={{ margin: '1rem 0' }} />
-            <div className='pd20 ql-snow'>
+            <div className='ql-snow mt2 mb2'>
                 <div className='ql-editor' style={{ padding: '0px' }}>
                     <div dangerouslySetInnerHTML={{ __html: article.content }} />
                 </div>
