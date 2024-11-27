@@ -8,26 +8,29 @@ export default function KakaoShare({ title, content, THU, link }) {
     }, []);
 
     const kakaoButton = () => {
-        console.log('제목:', title);
-        console.log('설명:', content);
-        console.log('이미지 URL:', THU);
-        console.log('링크 URL:', link);
 
-        if (window.Kakao) {
-            window.Kakao.Share.sendCustom({
-                templateId: 113405,
-                templateArgs: {
-                    title, link, content, THU
-                },
-            });
+        if (sessionStorage.getItem('authToken')) {
+
+            if (window.Kakao) {
+                window.Kakao.Share.sendCustom({
+                    templateId: 113405,
+                    templateArgs: {
+                        title, link, content, THU
+                    },
+                });
+            }
+        }
+        else {
+            alert('로그인 후 사용할 수 있는 기능입니다.');
+            return false;
         }
     };
 
     return (
-        <button 
-            id='kakaotalk-sharing-btn' 
-            className='shareButton' 
-            style={{ marginLeft: "auto" }} 
+        <button
+            id='kakaotalk-sharing-btn'
+            className='shareButton'
+            style={{ marginLeft: "auto" }}
             onClick={kakaoButton}
         >
             공유 &nbsp; <i className="bi bi-share" />

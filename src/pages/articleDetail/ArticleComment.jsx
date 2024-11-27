@@ -25,13 +25,16 @@ const ArticleComment = ({
 
     const [nowUser, setNowUser] = useState('')
     const fetchUser = async () => {
-        const authToken = sessionStorage.getItem('authToken');
-        if (!authToken) {
-            alert('로그인 정보가 없습니다.');
-            return;
+        try {
+            sessionStorage.getItem('authToken')
+
+            const userResponse = await getRequest('/api/user/myPage');
+            setNowUser(userResponse.data.id);
+            return true;
+        } catch (error) {
+            alert('로그인 후 사용할 수 있는 기능입니다.');
+            return false;
         }
-        const userResponse = await getRequest('/api/user/myPage');
-        setNowUser(userResponse.data.id);
     };
 
     const [activeSort, setActiveSort] = useState('')
@@ -74,21 +77,25 @@ const ArticleComment = ({
 
     // 댓글 달기
     const handleCommentSubmit = async () => {
-        if (newComment.trim()) {
-            const newCommentData = {
-                articleId: articleId,
-                content: newComment
-            };
-            try {
-                const response = await postRequest('/api/comment', newCommentData);
-                setComments(prevComments => [response.data, ...prevComments]);
 
-                setTotalItemsCount(comments.length + 1);
-                setNewComment('');
-            } catch (error) {
-                alert("댓글 작성에 실패했습니다.")
+        if (await fetchUser()) {
+            if (newComment.trim()) {
+                const newCommentData = {
+                    articleId: articleId,
+                    content: newComment
+                };
+                try {
+                    const response = await postRequest('/api/comment', newCommentData);
+                    setComments(prevComments => [response.data, ...prevComments]);
+
+                    setTotalItemsCount(comments.length + 1);
+                    setNewComment('');
+                } catch (error) {
+                    alert("댓글 작성에 실패했습니다.")
+                }
             }
         }
+
     };
 
     const handleNewCommentChange = (e) => {
@@ -109,32 +116,34 @@ const ArticleComment = ({
     };
 
     const handleReplySubmit = async (commentId) => {
-        if (replyContent.trim()) {
-            const newReplyData = {
-                commentID: commentId,
-                content: replyContent
-            };
 
-            try {
-                const response = await postRequest('/api/comment/replies', newReplyData);
-                const newReply = response.data;
-                setComments(prevComments =>
-                    prevComments.map(comment =>
-                        comment.id === commentId
-                            ? {
-                                ...comment,
-                                replies: [...comment.replies, newReply]
-                            }
-                            : comment
-                    )
-                );
-                setReplyContent('');
-            } catch (error) {
-                alert("답글 작성에 실패했습니다.")
+        if (await fetchUser()) {
+            if (replyContent.trim()) {
+                const newReplyData = {
+                    commentID: commentId,
+                    content: replyContent
+                };
+
+                try {
+                    const response = await postRequest('/api/comment/replies', newReplyData);
+                    const newReply = response.data;
+                    setComments(prevComments =>
+                        prevComments.map(comment =>
+                            comment.id === commentId
+                                ? {
+                                    ...comment,
+                                    replies: [...comment.replies, newReply]
+                                }
+                                : comment
+                        )
+                    );
+                    setReplyContent('');
+                } catch (error) {
+                    alert("답글 작성에 실패했습니다.")
+                }
             }
         }
     };
-
     const handleLikeToggle = async (commentId, likeStatus, type) => {
         try {
             if (type === 'comment') {
@@ -191,78 +200,82 @@ const ArticleComment = ({
 
     const handleEditClick = async (commentId, content, isEdit, type) => {
 
-        const updateComment = (comment) => {
-            return comment.id === commentId ? { ...comment, isEdit: !isEdit } : comment;
-        };
+        if (await fetchUser()) {
+            const updateComment = (comment) => {
+                return comment.id === commentId ? { ...comment, isEdit: !isEdit } : comment;
+            };
 
-        const updateReply = (reply) => {
-            return reply.id === commentId ? { ...reply, isEdit: !isEdit } : reply;
-        };
+            const updateReply = (reply) => {
+                return reply.id === commentId ? { ...reply, isEdit: !isEdit } : reply;
+            };
 
-        if (!isEdit) {
-            setComments(prevComments =>
-                prevComments.map(comment =>
-                    type === 'comment' ? updateComment(comment) : {
-                        ...comment,
-                        replies: comment.replies.map(reply => updateReply(reply))
-                    }
-                )
-            );
-        } else {
-            const newCommentData = { commentID: commentId, content };
-
-            try {
-                await putRequest('/api/comment/edit', newCommentData);
+            if (!isEdit) {
                 setComments(prevComments =>
-                    prevComments.map(comment => {
-                        if (comment.id === commentId && type === 'comment') {
-                            return { ...comment, content, isEdit: false };
-                        }
-
-                        return {
+                    prevComments.map(comment =>
+                        type === 'comment' ? updateComment(comment) : {
                             ...comment,
-                            replies: comment.replies.map(reply =>
-                                reply.id === commentId && type === 'reply'
-                                    ? { ...reply, content, isEdit: false }
-                                    : reply
-                            )
-                        };
-                    })
+                            replies: comment.replies.map(reply => updateReply(reply))
+                        }
+                    )
                 );
-            } catch (error) {
-                alert("수정 실패", error);
+            } else {
+                const newCommentData = { commentID: commentId, content };
+
+                try {
+                    await putRequest('/api/comment/edit', newCommentData);
+                    setComments(prevComments =>
+                        prevComments.map(comment => {
+                            if (comment.id === commentId && type === 'comment') {
+                                return { ...comment, content, isEdit: false };
+                            }
+
+                            return {
+                                ...comment,
+                                replies: comment.replies.map(reply =>
+                                    reply.id === commentId && type === 'reply'
+                                        ? { ...reply, content, isEdit: false }
+                                        : reply
+                                )
+                            };
+                        })
+                    );
+                } catch (error) {
+                    alert("수정 실패", error);
+                }
             }
         }
     };
 
     const handleDelete = async (commentId, type) => {
-        const isConfirmed = window.confirm("댓글을 삭제하시겠습니까?");
+        if (await fetchUser()) {
+            const isConfirmed = window.confirm("댓글을 삭제하시겠습니까?");
 
-        if (!isConfirmed) {
-            return;
-        }
+            if (!isConfirmed) {
+                return;
+            }
 
-        try {
-            await deleteRequest(`/api/comment/${commentId}`);
+            try {
+                await deleteRequest(`/api/comment/${commentId}`);
 
-            setComments(prevComments =>
-                prevComments.map(comment => {
-                    if (type === 'comment' && comment.id === commentId) {
-                        return null;
-                    }
+                setComments(prevComments =>
+                    prevComments.map(comment => {
+                        if (type === 'comment' && comment.id === commentId) {
+                            return null;
+                        }
 
-                    // 답글 처리
-                    const updatedReplies = comment.replies.filter(reply => reply.id !== commentId);
-                    return {
-                        ...comment,
-                        replies: updatedReplies
-                    };
-                }).filter(comment => comment !== null)
-            );
+                        // 답글 처리
+                        const updatedReplies = comment.replies.filter(reply => reply.id !== commentId);
+                        return {
+                            ...comment,
+                            replies: updatedReplies
+                        };
+                    }).filter(comment => comment !== null)
+                );
 
-            setTotalItemsCount(comments.length - 1);
-        } catch (error) {
-            alert("삭제 실패", error);
+                setTotalItemsCount(comments.length - 1);
+            } catch (error) {
+                alert("삭제 실패", error);
+            }
         }
     };
 
