@@ -52,9 +52,9 @@ export default function AdminMain() {
                     </div>
                     <StyledRequestListWrapper>
                         {requests ? (
-                            requests.length > 8
-                                ? requests.slice(0, 8).map((request, index) => (
-                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} width={width}/>
+                            requests.length > 6
+                                ? requests.slice(0, 6).map((request, index) => (
+                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} width={'100%'}/>
                                 ))
                                 : requests.map((request, index) => (
                                     <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
@@ -93,11 +93,12 @@ export default function AdminMain() {
 const StyledRequestListWrapper = styled.div`
     display: grid;
     grid-template-rows: repeat(2, 1fr); 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    align-self: center;
 `;
 const StyledArticleListWrapper = styled.div`
     display: grid;
-    grid-template-rows: repeat(2, 1fr); 
+    grid-template-rows: repeat(4, 1fr); 
     grid-template-columns: repeat(2, 1fr);
 `;
