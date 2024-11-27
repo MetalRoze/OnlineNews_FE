@@ -54,7 +54,7 @@ export default function Economy() {
             {/* Divider */}
             {/* <Divider />  */}
 
-            {articles.map((article) => (
+            {currentArticles.map((article) => (
                 <div key={article.id}>
                     <BasicArticle article={article} />
                     <hr />
@@ -69,15 +69,6 @@ export default function Economy() {
                 />
             )}
 
-
-            {articles.length > 0 && (
-                <MyPagination
-                    itemsCountPerPage={8}
-                    totalItemsCount={articles.length}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageChange}
-                />
-            )}
         </div>
     );
 }
