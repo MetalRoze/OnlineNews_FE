@@ -4,39 +4,48 @@ import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
+import MyPagination from "../../components/Pagination";
 
 export default function Economy() {
     const [articles, setArticles] = useState([]);
     const [head, setHead] = useState(null);
+    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템개수
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 헤드라인 데이터 먼저 가져오기
+                // 헤드라인 데이터 가져오기
                 const headlineResponse = await getRequest("/api/main-article/category/headline?category=ECONOMY");
-
-                if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
+                if (headlineResponse?.data?.length > 0) {
                     console.log(headlineResponse.data);
                     setHead(headlineResponse.data);
                 } else {
                     console.error("No headline data found.");
                 }
 
-                // 그 후 기사 데이터 가져오기
+                // 기사 데이터 가져오기
                 const articleResponse = await getRequest("/api/article/rss/category?categoryName=ECONOMY");
-                setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
+                setArticles(articleResponse.data || []); // 오류 방지
                 console.log(articleResponse.data);
-
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
-                setArticles([]);  // 오류가 발생한 경우에도 빈 배열로 설정
+                setArticles([]); // 오류 발생 시 빈 배열로 설정
             }
         };
 
         fetchData();
-
     }, []);
-    
+
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
@@ -45,12 +54,30 @@ export default function Economy() {
             {/* Divider */}
             {/* <Divider />  */}
 
-            {articles.map((article) => (  // map에서 'article'로 이름 변경
-                <div key={article.id}>    {/* article.id로 고유값을 설정 */}
-                    <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
+            {articles.map((article) => (
+                <div key={article.id}>
+                    <BasicArticle article={article} />
                     <hr />
                 </div>
             ))}
+            {currentArticles.length > 0 && (
+                <MyPagination
+                    itemsCountPerPage={5}
+                    totalItemsCount={articles.length}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                />
+            )}
+
+
+            {articles.length > 0 && (
+                <MyPagination
+                    itemsCountPerPage={8}
+                    totalItemsCount={articles.length}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                />
+            )}
         </div>
     );
 }
