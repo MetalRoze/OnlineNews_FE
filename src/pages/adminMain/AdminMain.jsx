@@ -54,7 +54,7 @@ export default function AdminMain() {
                         {requests ? (
                             requests.length > 8
                                 ? requests.slice(0, 8).map((request, index) => (
-                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
+                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} width={width}/>
                                 ))
                                 : requests.map((request, index) => (
                                     <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
