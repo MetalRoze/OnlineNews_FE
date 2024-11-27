@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Label from '../../components/Label';
+import { getNotificationDetails } from '../../utils/getNotificationDetails';
 
-export default function Notification({ notiType, userName, message, comment, createdAt, width }) {
-  const { label } = getNotificationDetails({ notiType });
+export default function Notification({ type, userName, message, comment, createdAt, width }) {
+  const { label } = getNotificationDetails({ type });
   return (
     <div className='desktop-item pd10 aiCenter jcCenter' style={{ width: width }}>
       <div className='flex column jcCenter' style={{ width: '100%' }}>
@@ -20,28 +21,3 @@ export default function Notification({ notiType, userName, message, comment, cre
     </div>
   );
 }
-const getNotificationDetails = ({ notiType }) => {
-  switch (notiType) {
-    case 'REPORTER_COMMENT':
-      return {
-        label: '댓글',
-      };
-    case 'REPORTER_LIKE':
-    case 'USER_LIKE':
-      return {
-        label: '좋아요'
-      };
-    case 'USER_REPLY':
-      return {
-        label: '대댓글'
-      };
-    case 'REQUEST':
-      return {
-        label: '승인'
-      };
-    default:
-      return {
-        label: '알림'
-      };
-  }
-};

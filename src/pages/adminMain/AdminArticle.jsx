@@ -19,7 +19,8 @@ export default function AdminArticle({ article, pathTo }) {
                     <p className=' m0 ml05' >{article.views}</p>
                 </div>
             </StyledArticleContentWrapper>
-            <img src="https://placehold.co/160x120" alt="Bootstrap" />
+            {article.images.length>0 &&  <img src={article.images[0]} alt="img" style={{width: '160px', height:'120px', objectFit:'cover'}}/>}
+            
         </div>
     );
 }
