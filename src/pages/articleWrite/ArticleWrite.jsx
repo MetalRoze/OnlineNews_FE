@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ArticlePreview from './ArticlePreview.jsx';
 import ArticleWriteForm from './ArticleWriteForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getRequest, postRequest, patchRequest, getRunMyCodeRequest  } from '../../apis/axios.jsx';
+import { getRequest, postRequest, patchRequest, getRunMyCodeRequest } from '../../apis/axios.jsx';
 import formatDateTime from '../../utils/formDateTime.jsx';
 const ArticleWrite = () => {
 
@@ -12,7 +12,8 @@ const ArticleWrite = () => {
     const [isEdit, setIsEdit] = useState(!!articleId);
     const [originalContent, setOriginalContent] = useState('');
     const [content, setContent] = useState('');
-    const [authorName, setAuthorName] = useState('홍길동');
+    const [authorName, setAuthorName] = useState();
+    const [authorImg, setAuthorImg] = useState();
     const [articleDate, setArticleDate] = useState("");
     const [title, setTitle] = useState('');
     const [subTitles, setSubTitles] = useState(['']);
@@ -20,6 +21,9 @@ const ArticleWrite = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [articleData, setArticleData] = useState();
+
+
+    const [isLoading, setIsLoading] = useState(false);
 
     // 소제목 관리
     const addSubtitleForm = () => {
@@ -109,6 +113,7 @@ const ArticleWrite = () => {
         const isConfirmed = window.confirm('기사를 제출하시겠습니까?');
 
         if (isConfirmed) {
+            setIsLoading(true);
             const mergedSubTitles = subTitles.join(',./');
 
             // 기사 수정
@@ -176,6 +181,7 @@ const ArticleWrite = () => {
                         });
 
                         if (response.status === 200) {
+                            setIsLoading(false);
                             alert('기사가 성공적으로 수정되었습니다.');
                             navigate(`/articleDetail/${articleId}`);
                         }
@@ -183,6 +189,7 @@ const ArticleWrite = () => {
                         console.error("기사 수정 중 오류가 발생했습니다.", error);
                         alert('기사 수정에 실패했습니다.');
                     }
+                    setIsLoading(false);
                 } else {
                     alert('수정된 내용이 없습니다.');
                 }
@@ -226,29 +233,32 @@ const ArticleWrite = () => {
                     });
 
                     if (response.status === 200) {
+                        setIsLoading(false);
                         alert('기사가 성공적으로 제출되었습니다.');
-                        
+
                         console.log(response.data);
                         const articleId = response.data;
                         const runMyCodeResponse = await getRunMyCodeRequest(`${articleId}`);
 
-                        if (runMyCodeResponse.status === 200){
+                        if (runMyCodeResponse.status === 200) {
                             console.log('키워드 추출 성공')
                         }
-                        else{
+                        else {
                             console.log('키워드 추출 실패')
                         }
 
                         navigate('/main');
-                      }
+                    }
                 } catch (error) {
                     console.error("기사 제출 중 오류가 발생했습니다.", error);
                     alert('기사 제출에 실패했습니다.');
                 }
             }
 
+            setIsLoading(false);
 
         } else {
+            setIsLoading(false);
             handleCloseModal();
         }
     };
@@ -266,7 +276,6 @@ const ArticleWrite = () => {
                     setSubTitles(articleData.subtitle.split(',./'));
                     setOriginalContent(articleData.content);
                     setSelectedCategory(articleData.category);
-                    setAuthorName(articleData.userID);
                 }
             } catch (error) {
                 console.error('기사를 불러오는 중 오류가 발생했습니다.', error);
@@ -282,6 +291,20 @@ const ArticleWrite = () => {
     useEffect(() => {
         console.log("현재 선택된 카테고리:", selectedCategory);
     }, [selectedCategory]);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userResponse = await getRequest('/api/user/myPage');
+                setAuthorName(userResponse.data.name);
+                setAuthorImg(userResponse.data.img);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     return (
         <div className="mobile-container">
@@ -303,7 +326,9 @@ const ArticleWrite = () => {
 
             {isModalOpen && (
                 <ArticlePreview
+                    isLoading={isLoading}
                     authorName={authorName}
+                    authorImg={authorImg}
                     title={title}
                     category={selectedCategory}
                     articleDate={articleDate}
