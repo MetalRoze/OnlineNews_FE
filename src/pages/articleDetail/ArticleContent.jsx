@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import formDateTime from '../../utils/formDateTime';
+import profileIcon from '../../assets/profileDefault.png';
 
 const ArticleContent = ({
     article
@@ -17,7 +18,7 @@ const ArticleContent = ({
                     <small className='mt1 gray30'>수정 {formDateTime(new Date(article.modifiedAt))}</small>
                 )}<div className='mt1 taRight'>
                     <p className='mr1 inline'>{article.userName} 기자</p>
-                    <img className='profile50' src={article.userImg} alt="Author" />
+                    <img className='profile50' src={article.userImg || profileIcon} />
                 </div>
             </div>
             <hr style={{ margin: '1rem 0' }} />

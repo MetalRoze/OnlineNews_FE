@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MyPagination from '../../components/Pagination';
 import { getRequest, postRequest, deleteRequest, putRequest } from '../../apis/axios';
 import { dateOnly } from '../../utils/formDateTime';
+import profileIcon from '../../assets/profileDefault.png';
 
 const ArticleComment = ({
     articleId
@@ -317,7 +318,7 @@ const ArticleComment = ({
                 {currentComment.map((comment) => (
                     <div key={comment.id} className='mb1'>
                         <div className='flex'>
-                            <img className='profile40' src={comment.userImg} />
+                            <img className='profile40' src={comment.userImg || profileIcon} />
                             <div className='mtbAuto ml05'>
                                 <h6 className='m0'>{obfuscateUsername(comment.userName)}</h6>
                                 <small className='gray40'>{dateOnly(new Date(comment.createdAt))}</small>
@@ -363,7 +364,7 @@ const ArticleComment = ({
                                 {comment.replies.map((reply) => (
                                     <div key={reply.id}>
                                         <div className='flex'>
-                                            <img className='profile40' src={reply.userImg} />
+                                            <img className='profile40' src={reply.userImg || profileIcon} />
                                             <div className='mtbAuto ml05'>
                                                 <h6 className='m0'>{obfuscateUsername(reply.userName)}</h6>
                                                 <small className='gray40'>{dateOnly(new Date(reply.createdAt))}</small>
