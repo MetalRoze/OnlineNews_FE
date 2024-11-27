@@ -70,10 +70,11 @@ const Header = () => {
                         <i
                             className="bi bi-search mr05 pointer"
                             onClick={handleSearchClick}
-                            >
+                        >
                         </i>
                         {isLoggedIn && <MyDropdown />}
-                        </div>
+                    </div>
+                    <div className='flex1'></div>
                     <div className='link'>
                         {isLoggedIn ? (
                             // 로그인된 상태일 때 '로그아웃' 버튼 표시

@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import 'swiper/css/navigation';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function MenuList({ backgroundColor = 'var(--color-white)', textColor = 'var(--color-black)', prompCategory = 0  }) {
+export default function MenuList({ backgroundColor = 'var(--color-white)', textColor = 'var(--color-black)', prompCategory = 0 }) {
     const categories = ['홈', 'MY', '랭킹', '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
     const paths = ['main', 'my', 'ranking', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
     const [activeIndex, setActiveIndex] = useState(1);
@@ -109,4 +109,8 @@ const StyledSwiperSlide = styled(SwiperSlide)`
     cursor: pointer;
     font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')}; 
     color: ${({ isActive, textColor }) => (isActive ? textColor : 'var(--color-gray30)')};
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
