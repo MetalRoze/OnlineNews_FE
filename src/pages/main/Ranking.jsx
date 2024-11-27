@@ -6,10 +6,19 @@ import styled from "styled-components";
 import RankingArticle from "./RankingArticle";
 import { getRequest } from "../../apis/axios";
 import KakaoAdFit from "../../components/KakaoAdFit";
+import MyPagination from "../../components/Pagination";
 
 export default function Ranking() {
     const [selectedTab, setSelectedTab] = useState("많이 본 뉴스"); // 기본값 설정
     const [articles, setArticles] = useState([]);
+    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템개수
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+
 
     // const articles = Array(6).fill(0);
 
@@ -34,6 +43,10 @@ export default function Ranking() {
         const sortBy = selectedTab === "많이 본 뉴스" ? "views" : "likes";
         fetchArticles(sortBy);
     }, [selectedTab]); // selectedTab이 변경될 때마다 실행
+
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentArticles = articles.slice(startIdx, endIdx);
 
     const handleTabClick = (tab) => {
         setSelectedTab(tab);
@@ -65,7 +78,7 @@ export default function Ranking() {
             {articles.length === 0 ? (
                 <p>기사를 불러오는 중입니다...</p>
             ) : (
-                articles.map((article, index) => (
+                currentArticles.map((article, index) => (
                     <div key={article.id}>
                         <RankingArticle
                             rank={index + 1}
@@ -74,6 +87,15 @@ export default function Ranking() {
                         <hr />
                     </div>
                 ))
+            )}
+
+            {articles.length > 0 && (
+                <MyPagination
+                    itemsCountPerPage={8}
+                    totalItemsCount={articles.length}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                />
             )}
         </div>
     );

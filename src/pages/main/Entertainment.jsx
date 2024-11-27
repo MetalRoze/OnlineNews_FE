@@ -4,10 +4,18 @@ import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
+import MyPagination from "../../components/Pagination";
 
 export default function Economy() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);
+    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템개수
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,6 +48,11 @@ export default function Economy() {
         console.log(articles); // articles 상태가 업데이트 된 후에 출력
     }, [articles]);
 
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentArticles = articles.slice(startIdx, endIdx);
+
+
     // articles가 배열일 경우에만 map 호출
     return (
         <div className='flex column mobile-container m0 pd0'>
@@ -50,7 +63,7 @@ export default function Economy() {
             {/* <Divider /> */}
 
             {Array.isArray(articles) && articles.length > 0 ? (
-                articles.map((article) => (  // map에서 'article'로 이름 변경
+                currentArticles.map((article) => (  // map에서 'article'로 이름 변경
                     <div key={article.id}>    {/* article.id로 고유값을 설정 */}
                         <BasicArticle article={article} />  {/* BasicArticle에 'article' prop 전달 */}
                         <hr />
@@ -58,6 +71,15 @@ export default function Economy() {
                 ))
             ) : (
                 <p>아직 불러올 기사들이 없습니다.</p>
+            )}
+
+            {articles.length > 0 && (
+                <MyPagination
+                    itemsCountPerPage={8}
+                    totalItemsCount={articles.length}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageChange}
+                />
             )}
         </div>
     );
