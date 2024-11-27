@@ -139,9 +139,9 @@ function MyArticle() {
                     <SearchBar width={'100%'} onSearch={handleSearch} />
                 )}
             </div>
-            <div className="flex mb1">
-                <div className='flex spaceBetween flex1'>
-                    <div className="">
+            <div className='flex mb1 spaceBetween'>
+                <div className="flex myArticleRadio">
+                    <div className='flex visibility mr3'>
                         <div>
                             <input
                                 type="radio"
@@ -151,8 +151,8 @@ function MyArticle() {
                                 checked={isPublic === "true"}
                                 onChange={() => handlePublic("true")}
                             />
-                            <label htmlFor="public">공개</label>
-
+                            <label htmlFor="public">공개</label></div>
+                        <div>
                             <input
                                 type="radio"
                                 id="private"
@@ -164,8 +164,7 @@ function MyArticle() {
                             <label htmlFor="private">비공개</label>
                         </div>
                     </div>
-
-                    <div>
+                    <div className='flex status'>
                         <div>
                             <input
                                 type="radio"
@@ -175,8 +174,9 @@ function MyArticle() {
                                 checked={status === "PENDING"}
                                 onChange={() => handleStatus("PENDING")}
                             />
-                            <label htmlFor="pending">승인대기</label>
+                            <label htmlFor="pending">승인대기</label></div>
 
+                        <div>
                             <input
                                 type="radio"
                                 id="approved"
@@ -185,8 +185,8 @@ function MyArticle() {
                                 checked={status === "APPROVED"}
                                 onChange={() => handleStatus("APPROVED")}
                             />
-                            <label htmlFor="approved">승인됨</label>
-
+                            <label htmlFor="approved">승인됨</label></div>
+                        <div>
                             <input
                                 type="radio"
                                 id="holding"
@@ -196,7 +196,8 @@ function MyArticle() {
                                 onChange={() => handleStatus("HOLDING")}
                             />
                             <label htmlFor="holding">보류됨</label>
-
+                        </div>
+                        <div>
                             <input
                                 type="radio"
                                 id="rejected"
@@ -209,10 +210,9 @@ function MyArticle() {
                         </div>
                     </div>
                 </div>
-                <div className='ml1 hoverGray' onClick={handleReset}> 초기화 </div>
 
+                <div className='ml1 hoverGray mtbAuto' onClick={handleReset}> 초기화 </div>
             </div>
-
             {result ? (
                 <div>
                     <div className='mtbAuto'>전체 {totalItemsCount}</div>
