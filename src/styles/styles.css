@@ -386,6 +386,32 @@
     text-overflow: ellipsis;
 }
 
+.myArticleRadio .visibility {
+    gap: 5px;
+}
+
+.myArticleRadio .visibility div {
+    display: flex;
+}
+
+.myArticleRadio .status {
+    gap: 5px;
+}
+
+.myArticleRadio .status div {
+    display: flex;
+}
+
+@media (max-width: 500px) {
+    .myArticleRadio {
+        flex-direction: column;
+    }
+
+    .myArticleRadio .visibility {
+        flex-direction: row;
+    }
+}
+
 .profile50 {
     width: 50px;
     height: 50px;
