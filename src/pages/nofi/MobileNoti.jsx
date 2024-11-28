@@ -88,7 +88,7 @@ export default function MobileNoti() {
                 {currentNoties.length > 0 && currentNoties.map((noti, index) => (
                     <Notification
                         key={index}
-                        notiType={noti.type}
+                        type={noti.type}
                         userName={noti.sentBy}
                         message={noti.notificationContent}
                         comment={noti.comment !== null ? noti.comment : null}
