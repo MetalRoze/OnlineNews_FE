@@ -5,7 +5,7 @@ import {convertUserGradeToKor} from '../../utils/convertUserGrade';
 export default function ProfileInfo(user) {
     return (
         <StyledProfileWrapper>
-            <img src={user.user.img || "https://placehold.co/150x200"} alt="Bootstrap" style={{width:'150px', height:'200px' , objectFit:'cover'}} />
+            <img src={user.user.profileImg ? user.user.profileImg : "https://placehold.co/150x200"} alt="Bootstrap" style={{width:'150px', height:'200px' , objectFit:'cover'}} />
             <ProfileInfoTable>
                 <tbody>
                     <tr>
