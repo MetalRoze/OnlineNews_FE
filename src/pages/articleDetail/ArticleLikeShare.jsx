@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import KakaoShare from '/src/utils/KakaoShare.jsx';
 import blackLogo from '../../assets/myeongbo_black.svg';
 import KakaoAdFit from '../../components/KakaoAdFit'
+import profileIcon from '../../assets/profileDefault.png';
 
 const ArticleLikeShare = ({
     article,
@@ -14,7 +15,7 @@ const ArticleLikeShare = ({
     return (
         <div className='mt1'>
             <div className='mlAuto flex'>
-                <img className='profile50 mr05' src={article.userImg} />
+                <img className='profile50 mr05' src={article.userImg || profileIcon} />
                 <div>
                     <p className='m0'>{article.userName} 기자 {article.userEmail}</p>
                     <small className='gray40'>{article.userBio}</small>
