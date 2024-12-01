@@ -85,7 +85,7 @@ export default function Society() {
                 </CenteredText>
             ) : (
                 Array.isArray(articles) && articles.length > 0 ? (
-                    currentArticles.map((article) => (
+                    currentArticles.map((article, index) => (
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
