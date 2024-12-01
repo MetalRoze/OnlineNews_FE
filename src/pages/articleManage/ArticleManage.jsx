@@ -5,6 +5,7 @@ import MyPagination from '../../components/Pagination';
 import { convertToKor } from '../../utils/convertCategories';
 import { DesktopList } from '../../components/DesktopList';
 import { getRequest } from '../../apis/axios';
+import Sidebar from '../../components/Sidebar';
 
 export default function ArticleManage() {
     const [activeTab, setActiveTab] = useState('createdAt');
@@ -52,6 +53,7 @@ export default function ArticleManage() {
 
     return (
         <div className="flex" style={{ width: "100vw" }}>
+             <Sidebar/>
             <div className="desktop-container">
                 <div className='flex aiCenter spaceBetween mt1'>
                     <TotalCount>전체 {articles.length}개</TotalCount>

@@ -116,10 +116,39 @@
     flex-direction: column;
     flex: 1;
     background-color: var(--color-white);
+    position: static;
     min-height: 100vh;
     padding: 20px;
     margin: 0;
     width: 100%;
+}
+
+
+.desktop-sidebar {
+    width: 200px;
+    min-width: 200px;
+    background-color: var(--color-black);
+   
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.desktop-sidebar .ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 10rem;
+}
+
+.desktop-sidebar li {
+    list-style-type: none;
+    color: var(--color-white);
+}
+.desktop-sidebar li:hover,
+.desktop-sidebar li.active
+{
+    color: var(--color-blue);
 }
 
 .mobile-back-header {

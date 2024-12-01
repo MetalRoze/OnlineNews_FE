@@ -1,24 +1,18 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import blueLogo from '../assets/myeongbo_blue.svg'; 
 
 const Sidebar = () => {
+    const categories = [ '정치', '경제', '사회', '연예', '생활/문화', '기계/IT', '오피니언'];
+    const paths = ['main', 'my', 'ranking', 'politics', 'economy', 'society', 'entertainment', 'lifestyle', 'tech', 'opinion'];
+
     return (
         <div className="desktop-sidebar">
-            <img src={blueLogo} alt="Bootstrap" className='logo' />
-            <div className='list'>
-                <div className='ul'>
-                    <Link to="/articleManage"><i className="bi bi-search mr15 mb1"></i>기사 검색</Link>
-                    <Link to="/staffManage"><i className="bi bi-people mr15 mb1"></i>직원 관리</Link>
-                    <Link to="/requestManage"><i className="bi bi-question-circle mr15 mb1"></i>요청 관리</Link>
-                    <Link to="/desktopNoti"><i className="bi bi-bell mr15 mb1"></i>알림</Link>
-                    <Link to="/adminMypage"><i className="bi bi-person mr15"></i>내 정보</Link>
-                </div>
-            </div>
-            <div style={{ flex: "1" }}></div>
-            <div className='logout'>
-                <Link to="/"><i className="bi bi-box-arrow-right mr15"></i>로그아웃</Link>
-            </div>
+            <ul className='ul'>
+                    {categories.map((category, index) => (
+                        <li key={index}>
+                            {category}
+                        </li>
+                    ))}
+                </ul>
         </div>
     );
 };
