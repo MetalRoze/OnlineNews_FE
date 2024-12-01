@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import blackLogo from '../assets/myeongbo_black.svg';
 import { useNavigate } from 'react-router-dom';
 import DesktopMenuList from './DesktopMenuList';
-import { dateOnly } from '../utils/formDateTime';
+import { yearMonthDay } from '../utils/formDateTime';
 
 
 const DesktopHeader = () => {
@@ -32,13 +32,11 @@ const DesktopHeader = () => {
         setIsLoggedIn(false);
         navigate('/adminMain');
     };
-    const handleDateClick = (e) => {
-        e.preventDefault();
-    };
+  
     return (
         <div style={{ width: '100vw' }}>
             <div className="desktop-header">
-                <div className='date' style={{ cursor: 'pointer' }} onClick={handleDateClick}>{dateOnly(today)}</div>
+                <div className='date' >{yearMonthDay(today)}</div>
                 <div >
                     <img src={blackLogo} alt="Bootstrap" className='logo' style={{ width: '15rem', cursor: 'pointer' }} onClick={handleLogoClick} />
                 </div>
