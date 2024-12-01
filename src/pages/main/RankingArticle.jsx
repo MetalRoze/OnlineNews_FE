@@ -62,6 +62,6 @@ const ArticleImage = styled.img`
   width: 8rem; /* 정사각형 크기 설정 */
   height: 8rem; /* 정사각형 크기 설정 */
   object-fit: cover; /* 이미지가 넘치면 잘라내고, 비율 유지 */
-  border-radius: 0.5rem; /* 모서리를 둥글게 */
+  border-radius: 0.2rem; /* 모서리를 둥글게 */
   flex-shrink: 0; /* 이미지 크기가 텍스트 길이에 따라 줄어들지 않도록 */
 `;
