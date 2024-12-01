@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import AdminRequest from './AdminRequest';
 import AdminArticle from './AdminArticle';
+import { DesktopList } from '../../components/DesktopList';
 import { getRequest } from '../../apis/axios';
+import { convertStatusToKor} from '../../utils/convertStatus';
+import {convertToKor} from '../../utils/convertCategories';
 
 export default function AdminMain() {
     const navigate = useNavigate();
@@ -36,6 +39,36 @@ export default function AdminMain() {
         }
     };
 
+    const currentRequests = requests.slice(0, 5);
+
+    const reqHeaders = ["접수일자", "이름", "구분", "제목", "처리구분", "승인일자"];
+    const reqColumns = "1fr 0.8fr 0.8fr 2fr 1fr 1fr";
+
+    const reqContents = currentRequests.map((request) => ({
+        접수일자: request.createdAt.split("T")[0],
+        이름: request.userName,
+        구분: request.type,
+        제목: request.requestTitle,
+        처리구분: convertStatusToKor(request.status),
+        승인일자: request.confirmedAt !== null ? request.confirmedAt.split("T")[0]: null,
+        id: request.id,
+    }));
+
+    const aHeaders = ["입력일자", "이름", "구분", "제목", "수정일자","작업"];
+    const aColumns = "1fr 0.8fr 0.8fr 2fr 1fr 0.8fr";
+    const currentArticles = articles.slice(0,10);
+
+    const aContents = currentArticles.map((article) => ({
+        입력일자: article.createdAt.split("T")[0],
+        이름: article.userName,
+        구분: convertToKor(article.category),
+        제목: article.title,
+        수정일자: article.modifiedAt !==null ? article.modifiedAt.split("T")[0] : null,
+        id: article.id,
+        작업: "헤드라인",
+    }));
+
+
     useEffect(() => {
         fetchRequests();
         fetchArticles();
@@ -50,7 +83,8 @@ export default function AdminMain() {
                         <h2 className='m0 mr05'>기사 요청 현황</h2>
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToRequest} />
                     </div>
-                    <StyledRequestListWrapper>
+                    <DesktopList pathTo={'../requestManage/requestDetail'} contents={reqContents} headers={reqHeaders} columns={reqColumns} />
+                    {/* <StyledRequestListWrapper>
                         {requests ? (
                             requests.length > 6
                                 ? requests.slice(0, 6).map((request, index) => (
@@ -62,7 +96,7 @@ export default function AdminMain() {
                         ) : (
                             <p>요청이 없습니다.</p>
                         )}
-                    </StyledRequestListWrapper>
+                    </StyledRequestListWrapper> */}
                 </div>
                 <div style={{ height: '3rem' }}></div>
 
@@ -71,7 +105,9 @@ export default function AdminMain() {
                         <h2 className='m0 mr05' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToArticle} />
                     </div>
-                    <StyledArticleListWrapper>
+
+                    <DesktopList pathTo={'../articleDetail'} contents={aContents} headers={aHeaders} columns={aColumns} />
+                    {/* <StyledArticleListWrapper>
                         {articles ? (
                             articles.length > 8
                                 ? articles.slice(0, 8).map((article, index) => (
@@ -83,7 +119,7 @@ export default function AdminMain() {
                         ) : (
                             <p>기사가 없습니다.</p>
                         )}
-                    </StyledArticleListWrapper>
+                    </StyledArticleListWrapper> */}
                 </div>
                 <div style={{ height: '3rem' }}></div>
             </div>
