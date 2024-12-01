@@ -25,7 +25,7 @@ export default function AdminArticle({ article, pathTo }) {
     );
 }
 const StyledArticleContentWrapper = styled.div`
-    width: 100%;
+    width: 25rem;
     display: grid;
     grid-template-rows: 1fr 1.5fr 1fr;
     justify-items: flex-start;

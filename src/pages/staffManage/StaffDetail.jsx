@@ -74,14 +74,13 @@ export default function StaffDetail() {
                 </StyledBackground>
                 <div className='desktop-detail aiCenter boxShadow'>
                     {userInfo && <ProfileInfo user={userInfo} />}
-                    <div className='flex aiCenter spaceBetween pd10 mt2' style={{ width: '100%' }}>
+                    <div className='pd10 mt2' style={{ width: '100%' }}>
                         <h2 className='m0'>최신기사</h2>
-                        <SearchBar />
                     </div>
                     <StyledArticleListWrapper className='mt1'>
                         {currentArticles && currentArticles.length > 0 ? (
                             currentArticles.map((article, index) => (
-                                <AdminArticle key={index} article={article} />
+                                <AdminArticle key={index} article={article} pathTo={`/articleDetail/${article.id}`} />
                             ))
                         ) : (
                             <div className="taCenter mb05" style={{ width: '100%' }}>
