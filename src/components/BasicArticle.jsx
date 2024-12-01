@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../styles/theme";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function BasicArticle({ article }) {
   const navigate = useNavigate();
 
   const handleArticleClick = () => {
-    if (article.articleImg && article.articleImg.length > 0) {
+    if ((article.articleImg && article.articleImg.length > 0) || (article.images && article.images.length > 0)) {
       // 이미지가 있으면 상세 페이지로 이동
       navigate(`/articleDetail/${article.id}`);
     } else {
@@ -17,78 +17,69 @@ export default function BasicArticle({ article }) {
   };
 
   return (
-    <div
-      className='basicArticle pd0'
-      style={{ cursor: "pointer", display: "flex", marginTop: "0.5rem" }}
-      onClick={handleArticleClick}
-    >
-      <ImageWrapper>
-        {article.articleImg && article.articleImg.length > 0 ? (
-          <Img 
-            src={article.articleImg}  
-            alt={article.title} 
-          />
-        ) : (
-          <EmptyImage />
-        )}
-      </ImageWrapper>
-      
-      <ArticleInfo>
+    <ArticleContainer onClick={handleArticleClick}>
+      {((article.articleImg && article.articleImg.length > 0) || (article.images && article.images.length > 0)) ? (
+        <ImageWrapper>
+          <Img src={article.articleImg || article.images[0]} alt={article.title} />
+        </ImageWrapper>
+      ) : null}
+
+      <ArticleInfo noImage={!article.articleImg && (!article.images || article.images.length === 0)}>
         <Title>{article.title}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>
-    </div>
+    </ArticleContainer>
   );
 }
-// 이미지와 빈 화면을 감싸는 Wrapper
+
+const ArticleContainer = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  align-items: center;
+`;
+
 const ImageWrapper = styled.div`
   margin-left: 0.5rem;
   margin-right: 0.7rem;
   width: 12rem;
   height: 7.5rem;
-  background-color: #f0f0f0;  /* 기본 배경색 (빈 이미지일 경우 사용) */
+  background-color: #f0f0f0;
 `;
 
-// 실제 이미지
 const Img = styled.img`
-  width: 12rem; // 부모 div에 맞게 100%로 크기 조정
-  height: 100%;  // 부모 div에 맞게 100%로 크기 조정
-  object-fit: cover;  /* 이미지가 크기를 채우면서 비율을 유지 */
-`;
-
-// 이미지가 없을 경우 표시되는 빈 공간
-const EmptyImage = styled.div`
-  width : 12rem;
+  width: 12rem;
   height: 100%;
-  background-color: #f0f0f0;  /* 빈 공간의 배경색 */
+  object-fit: cover;
 `;
 
 const ArticleInfo = styled.div`
   display: flex;
-  flex-direction: column; 
-  justify-content: space-between; 
+  flex-direction: column;
+  justify-content: space-between;
+  height: 8rem;
+  margin-left: ${({ noImage }) => (noImage ? "0.5rem" : "0")}; /* 이미지가 없을 경우 왼쪽 마진 추가 */
   margin-right: 0.5rem;
-  height: 8rem; 
 `;
 
 const Title = styled.p`
   margin: 0;
   margin-top: 0.3rem;
-  width: 100%;      
+  width: 100%;
   display: -webkit-box;
-  -webkit-line-clamp: 2; 
-  -webkit-box-orient: vertical; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Source = styled.p`
   margin: 0;
-  color: ${theme.colors.gray50}; 
+  color: ${theme.colors.gray50};
   text-align: left;
   margin-bottom: 0.3rem;
-  width: 100%;     
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; 
+  white-space: nowrap;
 `;
