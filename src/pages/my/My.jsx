@@ -7,11 +7,19 @@ import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
 import { getRequest, getCalculateRequest } from "../../apis/axios"; // getRequest 임포트 (이미 정의된 함수로 가정)
 import KakaoAdFit from "../../components/KakaoAdFit";
+import MyPagination from "../../components/Pagination";
 
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
     const [articles, setArticles] = useState([]);  // 추천 기사 데이터를 저장할 상태
     const navigate = useNavigate();
+
+    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템개수
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     const handleSetPub = () => {
         navigate('/subManage');
@@ -48,11 +56,16 @@ export default function My() {
                 console.log('Fetched Articles:', articlesData);
             } catch (error) {
                 console.error('Error fetching main articles:', error);
+                setArticles([]);
             }
         };
 
         fetchArticles(); // 컴포넌트 마운트 시 API 호출
     }, []); // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
+
+    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    const endIdx = startIdx + itemsCountPerPage;
+    const currentArticles = articles.slice(startIdx, endIdx);
 
     return (
         <div>
@@ -81,12 +94,25 @@ export default function My() {
                 <KakaoAdFit />
                 <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
 
-                {articles.map((article, index) => (
-                    <div key={article.id || index}>
-                        <BasicArticle article={article} /> {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
-                        <hr />
-                    </div>
-                ))}
+                {Array.isArray(articles) && articles.length > 0 ? (
+                    currentArticles.map((article, index) => (
+                        <div key={article.id || index}>
+                            <BasicArticle article={article} /> {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
+                            <hr />
+                        </div>
+                    ))
+                ) : (
+                <p> 좋아요 한 기사가 없습니다. </p>
+                )}
+
+                {articles.length > 0 && (
+                    <MyPagination
+                        itemsCountPerPage={8}
+                        totalItemsCount={articles.length}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                    />
+                )}
 
             </div>
         </div>
