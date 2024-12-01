@@ -17,8 +17,8 @@ const QuillEditor = ({ onChange, content }) => {
 
     React.useEffect(() => {
         setEditorContent(content);
-      }, [content]);
-      
+    }, [content]);
+
     const formats = [
         'float',
         'width',
@@ -47,7 +47,7 @@ const QuillEditor = ({ onChange, content }) => {
                     { align: "right" },
                     { align: "justify" }
                 ],
-                ["link", "image"],
+                ["image"],
             ],
         },
     };

@@ -45,36 +45,47 @@ const ArticleDetail = () => {
         };
         checkLikeStatus();
     }, [articleId]);
-
+    const fetchUser = async () => {
+        if (sessionStorage.getItem('authToken'))
+            return true
+        else {
+            alert('로그인 후 사용할 수 있는 기능입니다.');
+            return false;
+        }
+    };
     const handleLike = async () => {
-        try {
-            const response = await postRequest(`/api/article/${articleId}/like`);
-            setIsArticleLiked(true);
-            setLikeId(response.data);
+        if (await fetchUser()) {
+            try {
+                const response = await postRequest(`/api/article/${articleId}/like`);
+                setIsArticleLiked(true);
+                setLikeId(response.data);
 
-            setArticle(prevArticle => ({
-                ...prevArticle,
-                likes: prevArticle.likes + 1
-            }));
-        } catch (error) {
-            console.error("Error adding like", error);
+                setArticle(prevArticle => ({
+                    ...prevArticle,
+                    likes: prevArticle.likes + 1
+                }));
+            } catch (error) {
+                console.error("Error adding like", error);
+            }
         }
     };
 
     const handleUnlike = async () => {
-        try {
-            if (likeId) {
-                await deleteRequest(`/api/article/like/${likeId}/unlike`);
-                setIsArticleLiked(false);
-                setLikeId(null);
+        if (await fetchUser()) {
+            try {
+                if (likeId) {
+                    await deleteRequest(`/api/article/like/${likeId}/unlike`);
+                    setIsArticleLiked(false);
+                    setLikeId(null);
 
-                setArticle(prevArticle => ({
-                    ...prevArticle,
-                    likes: prevArticle.likes - 1
-                }));
+                    setArticle(prevArticle => ({
+                        ...prevArticle,
+                        likes: prevArticle.likes - 1
+                    }));
+                }
+            } catch (error) {
+                console.error("Error removing like", error);
             }
-        } catch (error) {
-            console.error("Error removing like", error);
         }
     };
 

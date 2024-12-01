@@ -67,7 +67,7 @@ export default function Main() {
             <KakaoAdFit />
             {
                 Array.isArray(articles) && articles.length > 0 ? (
-                    articles.map((article) => (
+                    articles.map((article, index) => (
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />

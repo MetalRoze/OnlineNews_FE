@@ -13,7 +13,12 @@ const dateOnly = (date) => {
     const [year, month, day] = formattedDate.split('.').map(part => part.trim());
     return `${year}/${month}/${day} ${formattedTime}`;
 };
-
+//yyyy년 mm월 dd일
+const yearMonthDay = (date) => {
+    const { formattedDate } = formatDateComponents(date);
+    const [year, month, day] = formattedDate.split('.').map(part => part.trim());
+    return `${year}년 ${month}월 ${day}일`;
+};
 const formatDateComponents = (date) => {
     const dateOptions = {
         year: 'numeric',
@@ -37,4 +42,4 @@ const formatDateComponents = (date) => {
 };
 
 export default formatDateTime;
-export { formatDateTime, dateOnly };
+export { formatDateTime, dateOnly, yearMonthDay };
