@@ -38,19 +38,19 @@ export default function MobileNoti() {
     const fetchNoties = async (userGrade, status) => {
         if (!userGrade) return;
         const endpoint = '/api/notification';
-        let param={};
+        let param = {};
 
         if (status === 'requestNoties') {
-            param = {type: 'request'};
+            param = { type: 'request' };
         } else if (status === 'likeNoties') {
-            param = {type: 'like'};
+            param = { type: 'like' };
         } else if (status === 'commentNoties') {
-            param = {type: 'comment'};
+            param = { type: 'comment' };
         }
         try {
             const response = await getRequest(endpoint, param);
-            setNoties(response.data);
-            console.log(response.data);
+            const reversedData = Array.isArray(response.data) ? response.data.reverse() : [];
+            setNoties(reversedData);
         } catch (error) {
             console.error('요청실패', error);
         }

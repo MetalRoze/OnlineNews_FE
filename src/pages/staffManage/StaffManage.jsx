@@ -59,13 +59,10 @@ export default function StaffManage() {
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container">
-                <div className='flex aiCenter spaceBetween mb1'>
-                    <h2> 직원 </h2>
+                <div className='flex aiCenter spaceBetween mt1'>
+                    <TotalCount>전체 {staffs.length}개</TotalCount>
                     <div><DesktopTab tabData={tabData} setActiveTab={setActiveTab} /></div>
                 </div>
-
-                <TotalCount>전체 {staffs.length}개</TotalCount>
-
                 <DesktopList pathTo={'staffDetail'} contents={contents} headers={headers} columns={columns} />
                 {staffs.length === 0 && (
                     <div className="taCenter mb05" style={{ width: '100%' }}>
