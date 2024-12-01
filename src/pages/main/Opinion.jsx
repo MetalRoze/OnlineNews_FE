@@ -5,7 +5,6 @@ import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 import MyPagination from "../../components/Pagination";
-import KakaoAdFit from "../../components/KakaoAdFit";
 import spinner from "../../assets/spinner.gif"; // import spinner.gif
 
 export default function Opinion() {
@@ -80,12 +79,10 @@ export default function Opinion() {
                 </CenteredText>
             ) : (
                 Array.isArray(articles) && articles.length > 0 ? (
-                    currentArticles.map((article, index) => (
+                    currentArticles.map((article) => (
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
-                            {/* KakaoAdFit 컴포넌트는 5개마다 삽입 */}
-                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (
@@ -95,11 +92,12 @@ export default function Opinion() {
 
             {articles.length > 0 && (
                 <MyPagination
-                    itemsCountPerPage={itemsCountPerPage}
-                    totalItemsCount={articles.length}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageChange}
-                />
+                activePage={currentPage}  // currentPage를 전달
+                itemsCountPerPage={8}
+                totalItemsCount={articles.length}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}  // 페이지 변경 함수
+            />
             )}
         </div>
     );

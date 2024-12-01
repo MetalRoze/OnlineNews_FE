@@ -71,6 +71,7 @@ export default function Main() {
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
+                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (

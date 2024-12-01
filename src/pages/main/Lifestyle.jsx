@@ -99,6 +99,7 @@ export default function Lifestyle() {
 
             {articles.length > 0 && (
                 <MyPagination
+                    activePage={currentPage}  // currentPage를 전달
                     itemsCountPerPage={8}
                     totalItemsCount={articles.length}
                     pageRangeDisplayed={5}
