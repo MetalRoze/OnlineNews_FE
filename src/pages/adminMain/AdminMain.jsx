@@ -24,7 +24,6 @@ export default function AdminMain() {
         try {
             const response = await getRequest("api/request/status", { keyword: 'pending' });
             setRequests(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('요청실패', error);
         }
@@ -73,7 +72,7 @@ export default function AdminMain() {
         fetchRequests();
         fetchArticles();
     }, []);
-
+    
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container aiCenter">
@@ -83,20 +82,11 @@ export default function AdminMain() {
                         <h2 className='m0 mr05'>기사 요청 현황</h2>
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToRequest} />
                     </div>
-                    <DesktopList pathTo={'../requestManage/requestDetail'} contents={reqContents} headers={reqHeaders} columns={reqColumns} />
-                    {/* <StyledRequestListWrapper>
-                        {requests ? (
-                            requests.length > 6
-                                ? requests.slice(0, 6).map((request, index) => (
-                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} width={'100%'}/>
-                                ))
-                                : requests.map((request, index) => (
-                                    <AdminRequest key={index} request={request} pathTo={`/requestManage/requestDetail/${request.id}`} />
-                                ))
+                    {requests && requests.length>0 ? (
+                            <DesktopList pathTo={'../requestManage/requestDetail'} contents={reqContents} headers={reqHeaders} columns={reqColumns} />
                         ) : (
-                            <p>요청이 없습니다.</p>
+                            <div className='taCenter' style={{width: '100%'}}>요청이 없습니다.</div>
                         )}
-                    </StyledRequestListWrapper> */}
                 </div>
                 <div style={{ height: '3rem' }}></div>
 
@@ -105,21 +95,11 @@ export default function AdminMain() {
                         <h2 className='m0 mr05' style={{ alignSelf: "flex-start" }}>오늘 기사</h2>
                         <i className="bi bi-chevron-right" style={{ cursor: 'pointer' }} onClick={goToArticle} />
                     </div>
-
-                    <DesktopList pathTo={'../articleDetail'} contents={aContents} headers={aHeaders} columns={aColumns} />
-                    {/* <StyledArticleListWrapper>
-                        {articles ? (
-                            articles.length > 8
-                                ? articles.slice(0, 8).map((article, index) => (
-                                    <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
-                                ))
-                                : articles.map((article, index) => (
-                                    <AdminArticle key={index} article={article} pathTo={`../articleDetail/${article.id}`} />
-                                ))
+                    {articles && articles.length>0 ? (
+                            <DesktopList pathTo={'../articleDetail'} contents={aContents} headers={aHeaders} columns={aColumns} />
                         ) : (
-                            <p>기사가 없습니다.</p>
+                            <div className='taCenter' style={{width: '100%'}}>기사가 없습니다.</div>
                         )}
-                    </StyledArticleListWrapper> */}
                 </div>
                 <div style={{ height: '3rem' }}></div>
             </div>
