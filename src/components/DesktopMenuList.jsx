@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const DesktopMenuList = () => {
+    const navigate =useNavigate();
+    const handleSearchClick = () => {
+        navigate('/search');
+    };
     return (
         <StyledNavbar>
             <Container className="container">
@@ -16,7 +21,7 @@ const DesktopMenuList = () => {
                 </Nav>
             </Container>
             <div className='side-menu' style={{ position: 'absolute', bottom: '0', left: '1rem' }}>
-                <i className="bi bi-search mr1" style={{ cursor: 'pointer' }}  />
+                <i className="bi bi-search mr1" style={{ cursor: 'pointer' }} onClick={handleSearchClick} />
             </div>
         </StyledNavbar>
     );
