@@ -16,19 +16,22 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
 }
-.mobile-header-grid > div{
+
+.mobile-header-grid>div {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
 }
-.mobile-header-grid> div:first-child{
+
+.mobile-header-grid>div:first-child {
     justify-content: flex-start;
 }
+
 .mobile-header-grid a,
 .mobile-header-grid .date,
-.mobile-header-grid .link{
-    color: var(--color-gray40); 
+.mobile-header-grid .link {
+    color: var(--color-gray40);
 }
 
 .mobile-header-grid img {
@@ -36,6 +39,24 @@
     height: 60px;
 }
 
+@media(max-width:600px) {
+    .mobile-header-grid img {
+        width: 110px;
+    }
+}
+
+@media(max-width:390px) {
+
+    .mobile-header-grid {
+        display: grid;
+        grid-template-columns: 2fr 1.5fr 2fr;
+        gap: 0rem;
+    }
+
+    .mobile-header-grid img {
+        width: 100%;
+    }
+}
 
 /* 헤더 */
 .desktop-header {
@@ -376,6 +397,32 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.myArticleRadio .visibility {
+    gap: 5px;
+}
+
+.myArticleRadio .visibility div {
+    display: flex;
+}
+
+.myArticleRadio .status {
+    gap: 5px;
+}
+
+.myArticleRadio .status div {
+    display: flex;
+}
+
+@media (max-width: 500px) {
+    .myArticleRadio {
+        flex-direction: column;
+    }
+
+    .myArticleRadio .visibility {
+        flex-direction: row;
+    }
 }
 
 .profile50 {
