@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 import MyPagination from "../../components/Pagination";
 import spinner from "../../assets/spinner.gif"; // import spinner.gif
+import KakaoAdFit from "../../components/KakaoAdFit";
 
 
 export default function Economy() {
@@ -73,7 +74,7 @@ export default function Economy() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
+            {head ? <HeadlineArticle head={head} /> : <CenteredText>Loading headline...</CenteredText>}
 
             {/* Divider */}
             {/* <Divider /> */}
@@ -89,6 +90,7 @@ export default function Economy() {
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
+                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (

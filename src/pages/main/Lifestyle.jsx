@@ -5,6 +5,7 @@ import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 import MyPagination from "../../components/Pagination";
+import KakaoAdFit from "../../components/KakaoAdFit";
 import spinner from "../../assets/spinner.gif"; // import spinner.gif
 
 export default function Lifestyle() {
@@ -73,7 +74,7 @@ export default function Lifestyle() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
+            {head ? <HeadlineArticle head={head} /> : <CenteredText>Loading headline...</CenteredText>}
 
             {/* Divider */}
             {/* <Divider /> */}

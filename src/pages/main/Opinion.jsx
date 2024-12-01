@@ -5,6 +5,7 @@ import BasicArticle from "../../components/BasicArticle";
 import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 import MyPagination from "../../components/Pagination";
+import KakaoAdFit from "../../components/KakaoAdFit";
 import spinner from "../../assets/spinner.gif"; // import spinner.gif
 
 export default function Opinion() {
@@ -70,7 +71,7 @@ export default function Opinion() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
+            {head ? <HeadlineArticle head={head} /> : <CenteredText>Loading headline...</CenteredText>}
 
             {isLoading ? (  // 로딩 중일 때 스피너 표시
                 <CenteredText>
@@ -79,10 +80,12 @@ export default function Opinion() {
                 </CenteredText>
             ) : (
                 Array.isArray(articles) && articles.length > 0 ? (
-                    currentArticles.map((article) => (
+                    currentArticles.map((article, index) => (
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
+                            {/* KakaoAdFit 컴포넌트는 5개마다 삽입 */}
+                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (

@@ -85,6 +85,8 @@ export default function Ranking() {
                             article={article} // 전달된 기사 데이터를 RankingArticle로 전달
                         />
                         <hr />
+                        {(index + 1) % 5 === 0 && <KakaoAdFit />}
+
                     </div>
                 ))
             )}
