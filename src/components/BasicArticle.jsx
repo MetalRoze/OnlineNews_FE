@@ -7,7 +7,7 @@ export default function BasicArticle({ article }) {
   const navigate = useNavigate();
 
   const handleArticleClick = () => {
-    if (article.articleImg && article.articleImg.length > 0) {
+    if ((article.articleImg && article.articleImg.length > 0) || (article.images && article.images.length > 0)) {
       // 이미지가 있으면 상세 페이지로 이동
       navigate(`/articleDetail/${article.id}`);
     } else {
@@ -18,13 +18,13 @@ export default function BasicArticle({ article }) {
 
   return (
     <ArticleContainer onClick={handleArticleClick}>
-      {article.articleImg && article.articleImg.length > 0 ? (
+      {((article.articleImg && article.articleImg.length > 0) || (article.images && article.images.length > 0)) ? (
         <ImageWrapper>
-          <Img src={article.articleImg} alt={article.title} />
+          <Img src={article.articleImg || article.images[0]} alt={article.title} />
         </ImageWrapper>
       ) : null}
 
-      <ArticleInfo noImage={!article.articleImg || article.articleImg.length === 0}>
+      <ArticleInfo noImage={!article.articleImg && (!article.images || article.images.length === 0)}>
         <Title>{article.title}</Title>
         <Source>{article.publisherName}</Source>
       </ArticleInfo>

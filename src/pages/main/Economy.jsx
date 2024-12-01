@@ -32,10 +32,21 @@ export default function Economy() {
                     console.error("No headline data found.");
                 }
 
-                // 기사 데이터 가져오기
-                const articleResponse = await getRequest("/api/article/rss/category?categoryName=ECONOMY");
-                setArticles(articleResponse.data || []); // 오류 방지
-                console.log(articleResponse.data);
+                const [articleRssResponse, articleSelectResponse] = await Promise.all([
+                    getRequest("/api/article/rss/category?categoryName=OPINION"),
+                    getRequest("/api/article/select?category=OPINION")
+                ]);
+
+                // 두 API 결과 합치기
+                const allArticles = [
+                    ...articleRssResponse.data,  // 첫 번째 API 데이터
+                    ...articleSelectResponse.data  // 두 번째 API 데이터
+                ];
+
+                // 데이터를 랜덤하게 섞기
+                const shuffledArticles = allArticles.sort(() => Math.random() - 0.5);
+
+                setArticles(shuffledArticles);  // 섞인 데이터를 articles 상태에 저장
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
                 setArticles([]); // 오류 발생 시 빈 배열로 설정

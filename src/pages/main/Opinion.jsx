@@ -15,7 +15,7 @@ export default function Opinion() {
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
+        setCurrentPage(page); // 페이지 변경 시 currentPage 업데이트
     };
 
     useEffect(() => {
@@ -25,17 +25,26 @@ export default function Opinion() {
                 const headlineResponse = await getRequest("/api/main-article/category/headline?category=OPINION");
 
                 if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
-                    console.log("헤드라인 : ", headlineResponse.data[0]);
                     setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");
                 }
 
-                // 그 후 기사 데이터 가져오기
-                const articleResponse = await getRequest("/api/article/rss/category?categoryName=OPINION");
-                setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
-                console.log(articleResponse.data);
+                const [articleRssResponse, articleSelectResponse] = await Promise.all([
+                    getRequest("/api/article/rss/category?categoryName=OPINION"),
+                    getRequest("/api/article/select?category=OPINION")
+                ]);
 
+                // 두 API 결과 합치기
+                const allArticles = [
+                    ...articleRssResponse.data,  // 첫 번째 API 데이터
+                    ...articleSelectResponse.data  // 두 번째 API 데이터
+                ];
+
+                // 데이터를 랜덤하게 섞기
+                const shuffledArticles = allArticles.sort(() => Math.random() - 0.5);
+
+                setArticles(shuffledArticles);  // 섞인 데이터를 articles 상태에 저장
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
                 setArticles([]);  // 오류가 발생한 경우에도 빈 배열로 설정
@@ -48,17 +57,20 @@ export default function Opinion() {
 
     }, []); // 빈 배열로 한 번만 호출
 
+    // articles 상태가 변경될 때마다 로그 출력
+    useEffect(() => {
+        console.log(articles);  // articles 상태가 업데이트된 후에만 실행
+    }, [articles]);
+
+    // 페이징 처리
     const startIdx = (currentPage - 1) * itemsCountPerPage;
     const endIdx = startIdx + itemsCountPerPage;
-    const currentArticles = articles.slice(startIdx, endIdx);
+    const currentArticles = articles.slice(startIdx, endIdx); // 현재 페이지에 해당하는 기사만 가져오기
 
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
             {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
-
-            {/* Divider */}
-            {/* <Divider /> */}
 
             {isLoading ? (  // 로딩 중일 때 스피너 표시
                 <CenteredText>
@@ -80,7 +92,7 @@ export default function Opinion() {
 
             {articles.length > 0 && (
                 <MyPagination
-                    itemsCountPerPage={8}
+                    itemsCountPerPage={itemsCountPerPage}
                     totalItemsCount={articles.length}
                     pageRangeDisplayed={5}
                     onPageChange={handlePageChange}
