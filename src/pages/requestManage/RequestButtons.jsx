@@ -14,7 +14,7 @@ const RequestButtons = ({ request, article, status, type }) => {
                 : `/api/request/${reqId}/enroll`; //시민기자 승인
             const response = await patchRequest(url);
             console.log(response.status);
-            if (response.status === '200') {
+            if (response.status === 200) {
                 alert("승인되었습니다.")
             }
         } catch (error) {
