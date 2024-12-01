@@ -44,6 +44,7 @@ const ImageWrapper = styled.div`
   margin-right: 0.7rem;
   width: 12rem;
   height: 7.5rem;
+  margin-bottom : 0.5rem;
   background-color: #f0f0f0;
 `;
 
