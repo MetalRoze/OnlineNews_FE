@@ -55,7 +55,7 @@ export default function RequestManage() {
         구분: request.type,
         제목: request.requestTitle,
         처리구분: convertStatusToKor(request.status),
-        승인일자: request.confirmedAt !== null ? request.confirmedAt.split("T")[0]: null,
+        승인일자: request.confirmedAt !== null ? request.confirmedAt.split("T")[0] : null,
         id: request.id,
     }));
 
@@ -64,11 +64,10 @@ export default function RequestManage() {
     return (
         <div className="flex" style={{ width: "100vw" }}>
             <div className="desktop-container">
-                <div className="flex aiCenter spaceBetween mb1">
-                    <h2>승인요청내역</h2>
+                <div className="flex aiCenter spaceBetween mt1">
+                    <TotalCount>전체 {requests.length}개</TotalCount>
                     <div><DesktopTab tabData={tabData} activeTab={activeTab} setActiveTab={setActiveTab} /></div>
                 </div>
-                <TotalCount>전체 {requests.length}개</TotalCount>
                 <div>
                     <DesktopList pathTo={'requestDetail'} contents={contents} headers={headers} columns={columns} />
                     {requests.length === 0 && (
