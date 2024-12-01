@@ -26,8 +26,14 @@ export default function RequestManage() {
                 : '/api/request/status';
             const params = status === 'allRequests' ? {} : { keyword: status };
             const response = await getRequest(endpoint, params);
-            setRequests(response.data);
-            console.log(response.data);
+    
+            const fetchedRequests = response.data;
+            if (status !== 'allRequests') {
+                fetchedRequests.reverse(); 
+            }
+    
+            setRequests(fetchedRequests);
+            console.log(fetchedRequests);
         } catch (error) {
             console.error('요청실패', error);
         }
