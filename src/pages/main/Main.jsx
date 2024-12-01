@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import MenuList from "../../components/MenuList";
 import HeadlineArticle from "../../components/HeadlineArticle";
 import BasicArticle from "../../components/BasicArticle";
@@ -9,6 +9,7 @@ import KakaoAdFit from "../../components/KakaoAdFit";
 export default function Main() {
     const [head, setHead] = useState(null);
     const [articles, setArticles] = useState([]);  // 기본값을 빈 배열로 설정
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,10 +23,31 @@ export default function Main() {
                     console.error("No headline data found.");
                 }
 
-                // 그 후 기사 데이터 가져오기
-                const articleResponse = await getRequest("/api/main-article");
-                setArticles(articleResponse.data);  // 가져온 데이터를 articles 상태에 저장
-                console.log(articleResponse.data);
+                // 그 후 기사 데이터 두 개의 카테고리에서 가져오기
+                const opinionResponse = await getRequest("/api/main-article/category?category=OPINION");
+                const lifeCultureResponse = await getRequest("/api/main-article/category?category=LIFE_CULTURE");
+                const socialResponse = await getRequest("/api/main-article/category?category=SOCIAL");
+                const enterResponse = await getRequest ("api/main-article/category?category=ENTERTAINMENT");
+                const techResponse = await getRequest ("api/main-article/category?category=SCIENCE_TECH");
+                const politicsResponse = await getRequest ("api/main-article/category?category=POLITICS");
+                const economyResponse = await getRequest ("api/main-article/category?category=ECONOMY");
+
+
+
+                // 두 개의 응답 데이터를 하나로 합치기
+                const combinedArticles = [
+                    ...opinionResponse.data,
+                    ...lifeCultureResponse.data,
+                    ...socialResponse.data,
+                    ...enterResponse.data,
+                    ...techResponse.data,
+                    ...politicsResponse.data,
+                    ...economyResponse.data
+                ];
+
+                // 합쳐진 기사 데이터를 상태에 저장
+                setArticles(combinedArticles);
+                console.log("Fetched Articles:", combinedArticles);
 
             } catch (error) {
                 console.error("Failed to fetch articles:", error);
@@ -34,7 +56,6 @@ export default function Main() {
         };
 
         fetchData();
-
     }, []);
 
     return (
@@ -50,6 +71,7 @@ export default function Main() {
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
+                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (

@@ -12,9 +12,11 @@ import MyPagination from "../../components/Pagination";
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
     const [articles, setArticles] = useState([]);  // 추천 기사 데이터를 저장할 상태
+    const [subscribedArticles, setSubscribedArticles] = useState([]); // 구독 기사 데이터를 저장할 상태
+    const [isRecommendedArticles, setIsRecommendedArticles] = useState(true); // 추천 기사와 구독 기사 토글 상태
     const navigate = useNavigate();
 
-    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템개수
+    const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템 개수
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
 
     const handlePageChange = (page) => {
@@ -31,6 +33,28 @@ export default function My() {
             .then(response => {
                 setSubscriptions(response.data); // 받은 데이터로 subscriptions 상태 업데이트
                 console.log(response.data);
+                
+                // 구독 기사 가져오기
+                const fetchSubscribedArticles = async () => {
+                    try {
+                        const subscribedArticlePromises = response.data.map(subscription =>
+                            getRequest(`/api/article/rss/${subscription.publisher_id}`)
+                        );
+
+                        // 모든 구독 기사 요청 병렬 처리
+                        const subscribedArticleResponses = await Promise.all(subscribedArticlePromises);
+
+                        // 구독 기사 데이터 추출
+                        const subscribedArticlesData = subscribedArticleResponses.map(response => response.data);
+                        setSubscribedArticles(subscribedArticlesData);
+                        console.log('Fetched Subscribed Articles:', subscribedArticlesData);
+                    } catch (error) {
+                        console.error('Error fetching subscribed articles:', error);
+                        setSubscribedArticles([]);
+                    }
+                };
+
+                fetchSubscribedArticles(); // 구독 기사 가져오기 호출
             })
             .catch(error => {
                 console.error('Error fetching subscriptions:', error);
@@ -87,25 +111,62 @@ export default function My() {
                                 <CgAddR size={28} onClick={handleSetPub} />
                             </AddIconBox>
                         </GrayBox>
-
                     </CenteredContainer>
                 </div>
 
                 <KakaoAdFit />
-                <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>추천 기사</h4>
+                
+                {/* 추천 기사와 구독 기사 제목을 클릭할 수 있도록 수정 */}
+                <div style={{ textAlign: "left", width: "95%", marginTop: "2rem", marginLeft: "0.5rem" }}>
+                    <TitleTab 
+                        isActive={isRecommendedArticles}
+                        onClick={() => setIsRecommendedArticles(true)}
+                    >
+                        추천 기사
+                    </TitleTab>
+                    <TitleTab 
+                        isActive={!isRecommendedArticles}
+                        onClick={() => setIsRecommendedArticles(false)}
+                    >
+                        구독 기사
+                    </TitleTab>
+                </div>
 
-                {Array.isArray(articles) && articles.length > 0 ? (
-                    currentArticles.map((article, index) => (
-                        <div key={article.id || index}>
-                            <BasicArticle article={article} /> {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
+                <h4 style={{ textAlign: 'left', width: '95%', marginTop: "2rem", marginLeft: "0.5rem" }}>
+                    {isRecommendedArticles ? "추천 기사" : "구독 기사"}
+                </h4>
+
+                {isRecommendedArticles ? (
+                    Array.isArray(articles) && articles.length > 0 ? (
+                        currentArticles.map((article, index) => (
+                            <div key={article.id || index}>
+                                <BasicArticle article={article} /> {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
+                                <hr />
+                            </div>
+                        ))
+                    ) : (
+                        <p> 좋아요 한 기사가 없습니다. </p>
+                    )
+                ) : (
+                    // 구독 기사 렌더링
+                    subscribedArticles.map((articlesList, index) => (
+                        <div key={index}>
+                            <h5>{subscriptions[index]?.publisher_name}</h5>
+                            {Array.isArray(articlesList) && articlesList.length > 0 ? (
+                                articlesList.map((article, articleIndex) => (
+                                    <div key={articleIndex}>
+                                        <BasicArticle article={article} /> {/* 구독 기사 */}
+                                    </div>
+                                ))
+                            ) : (
+                                <CenteredText> 구독한 기사가 없습니다. </CenteredText>
+                            )}
                             <hr />
                         </div>
                     ))
-                ) : (
-                <p> 좋아요 한 기사가 없습니다. </p>
                 )}
 
-                {articles.length > 0 && (
+                {articles.length > 0 && isRecommendedArticles && (
                     <MyPagination
                         itemsCountPerPage={8}
                         totalItemsCount={articles.length}
@@ -113,11 +174,32 @@ export default function My() {
                         onPageChange={handlePageChange}
                     />
                 )}
-
             </div>
         </div>
     );
 }
+
+const CenteredText = styled.h5`
+    display: flex;
+    flex-direction: column;  // 이미지와 텍스트를 세로로 정렬
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    text-align: center;
+    color: #000;
+`;
+
+
+const TitleTab = styled.div`
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    background-color: ${(props) => (props.isActive ? "#ccc" : "#fff")};
+    border-radius: 5px;
+    font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
+    transition: background-color 0.3s, font-weight 0.3s;
+`;
 
 const CenteredContainer = styled.div`
     display: flex;

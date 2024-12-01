@@ -70,7 +70,7 @@ export default function Opinion() {
     return (
         <div className='flex column mobile-container m0 pd0'>
             <MenuList />
-            {head ? <HeadlineArticle head={head} /> : <p>Loading headline...</p>}
+            {head ? <HeadlineArticle head={head} /> : <CenteredText>Loading headline...</CenteredText>}
 
             {isLoading ? (  // 로딩 중일 때 스피너 표시
                 <CenteredText>
@@ -92,11 +92,12 @@ export default function Opinion() {
 
             {articles.length > 0 && (
                 <MyPagination
-                    itemsCountPerPage={itemsCountPerPage}
-                    totalItemsCount={articles.length}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageChange}
-                />
+                activePage={currentPage}  // currentPage를 전달
+                itemsCountPerPage={8}
+                totalItemsCount={articles.length}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}  // 페이지 변경 함수
+            />
             )}
         </div>
     );

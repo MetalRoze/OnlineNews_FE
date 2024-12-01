@@ -85,12 +85,15 @@ export default function Ranking() {
                             article={article} // 전달된 기사 데이터를 RankingArticle로 전달
                         />
                         <hr />
+                        {(index + 1) % 5 === 0 && <KakaoAdFit />}
+
                     </div>
                 ))
             )}
 
             {articles.length > 0 && (
                 <MyPagination
+                    activePage={currentPage}  // currentPage를 전달
                     itemsCountPerPage={8}
                     totalItemsCount={articles.length}
                     pageRangeDisplayed={5}
