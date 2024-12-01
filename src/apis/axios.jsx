@@ -102,5 +102,12 @@ const getRunMyCodeRequest = (articleId) => {
   return apiClientForRunMyCode.get(`/pyapi/run-my-code/${articleId}`);
 };
 
+// calculate 요청 GET 요청 함수
+const getCalculateRequest = (params = {}) => {
+  return apiClientForRunMyCode.get('/pyapi/calculate', {
+    params,
+  });
+};
 
-export { getRequest, postRequest, putRequest, patchRequest, deleteRequest, getRunMyCodeRequest };
+
+export { getRequest, postRequest, putRequest, patchRequest, deleteRequest, getRunMyCodeRequest, getCalculateRequest };
