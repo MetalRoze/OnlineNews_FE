@@ -93,7 +93,7 @@ const AllAgreeDescription = styled.p`
 const HrLine = styled.hr`
   width: 100%;
   max-width: 100%; 
-  margin: 5px 0px;
+  margin: 10px 0px;
   border: 0;
   border-bottom: 1px solid var(--color-gray50);
 `;
