@@ -16,7 +16,8 @@ const Message = styled.h1`
 
 const NextButton = styled.button`
     padding:10px;
-    width: 400px;
+    width:100%;
+    max-width:80%;
     background-color: var(--color-gray40);
     color: white;
     border: none;
@@ -37,7 +38,7 @@ export default function Signup() {
     };
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <div className='column mobile-container m0 pd30 aiCenter jfCcenter'>
             <IconWrapper>
                 <img 
                     width='180px' 
