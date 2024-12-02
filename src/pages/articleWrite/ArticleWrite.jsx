@@ -311,6 +311,7 @@ const ArticleWrite = () => {
             <ArticleWriteForm
                 title={title}
                 setTitle={setTitle}
+                authorImg={authorImg}
                 subTitles={subTitles}
                 setSubTitles={setSubTitles}
                 handleSubtitleChange={handleSubtitleChange}
