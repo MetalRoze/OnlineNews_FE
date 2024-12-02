@@ -50,6 +50,7 @@ import StaffDetail from './pages/staffManage/StaffDetail';
 import MyArticle from './pages/myArticle/MyArticle';
 import MyDetail from './pages/myArticle/MyDetail';
 import SearchResult from './pages/search/SearchResult';
+import PrivateAd from './components/PrivateAd'
 
 
 function App() {
@@ -151,8 +152,9 @@ const Basic = () => {
         <Route path='/ranking' element={<Ranking />} />
         <Route path='/myArticle' element={<MyArticle />} />
         <Route path='/myDetail/:articleId' element={<MyDetail />} />
-        <Route path='/result' element={<SearchResult/>}/>
+        <Route path='/result' element={<SearchResult />} />
       </Routes>
+      {!isDesktop && <PrivateAd />}
       <Footer className={isDesktop ? 'desktop-footer' : 'mobile-footer'} />
     </div>
   );
