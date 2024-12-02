@@ -7,16 +7,20 @@ import { getRequest, postRequest, deleteRequest } from '../../apis/axios';
 import MailingSettingModal from '../../components/MailingSettingModal'; // 추가된 import
 
 const ProfileWrapper = styled.div`
-    width: 500px; 
-    height:200px; 
+    width: 100%; 
+    max-width:100%;
+    margin: 0 auto; 
+    height: 100%; 
     display:flex;
     flex-direction:row; 
     justify-content:center;
     align-items:center; 
+    padding: 0 20px;
 `; 
 
 const ProfileTextWrapper = styled.div`
-    width: 250px; 
+    width: 100%;
+    max-width:70%; 
     display:flex;
     margin: 0px 10px;
     flex-direction:column; 
@@ -25,9 +29,10 @@ const ProfileTextWrapper = styled.div`
 `;
 
 const ProfileImage = styled.img`
-    width: 150px; 
-    height: 150px; 
-    margin: 0px 30px;
+    width: 100%;
+    max-width:40%; 
+    height: auto; 
+    margin: 0px 20px;
     border-radius: 50%;  
 `; 
 
@@ -35,16 +40,15 @@ const NameWrapper = styled.div`
     width:100%; 
     display:flex;
     flex-direction:row; 
-    margin: 10px 0px;
 `; 
 
 const NameText = styled.h1`
-    font-size:2.25rem;
+    font-size:2rem;
     width:100%; 
 `; 
 
 const BioWrapper = styled.div`
-    width:250px;
+    width:100%;
     display:flex; 
     flex-direction:row; 
 `; 
@@ -58,7 +62,8 @@ const VerticalLine = styled.div`
 
 const HorizontalLine = styled.div`
     border-top: 1px solid var(--color-gray50);
-    width: 450px; 
+    width:100%;
+    max-width:80%;
     margin: 20px 0; 
 `; 
 
@@ -69,37 +74,50 @@ const BioText = styled.p`
 `; 
 
 const InfoWrapper = styled.div`
-    width: 500px; 
-    height: 400px; 
+    width:100%;
+    max-width:100%;
+    margin: 20px auto;
+    height: auto; 
     display: flex;
     flex-direction:column;
-    align-items: center; 
     justify-content:center;
-    padding: 20px 40px;
-    `; 
+    align-items:center; 
+`;
 
 const InfoColumn = styled.div`
-    width:500px; 
-    margin:10px;
-    display:flex;
-    flex-direction:row; 
-    padding: 0px 40px;
-`; 
+    width: 100%;
+    height: auto;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    align-items: flex-start; /* 텍스트가 위로 정렬되도록 설정 */
+    flex-wrap: wrap; /* 줄바꿈을 허용하여 요소들이 라인 바꿈을 할 수 있도록 설정 */
+`;
 
 const InfoLabel = styled.p`
-    font-size:1.5rem;
-    font-weight:400;
-    width:200px; 
-`; 
+    flex: 0 0 35%;  /* 35% 너비로 고정 */
+    word-break: break-word; 
+    margin: 0 20px;
+    padding: 10px;
+    font-size: 1.25rem;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-start; /* 라벨 텍스트가 왼쪽으로 정렬 */
+`;
 
 const InfoText = styled.p`
-    font-size:1.5rem;
-    font-weight:400;
-    margin-left:10px;
-    width:250px; 
+    flex: 1;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0px 10px;
+    padding: 10px;
     color: var(--color-gray50); 
-
-`; 
+    word-break: break-word;  /* 긴 단어가 화면을 넘어가지 않도록 처리 */
+    white-space: normal;  /* 텍스트가 길어지면 줄바꿈 */
+    display: flex;
+    flex-wrap: wrap; /* 줄바꿈을 허용하여 텍스트가 여러 줄로 나눠지게 함 */
+`;
 
 const EditSpace = styled.div`
     width:30px;
@@ -115,7 +133,8 @@ const EditSpace = styled.div`
 const NextButton = styled.button`
     padding:10px;
     margin: 10px;
-    width: 400px;
+    width:100%;
+    max-width:80%;
     background-color: var(--color-gray40);
     color: white;
     border: none;
@@ -224,7 +243,7 @@ export default function GeneralMyPage() {
     };
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <div className='column mobile-container m0 pd30 aiCenter jfCcenter'>
             <ProfileWrapper>
                 <ProfileImage 
                     src={userData.profileImg || profileIcon}
