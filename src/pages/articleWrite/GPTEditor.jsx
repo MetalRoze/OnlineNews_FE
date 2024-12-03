@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import profileIcon from '../../assets/profileDefault.png';
 import gptLarge from '../../assets/gptLarge.png';
 import gptSmall from '../../assets/gptSmall.png';
+import {postRequest} from '../../apis/axios.jsx';
 
 const GPTEditor = ({
     authorImg
@@ -15,13 +16,25 @@ const GPTEditor = ({
         setKeyword(e.target.value);
     };
 
-    const handleGenerateClick = () => {
+    const handleGenerateClick = async () => {
         if (keyword) {
-            console.log(`Generating article for keyword: ${keyword}`);
-            setArticle(`${keyword}`);
-            setCopyMessage('복사하기');
+
+            try {
+                const response = await postRequest('/api/gpt/ask', 
+                { question: keyword })
+
+                if (response.status === 200) {
+                    setArticle(response.data.choices[0].message.content);
+                    console.log(response.data);
+            
+                    setCopyMessage('복사하기');
+                }
+            } catch (error) {
+                console.error(error);
+                alert(error)
+            }
         } else {
-            alert('기사를 작성하기에 정보가 부족합니다.');
+            alert('요청 정보가 부족합니다.');
         }
     };
 
