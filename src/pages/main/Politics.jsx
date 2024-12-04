@@ -29,7 +29,7 @@ export default function Politics() {
 
                 if (headlineResponse && headlineResponse.data && headlineResponse.data.length > 0) {
                     console.log(headlineResponse.data);
-                    setHead(headlineResponse.data);
+                    setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");
                 }

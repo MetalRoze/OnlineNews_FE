@@ -28,7 +28,7 @@ export default function Economy() {
                 const headlineResponse = await getRequest("/api/main-article/category/headline?category=ECONOMY");
                 if (headlineResponse?.data?.length > 0) {
                     console.log(headlineResponse.data);
-                    setHead(headlineResponse.data);
+                    setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");
                 }

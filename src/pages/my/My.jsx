@@ -14,82 +14,96 @@ export default function My() {
     const [articles, setArticles] = useState([]);  // 추천 기사 데이터를 저장할 상태
     const [subscribedArticles, setSubscribedArticles] = useState([]); // 구독 기사 데이터를 저장할 상태
     const [isRecommendedArticles, setIsRecommendedArticles] = useState(true); // 추천 기사와 구독 기사 토글 상태
-    const navigate = useNavigate();
-
+    const [pagination, setPagination] = useState({
+        currentPage: 1,  // 추천 기사 페이지
+        subscribedPage: 1, // 구독 기사 페이지
+    });
     const [itemsCountPerPage] = useState(8); // 한 페이지에 보이는 아이템 개수
-    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+    const navigate = useNavigate();
+    const [error, setError] = useState(null); // 에러 메시지 상태
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
+    // 페이지 변경 핸들러
+    const handlePageChange = (page) => setPagination(prev => ({ ...prev, currentPage: page }));
+    const handleSubscribedPageChange = (page) => setPagination(prev => ({ ...prev, subscribedPage: page }));
 
+    // 구독 관리 페이지로 이동
     const handleSetPub = () => {
         navigate('/subManage');
     };
 
     useEffect(() => {
         // 구독 정보를 가져오는 API 요청
-        getRequest('/api/subscription')
-            .then(response => {
+        const fetchSubscriptions = async () => {
+            try {
+                const response = await getRequest('/api/subscription');
                 setSubscriptions(response.data); // 받은 데이터로 subscriptions 상태 업데이트
-                console.log(response.data);
-                
+
                 // 구독 기사 가져오기
-                const fetchSubscribedArticles = async () => {
-                    try {
-                        const subscribedArticlePromises = response.data.map(subscription =>
-                            getRequest(`/api/article/rss/${subscription.publisher_id}`)
-                        );
-
-                        // 모든 구독 기사 요청 병렬 처리
-                        const subscribedArticleResponses = await Promise.all(subscribedArticlePromises);
-
-                        // 구독 기사 데이터 추출
-                        const subscribedArticlesData = subscribedArticleResponses.map(response => response.data);
-                        setSubscribedArticles(subscribedArticlesData);
-                        console.log('Fetched Subscribed Articles:', subscribedArticlesData);
-                    } catch (error) {
-                        console.error('Error fetching subscribed articles:', error);
-                        setSubscribedArticles([]);
-                    }
-                };
-
-                fetchSubscribedArticles(); // 구독 기사 가져오기 호출
-            })
-            .catch(error => {
+                const subscribedArticlePromises = response.data.map(subscription =>
+                    getRequest(`/api/article/rss/${subscription.publisher_id}`)
+                );
+                const subscribedArticleResponses = await Promise.all(subscribedArticlePromises);
+                const subscribedArticlesData = subscribedArticleResponses.map(response => response.data).flat(); // 평탄화
+                setSubscribedArticles(subscribedArticlesData);
+            } catch (error) {
+                setError("구독 정보를 불러오는 데 실패했습니다.");
                 console.error('Error fetching subscriptions:', error);
-            });
+            }
+        };
 
         // 추천 기사를 가져오는 API 요청
         const fetchArticles = async () => {
             try {
                 const calculateResponse = await getCalculateRequest();
-                const articleIds = calculateResponse.data?.data || []; // ID 배열 추출
-
-                // 각 ID에 대해 /api/article/select 호출
-                const articlePromises = articleIds.map(id =>
-                    getRequest('/api/article/select', { id })
-                );
-
-                // 모든 요청 결과를 병렬로 처리
+                const articleIds = calculateResponse.data?.data || [];
+                const articlePromises = articleIds.map(id => getRequest('/api/article/select', { id }));
                 const articleResponses = await Promise.all(articlePromises);
-
-                // 응답에서 data 추출
-                const articlesData = articleResponses.map(response => response.data[0]); // Array에서 첫 번째 객체를 추출
+                const articlesData = articleResponses.map(response => response.data[0]);
                 setArticles(articlesData);
-                console.log('Fetched Articles:', articlesData);
             } catch (error) {
+                setError("추천 기사를 불러오는 데 실패했습니다.");
                 console.error('Error fetching main articles:', error);
-                setArticles([]);
             }
         };
 
-        fetchArticles(); // 컴포넌트 마운트 시 API 호출
-    }, []); // 빈 배열을 의존성으로 사용하여 컴포넌트가 처음 렌더링될 때만 호출
+        fetchSubscriptions(); // 구독 정보 및 기사 가져오기
+        fetchArticles(); // 추천 기사 가져오기
+    }, []);
 
-    const startIdx = (currentPage - 1) * itemsCountPerPage;
+    // 현재 페이지에 맞는 추천 기사 데이터 추출
+    const startIdx = (pagination.currentPage - 1) * itemsCountPerPage;
     const endIdx = startIdx + itemsCountPerPage;
     const currentArticles = articles.slice(startIdx, endIdx);
+
+    // 구독 기사에서 현재 페이지의 기사 추출
+    const subscribedStartIdx = (pagination.subscribedPage - 1) * itemsCountPerPage;
+    const subscribedEndIdx = subscribedStartIdx + itemsCountPerPage;
+    const currentSubscribedArticles = subscribedArticles.slice(subscribedStartIdx, subscribedEndIdx);
+
+    const renderArticles = () => {
+        if (isRecommendedArticles) {
+            return currentArticles.length > 0 ? (
+                currentArticles.map((article, index) => (
+                    <div key={article.id || index}>
+                        <BasicArticle article={article} />
+                        <hr />
+                    </div>
+                ))
+            ) : (
+                <CenteredText> 좋아요 한 기사가 없습니다. </CenteredText>
+            );
+        } else {
+            return currentSubscribedArticles.length > 0 ? (
+                currentSubscribedArticles.map((article, index) => (
+                    <div key={index}>
+                        <BasicArticle article={article} />
+                    </div>
+                ))
+            ) : (
+                <CenteredText> 구독한 기사가 없습니다. </CenteredText>
+            );
+        }
+    };
 
     return (
         <div>
@@ -115,16 +129,16 @@ export default function My() {
                 </div>
 
                 <KakaoAdFit />
-                
+
                 {/* 추천 기사와 구독 기사 제목을 클릭할 수 있도록 수정 */}
                 <div style={{ textAlign: "left", width: "95%", marginTop: "2rem", marginLeft: "0.5rem" }}>
-                    <TitleTab 
+                    <TitleTab
                         isActive={isRecommendedArticles}
                         onClick={() => setIsRecommendedArticles(true)}
                     >
                         추천 기사
                     </TitleTab>
-                    <TitleTab 
+                    <TitleTab
                         isActive={!isRecommendedArticles}
                         onClick={() => setIsRecommendedArticles(false)}
                     >
@@ -136,44 +150,30 @@ export default function My() {
                     {isRecommendedArticles ? "추천 기사" : "구독 기사"}
                 </h4>
 
-                {isRecommendedArticles ? (
-                    Array.isArray(articles) && articles.length > 0 ? (
-                        currentArticles.map((article, index) => (
-                            <div key={article.id || index}>
-                                <BasicArticle article={article} /> {/* article 데이터를 BasicArticle 컴포넌트에 전달 */}
-                                <hr />
-                            </div>
-                        ))
-                    ) : (
-                        <p> 좋아요 한 기사가 없습니다. </p>
-                    )
+                {error ? (
+                    <CenteredText>{error}</CenteredText>
                 ) : (
-                    // 구독 기사 렌더링
-                    subscribedArticles.map((articlesList, index) => (
-                        <div key={index}>
-                            <h5>{subscriptions[index]?.publisher_name}</h5>
-                            {Array.isArray(articlesList) && articlesList.length > 0 ? (
-                                articlesList.map((article, articleIndex) => (
-                                    <div key={articleIndex}>
-                                        <BasicArticle article={article} /> {/* 구독 기사 */}
-                                    </div>
-                                ))
-                            ) : (
-                                <CenteredText> 구독한 기사가 없습니다. </CenteredText>
-                            )}
-                            <hr />
-                        </div>
-                    ))
+                    renderArticles()
                 )}
 
-                {articles.length > 0 && isRecommendedArticles && (
+                {isRecommendedArticles && articles.length > 0 && (
                     <MyPagination
-                        itemsCountPerPage={8}
+                        itemsCountPerPage={itemsCountPerPage}
                         totalItemsCount={articles.length}
                         pageRangeDisplayed={5}
                         onPageChange={handlePageChange}
                     />
                 )}
+
+                {!isRecommendedArticles && subscribedArticles.length > 0 && (
+                    <MyPagination
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={subscribedArticles.length}
+                        pageRangeDisplayed={5}
+                        onPageChange={handleSubscribedPageChange}
+                    />
+                )}
+
             </div>
         </div>
     );
@@ -181,14 +181,13 @@ export default function My() {
 
 const CenteredText = styled.h5`
     display: flex;
-    flex-direction: column;  // 이미지와 텍스트를 세로로 정렬
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 200px;
     text-align: center;
     color: #000;
 `;
-
 
 const TitleTab = styled.div`
     display: inline-block;
@@ -203,7 +202,7 @@ const TitleTab = styled.div`
 
 const CenteredContainer = styled.div`
     display: flex;
-    justify-content: center; /* GrayBox를 부모 컨테이너에서 중앙 정렬 */ 
+    justify-content: center;
 `;
 
 const GrayBox = styled.div`
