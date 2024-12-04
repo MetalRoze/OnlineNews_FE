@@ -487,6 +487,13 @@
     color: var(--color-white);
 }
 
+
+.blueButton {
+    width: 150px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
 .shareButton {
     width: 110px;
     padding: 5px 20px;
