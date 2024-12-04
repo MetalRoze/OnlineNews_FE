@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { getRequest } from "../../apis/axios";
 import MyPagination from "../../components/Pagination";
 import spinner from "../../assets/spinner.gif"; // import spinner.gif
+import KakaoAdFit from "../../components/KakaoAdFit";
 
 export default function Opinion() {
     const [head, setHead] = useState(null);
@@ -83,6 +84,7 @@ export default function Opinion() {
                         <div key={article.id}>
                             <BasicArticle article={article} />
                             <hr />
+                            {(index + 1) % 5 === 0 && <KakaoAdFit />}
                         </div>
                     ))
                 ) : (

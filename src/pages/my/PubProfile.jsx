@@ -14,32 +14,32 @@ export default function PubProfile({
     // 클릭 핸들러
     const handleSubscribe = async () => {
         try {
-              // 구독 요청
             const data = { publisherId };
             console.log("Request data:", data);
-
-            // 구독 상태 확인
+    
             const checkUrl = `/api/subscription/check/${publisherId}`;
             const isSubscribed = await getRequest(checkUrl);
-            console.log(`${publisherName} 구독 상태:`, isSubscribed);
-
-            if (isSubscribed.data) {
+            console.log(`${publisherName} 구독 상태 응답:`, isSubscribed);
+    
+            if (isSubscribed?.data) {
                 alert(`${publisherName}은(는) 이미 구독 중입니다.`);
-                return; // 이미 구독 상태라면 구독 요청을 보내지 않음
+                return;
             }
-
-            const response = await postRequest('/api/subscription/subscribe', data,{
-                headers : {'Content-Type' : 'application/json'}
+    
+            const response = await postRequest('/api/subscription/subscribe', data, {
+                headers: { 'Content-Type': 'application/json' },
             });
-            console.log(`${publisherName} 구독 완료`, response);
-
+            console.log(`${publisherName} 구독 완료 응답:`, response);
+    
             if (fetchMy) {
-                await fetchMy(); // 상태 업데이트
+                console.log("상태 업데이트 요청 실행");
+                await fetchMy();
             }
         } catch (error) {
             console.error(`Error subscribing to ${publisherName}:`, error.response?.data || error.message);
         }
     };
+    
     
     
     return (
