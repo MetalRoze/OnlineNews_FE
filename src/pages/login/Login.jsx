@@ -15,6 +15,13 @@ color: var(--color-black);
 padding-bottom: 20px; 
 `;
 
+const ErrorMessage = styled.p`
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+`;
+
 const LoginOptionsWrapper = styled.div`
 margin-top: 20px; 
 text-align: center; 
@@ -29,6 +36,7 @@ color: var(--color-primary);
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
@@ -47,6 +55,11 @@ export default function Login() {
                 navigateByUserGrade();
             })
             .catch(error => {
+                if (error.response && error.response.status === 400) {
+                    setErrorMessage('이메일 또는 비밀번호가 올바르지 않습니다.');
+                } else {
+                    setErrorMessage('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+                }
                 console.error('Error fetching subscriptions:', error);
             });
 
@@ -91,6 +104,7 @@ export default function Login() {
                         aria-label='비밀번호 입력 필드'
                     />
                 </div>
+                {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
                 <button type="submit" className="long-black-button" style={{marginTop:'50px'}}>로그인</button>
             </form>
             <LoginOptionsWrapper>

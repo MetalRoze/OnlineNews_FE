@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import QuillEditor from './QuillEditor';
 import Category from '../../components/Category'
+import GPTEditor from './GPTEditor'
 
-const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory,
+const ArticleWriteForm = ({ title, setTitle, authorImg, subTitles, handleContent, handleSubtitleChange, handleEditorChange, addSubtitleForm, minusSubtitleForm, selectedCategory,
     setSelectedCategory, content }) => {
 
 
@@ -46,15 +47,23 @@ const ArticleWriteForm = ({ title, setTitle, subTitles, handleContent, handleSub
                 <h4 className="mr1 mtbAuto wsNowrap">카테고리</h4>
                 <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
             </div>
+
             <hr />
 
+            <div className='mt1 flex'>
+                <h4 className="mr1 mtbAuto">
+                    기사 작성
+                </h4>
+                <div className='flex1'></div>
+                <GPTEditor authorImg={authorImg} />
+            </div>
             <QuillEditor onChange={handleEditorChange} content={content} />
             <div className="flex">
-                <button className='mlAuto' onClick={handleContent}>미리보기</button>
+                <div className='flex1'></div>
+                <button onClick={handleContent}>미리보기</button>
             </div>
         </div>
 
     );
 };
 export default ArticleWriteForm;
-

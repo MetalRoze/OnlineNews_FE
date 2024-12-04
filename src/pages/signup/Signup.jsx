@@ -20,7 +20,7 @@ const SignupSelectSubTitle = styled.p`
 
 const OptionWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width:80%;
     padding:20px;
     margin-bottom:10px;
     border: 1px solid var(--color-gray20);

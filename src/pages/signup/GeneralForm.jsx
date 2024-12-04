@@ -8,7 +8,7 @@ import profileResetIcon from '../../assets/x-square.svg';
 import { postRequest } from '../../apis/noCTAxios';
 
 const InputContainer = styled.div`
-    max-width:400px;
+    max-width:100%;
     max-height:600px;
     overflow-y:auto;
     scrollbar-width: none;
@@ -18,7 +18,7 @@ const InputContainer = styled.div`
 
 const TitleWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width:100%;
     display:flex; 
     flex-direction:column; 
     justify-content : left;
@@ -40,7 +40,8 @@ const SubTitle = styled.p`
 
 const NextButton = styled.button`
     padding:10px;
-    width: 400px;
+    width: 100%;
+    max-width:100%;
     background-color: var(--color-gray40);
     color: white;
     border: none;
@@ -62,7 +63,8 @@ const SmallText = styled.span`
 
 const InputWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width:100%;
+    margin: 0 auto; /* 부모 요소에 중앙 정렬 적용 */
 `; 
 
 const InputLabel = styled.div`
@@ -84,7 +86,7 @@ const PhoneInputWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 400px;
+    max-width:100%;
     margin-bottom:10px;
 `;
 
@@ -123,16 +125,21 @@ const ProfileImage = styled.img`
     height: 70px;
     border-radius: 50%; 
     margin-bottom: 10px;
-
 `;
 
 const ProfileInputWrapper = styled.div`
+    width:100%;
+    max-width:100%;
     display:flex; 
     flex-direction:row; 
+    align-items: center; /* 세로 정렬 */
+    justify-content: space-between; /* 내부 요소를 양쪽 끝에 배치 */
     border: var(--color-gray50)
 `;
 
 const CancelButton = styled.button`
+    width:auto;
+    height:100%;
     background: transparent;
     border: none;
     cursor: pointer; 
@@ -302,7 +309,7 @@ export default function GeneralForm() {
     };
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <div className='column mobile-container m0 pd30 aiCenter jfCcenter'>
             <TitleWrapper>
                 <Title>회원정보</Title>
                 <SubTitle>입력항목중<SmallText>(</SmallText><SmallRedText>*</SmallRedText><SmallText>)</SmallText>는 필수입력 표시입니다.</SubTitle>
@@ -436,22 +443,22 @@ export default function GeneralForm() {
                 <InputWrapper>
                     <InputLabel>프로필 사진</InputLabel>
                     <ProfileIconWrapper>
-                    <ProfileImage 
-                        src={profileImg}
-                        alt="프로필 아이콘"
-                    />
-                    <ProfileInputWrapper>
-                        <input 
-                            type="file" 
-                            id="profilePic"
-                            accept="image/*" 
-                            aria-label="프로필 사진 입력 필드"
-                            onChange={handleProfileChange}
+                        <ProfileImage 
+                            src={profileImg}
+                            alt="프로필 아이콘"
                         />
-                        <CancelButton onClick={handleCancelProfile}>
-                                 <img src ={profileResetIcon} alt='초기화 아이콘'></img>
-                        </CancelButton>
-                    </ProfileInputWrapper>
+                        <ProfileInputWrapper>
+                            <input 
+                                type="file" 
+                                id="profilePic"
+                                accept="image/*" 
+                                aria-label="프로필 사진 입력 필드"
+                                onChange={handleProfileChange}
+                            />
+                            <CancelButton onClick={handleCancelProfile}>
+                                    <img src ={profileResetIcon} alt='초기화 아이콘'></img>
+                            </CancelButton>
+                        </ProfileInputWrapper>
                     
                     </ProfileIconWrapper>
                 </InputWrapper>
