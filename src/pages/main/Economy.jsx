@@ -34,8 +34,8 @@ export default function Economy() {
                 }
 
                 const [articleRssResponse, articleSelectResponse] = await Promise.all([
-                    getRequest("/api/article/rss/category?categoryName=OPINION"),
-                    getRequest("/api/article/select?category=OPINION")
+                    getRequest("/api/article/rss/category?categoryName=ECONOMY"),
+                    getRequest("/api/article/select?category=ECONOMY")
                 ]);
 
                 // 두 API 결과 합치기
