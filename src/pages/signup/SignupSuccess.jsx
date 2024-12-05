@@ -16,29 +16,28 @@ const Message = styled.h1`
 
 const NextButton = styled.button`
     padding:10px;
+    margin-top:100px;
     width:100%;
-    max-width:80%;
+    max-width: 80%; 
     background-color: var(--color-gray40);
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    position: absolute; 
-    bottom: 20px; 
-    left: 50%;
-    transform: translateX(-50%); 
 `; 
 
 export default function Signup() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate(); 
 
     const handleNext = () => {
         navigate('/login');
     };
 
     return (
-        <div className='column mobile-container m0 pd30 aiCenter jfCcenter'>
+        <div className='column mobile-container m0 pd30 aiCenter jfCcenter' 
+             style={{ display : 'flex'}}
+        >
             <IconWrapper>
                 <img 
                     width='180px' 
