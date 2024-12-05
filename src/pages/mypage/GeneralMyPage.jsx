@@ -142,7 +142,12 @@ const NextButton = styled.button`
     cursor: pointer;
     font-size: 1.3rem;
     font-weight:300;
-`; 
+
+    @media (max-width: 768px) {
+        font-size: 3.5vw;
+        max-font-size:1.3rem; 
+    }
+`;
 
 
 export default function GeneralMyPage() {
