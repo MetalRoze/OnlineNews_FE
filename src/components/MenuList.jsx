@@ -21,8 +21,8 @@ export default function MenuList({ backgroundColor = 'var(--color-white)', textC
             setActiveIndex(currentIndex);
             swiperRef.current?.slideTo(currentIndex);  // 초기화 시에 현재 인덱스로 슬라이드 이동
         } else {
-            setActiveIndex(prompCategory)
-            swiperRef.current?.slideTo(prompCategory);
+            setActiveIndex(prompCategory+1)
+            swiperRef.current?.slideTo(prompCategory+1);
         }
     }, [location.pathname, prompCategory]);
 

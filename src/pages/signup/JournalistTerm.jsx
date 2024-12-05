@@ -8,7 +8,7 @@ import parseTerms from './term/ParseTerms';
 
 const TitleWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width: 100%; 
     display:flex; 
     flex-direction:column; 
     justify-content : left;
@@ -30,7 +30,8 @@ const TermSubTitle = styled.p`
 
 const NextButton = styled.button`
     padding:10px;
-    width: 400px;
+    width:100%;
+    max-width: 100%; 
     background-color: var(--color-gray40);
     color: white;
     border: none;
@@ -41,7 +42,7 @@ const NextButton = styled.button`
 
 const AllAgreeWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width: 100%; 
     padding: 0px 10px 0px 10px;
     display: flex; 
     flex-direction:column;
@@ -51,7 +52,7 @@ const AllAgreeWrapper = styled.div`
 
 const AgreeCheckWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width: 100%; 
     margin:5px 0px;
     display: flex; 
     flex-direction:row;
@@ -61,7 +62,7 @@ const AgreeCheckWrapper = styled.div`
 
 const UseTermAgreeWrapper = styled.div`
     width:100%; 
-    max-width:400px; 
+    max-width: 100%; 
     padding: 0px 10px 10px 10px;
     margin-bottom:40px;
     display: flex; 
@@ -91,14 +92,15 @@ const AllAgreeDescription = styled.p`
 
 const HrLine = styled.hr`
   width: 100%;
-  max-width: 400px;
+  max-width: 100%; 
+  margin: 10px 0px;
   border: 0;
   border-bottom: 1px solid var(--color-gray50);
 `;
 
 const TermDescriptionScrollBox = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 100%; 
   max-height: 120px;  
   padding: 10px;
   margin-bottom:20px;
@@ -148,7 +150,7 @@ export default function JurnalistTerm() {
     }; 
 
     return (
-        <div className='column mobile-container m0 pd20 aiCenter jfCcenter'>
+        <div className='column mobile-container m0 pd30 aiCenter jfCcenter'>
         <TitleWrapper>
                 <TermTitle>이용약관</TermTitle>
                 <TermSubTitle>회원가입을 통해 다양한 혜택을 누리시기 바랍니다.</TermSubTitle>

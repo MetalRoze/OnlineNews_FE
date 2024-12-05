@@ -28,14 +28,14 @@ export default function Economy() {
                 const headlineResponse = await getRequest("/api/main-article/category/headline?category=ECONOMY");
                 if (headlineResponse?.data?.length > 0) {
                     console.log(headlineResponse.data);
-                    setHead(headlineResponse.data);
+                    setHead(headlineResponse.data[0]);
                 } else {
                     console.error("No headline data found.");
                 }
 
                 const [articleRssResponse, articleSelectResponse] = await Promise.all([
-                    getRequest("/api/article/rss/category?categoryName=OPINION"),
-                    getRequest("/api/article/select?category=OPINION")
+                    getRequest("/api/article/rss/category?categoryName=ECONOMY"),
+                    getRequest("/api/article/select?category=ECONOMY")
                 ]);
 
                 // 두 API 결과 합치기
