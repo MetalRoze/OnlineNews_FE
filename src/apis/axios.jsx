@@ -104,8 +104,14 @@ const getRunMyCodeRequest = (articleId) => {
 
 // calculate 요청 GET 요청 함수
 const getCalculateRequest = (params = {}) => {
-  return apiClientForRunMyCode.get('/pyapi/calculate', {
-    params,
+  const authToken = sessionStorage.getItem('authToken'); // 토큰 가져오기
+  if (!authToken) {
+      throw new Error('인증 토큰이 없습니다. 로그인 후 다시 시도해주세요.');
+  }
+
+  // 토큰을 경로에 포함하여 요청
+  return apiClientForRunMyCode.get(`/pyapi/calculate/${authToken}`, {
+      params,
   });
 };
 
