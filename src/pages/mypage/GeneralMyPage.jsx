@@ -8,53 +8,76 @@ import MailingSettingModal from '../../components/MailingSettingModal'; // 추�
 
 const ProfileWrapper = styled.div`
     width: 100%; 
-    max-width:100%;
+    max-width:80%;
     margin: 0 auto; 
+    margin-top: 30px;
     height: 100%; 
-    display:flex;
-    flex-direction:row; 
-    justify-content:center;
-    align-items:center; 
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center; 
     padding: 0 20px;
-`; 
+
+    @media (max-width: 768px) {
+        max-width:100%;
+    }
+
+`;
 
 const ProfileTextWrapper = styled.div`
     width: 100%;
-    max-width:70%; 
-    display:flex;
+    max-width:65%; 
+    display: flex;
     margin: 0px 10px;
-    flex-direction:column; 
-    justify-content:left; 
-    align-items:left; 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-start; 
+
+    @media (max-width: 768px) {
+        margin: 0 1vh;
+    }
+
 `;
 
 const ProfileImage = styled.img`
-    width: 100%;
-    max-width:40%; 
-    height: auto; 
+    max-width:35%; 
+    padding:5px;
+    aspect-ratio: 1;
     margin: 0px 20px;
-    border-radius: 50%;  
-`; 
+    border-radius: 50%;
+
+    @media (max-width: 768px) {
+        margin: 0 2vh;
+    }
+`;
 
 const NameWrapper = styled.div`
     width:100%; 
     display:flex;
     flex-direction:row; 
+    justify-content: space-between;
+    align-items: center;
+
 `; 
 
 const NameText = styled.h1`
-    font-size:2rem;
+    font-size: 2rem;
     width:100%; 
-`; 
+
+    @media (max-width: 768px) {
+        font-size: 5vw;
+        max-font-size:2em; 
+    }
+`;
 
 const BioWrapper = styled.div`
     width:100%;
     display:flex; 
     flex-direction:row; 
-`; 
+`;
 
 const VerticalLine = styled.div`
-    height: 50px;
+    max-height: 100%;
     margin-top:1px;
     margin-right:15px; 
     border: 1px solid black; 
@@ -67,21 +90,30 @@ const HorizontalLine = styled.div`
     margin: 20px 0; 
 `; 
 
+
 const BioText = styled.p`
     width:100%; 
-    font-size:1.2rem;
-    height: 50px;
+    font-size:1.2rem;    
+
+    @media (max-width: 768px) {
+        font-size: 3vw;
+    }
 `; 
 
 const InfoWrapper = styled.div`
     width:100%;
-    max-width:100%;
+    max-width:80%;
     margin: 20px auto;
     height: auto; 
     display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+
+    @media (max-width: 768px) {
+        max-width:90%;
+        margin: 5vw auto;
+    }
 `;
 
 const InfoColumn = styled.div`
@@ -91,19 +123,29 @@ const InfoColumn = styled.div`
     display: flex;
     flex-direction: row;
     padding: 0px 10px;
-    align-items: flex-start; /* 텍스트가 위로 정렬되도록 설정 */
-    flex-wrap: wrap; /* 줄바꿈을 허용하여 요소들이 라인 바꿈을 할 수 있도록 설정 */
+    align-items: flex-start;
+    flex-wrap: wrap; 
+    @media (max-width: 768px) {
+        margin: 0.2vw;
+    }
 `;
 
+
 const InfoLabel = styled.p`
-    flex: 0 0 35%;  /* 35% 너비로 고정 */
+    flex: 0 0 35%;  
     word-break: break-word; 
     margin: 0 20px;
     padding: 10px;
     font-size: 1.25rem;
     font-weight: 400;
     display: flex;
-    justify-content: flex-start; /* 라벨 텍스트가 왼쪽으로 정렬 */
+    justify-content: flex-start;
+
+    @media (max-width: 768px) {
+        font-size: 3.5vw;
+        max-font-size:1.25rem;
+        margin: 0 5vw;
+    }
 `;
 
 const InfoText = styled.p`
@@ -113,21 +155,33 @@ const InfoText = styled.p`
     margin: 0px 10px;
     padding: 10px;
     color: var(--color-gray50); 
-    word-break: break-word;  /* 긴 단어가 화면을 넘어가지 않도록 처리 */
-    white-space: normal;  /* 텍스트가 길어지면 줄바꿈 */
+    word-break: break-word;  
+    white-space: normal;  
     display: flex;
-    flex-wrap: wrap; /* 줄바꿈을 허용하여 텍스트가 여러 줄로 나눠지게 함 */
+    flex-wrap: wrap;
+    @media (max-width: 768px) {
+        font-size: 3.5vw;
+        max-font-size:1.25rem;
+        margin: 0;
+    }
 `;
 
 const EditSpace = styled.div`
-    width:30px;
-    height:20px; 
+    width:1.25rem;
+    height:1.25rem;
     margin-top:10px;
     margin-bottom:20px; 
     display:flex;
     flex-direction:column;
     align-items: center; 
     justify-content:center;
+
+    @media (max-width: 768px) {
+        width:2.5vw; 
+        height:2.5vw; 
+        margin-top:2vw;
+        margin-bottom:5vw; 
+    }
 `; 
 
 const NextButton = styled.button`
