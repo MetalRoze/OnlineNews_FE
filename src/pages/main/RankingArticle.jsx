@@ -19,7 +19,7 @@ export default function RankingArticle({ rank, article }) {
       </ArticleInfo>
       {article.images && (
         <ArticleImage
-          src={article.images}
+          src={article.images[0]}
           alt={`${article.images[0]} 썸네일`}
         />
       )}
@@ -56,6 +56,7 @@ const Source = styled.p`
   margin: 0;
   color: ${theme.colors.gray50};
   text-align: left;
+  margin-top : 2rem;
 `;
 
 const ArticleImage = styled.img`
