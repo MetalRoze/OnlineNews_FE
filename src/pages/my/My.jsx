@@ -97,6 +97,7 @@ export default function My() {
                 currentSubscribedArticles.map((article, index) => (
                     <div key={index}>
                         <BasicArticle article={article} />
+                        <hr />
                     </div>
                 ))
             ) : (

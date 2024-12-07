@@ -94,6 +94,7 @@ const patchRequest = (url, data, headers = {}) => {
 
 // DELETE 요청 함수
 const deleteRequest = (url, data, headers = {}) => {
+  console.log(headers, url, data);
   return apiClient.delete(url, { headers, data });
 };
 
