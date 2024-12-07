@@ -23,7 +23,7 @@ export default function Ranking() {
     // const articles = Array(6).fill(0);
 
     const fetchArticles = (sortBy) => {
-        const url = `/api/article/select?sortBy=${sortBy}`;
+        const url = `/api/article/select?sortBy=${sortBy}&sortDirection=desc`;
         getRequest(url)
             .then((response) => {
                 if (response && Array.isArray(response.data)) {
