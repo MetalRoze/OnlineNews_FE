@@ -93,9 +93,9 @@ const patchRequest = (url, data, headers = {}) => {
 };
 
 // DELETE 요청 함수
-const deleteRequest = (url, data, headers = {}) => {
+const deleteRequest = (url, headers = {}) => {
   console.log(headers, url, data);
-  return apiClient.delete(url, { headers, data });
+  return apiClient.delete(url, { headers });
 };
 
 // run-my-code 요청을 위한 POST 요청 함수
