@@ -3,11 +3,13 @@ import BasicArticle from "../../components/BasicArticle";
 import MenuList from "../../components/MenuList";
 import styled from "styled-components";
 import SubPub from "./SubPub";
+import { IoIosSettings } from "react-icons/io";
 import { CgAddR } from "react-icons/cg"; // 아이콘 불러오기
 import { useNavigate } from 'react-router-dom';
 import { getRequest, getCalculateRequest } from "../../apis/axios"; // getRequest 임포트 (이미 정의된 함수로 가정)
 import KakaoAdFit from "../../components/KakaoAdFit";
 import MyPagination from "../../components/Pagination";
+import PubProfile from "./PubProfile";
 
 export default function My() {
     const [subscriptions, setSubscriptions] = useState([]); // 구독 정보를 저장할 상태
@@ -38,6 +40,7 @@ export default function My() {
                 const response = await getRequest('/api/subscription');
                 setSubscriptions(response.data); // 받은 데이터로 subscriptions 상태 업데이트
 
+                console.log("구독 : ", response.data);
                 // 구독 기사 가져오기
                 const subscribedArticlePromises = response.data.map(subscription =>
                     getRequest(`/api/article/rss/${subscription.publisher_id}`)
@@ -110,21 +113,32 @@ export default function My() {
         <div>
             <MenuList />
             <div className="flex column mobile-container">
-                <h4 style={{ textAlign: 'left', width: '95%', marginLeft: "0.5rem", marginTop: "1rem" }}>My</h4>
+                <div className="flex aiCenter" >
+                    <h4 style={{ textAlign: 'left', marginLeft: "1rem" }}>My</h4>
+                    <AddIconBox>
+                        <IoIosSettings size={28} onClick={handleSetPub} style={{ marginRight: "4rem", marginBottom: "0.3rem" }} />
+                    </AddIconBox>
+                </div>
 
                 <div>
                     <CenteredContainer>
                         <GrayBox>
                             {subscriptions.map((subscription, index) => (
-                                <SubPub
-                                    key={index}
-                                    publisher={subscription.publisher_name}
-                                    onClick={null} // 명시적으로 클릭 이벤트를 전달하지 않음
+                                // <SubPub
+                                //     key={index}
+                                //     publisher={subscription.publisher_name}
+                                //     onClick={null} // 명시적으로 클릭 이벤트를 전달하지 않음
+                                // />
+                                <PubProfile
+                                    key={subscription.publihser_Id} // 고유 ID로 키 설정
+                                    publisherImg={subscription.publisher_img}
+                                    publisherName={null}
+                                    publisherType={null}
+                                    publisherUrl={null}
+                                    publisherId={subscription.publisher_id} // API 요청 시 사용
                                 />
                             ))}
-                            <AddIconBox>
-                                <CgAddR size={28} onClick={handleSetPub} />
-                            </AddIconBox>
+
                         </GrayBox>
                     </CenteredContainer>
                 </div>
@@ -215,6 +229,9 @@ const GrayBox = styled.div`
     border-radius: 1rem;
     box-sizing: border-box; 
     width:95%;
+    margin-bottom : 1rem;
+    height: 150px; /* 세로 높이 조정 */
+    margin-top : 0rem;
 `;
 
 const AddIconBox = styled.div`
